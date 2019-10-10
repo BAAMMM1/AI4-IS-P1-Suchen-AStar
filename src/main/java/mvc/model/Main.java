@@ -1,6 +1,8 @@
-import algorithm.Bfs;
-import algorithm.Tfs;
-import problem.Problem;
+package mvc.model;
+
+import mvc.model.algorithm.Bfs;
+import mvc.model.algorithm.Tfs;
+import mvc.model.problem.Problem;
 
 public class Main {
 
