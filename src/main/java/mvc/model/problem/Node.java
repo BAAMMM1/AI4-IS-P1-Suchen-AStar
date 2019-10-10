@@ -1,4 +1,4 @@
-package problem;
+package mvc.model.problem;
 
 public class Node {
 

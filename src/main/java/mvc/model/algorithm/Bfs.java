@@ -1,13 +1,11 @@
-package algorithm;
+package mvc.model.algorithm;
 
-import org.omg.CORBA.NO_IMPLEMENT;
-import problem.Node;
-import problem.NodeType;
-import problem.Problem;
+import mvc.model.problem.Node;
+import mvc.model.problem.NodeType;
+import mvc.model.problem.Problem;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Bfs {

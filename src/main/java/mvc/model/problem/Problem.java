@@ -1,7 +1,7 @@
-package problem;
+package mvc.model.problem;
 
-import algorithm.Bfs;
-import algorithm.Tfs;
+import mvc.model.algorithm.Bfs;
+import mvc.model.algorithm.Tfs;
 
 import java.util.ArrayList;
 import java.util.List;

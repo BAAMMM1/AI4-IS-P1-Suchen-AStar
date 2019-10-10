@@ -1,4 +1,4 @@
-package problem;
+package mvc.model.problem;
 
 public enum NodeType {
 
