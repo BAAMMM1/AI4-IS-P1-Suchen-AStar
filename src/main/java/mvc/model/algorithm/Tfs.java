@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+// TODO Schrittkosten
 public class Tfs {
 
     private Node source;

@@ -17,7 +17,7 @@ public class Bfs {
     private List<Node> closeList;
     private List<Node> path;
 
-    // TODO getOpenlist, getCloselist für das Einzeichnen?
+    // TODO schrittkosten
 
     public Bfs() {
 
