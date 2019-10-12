@@ -9,11 +9,22 @@ public class Node {
 
     private String draw;
 
+    // Schrittkosten zum Knoten (Kosten an der Kante)
+    private int stepCoast = 1;
+
+    // Die addieren StepCoast zu dem Knoten, d.h. die Pfadkosten zum Knoten
+    private int gCoast;
+
+    // f(n) = g(n) + (hn)
+    private int fVonN;
+
     public Node(int zustand) {
         this.type = NodeType.FREE_UNDISCOVERED;
         this.zustand = zustand;
         this.type = type;
-        this.draw = "" + zustand;
+        //this.draw = "" + zustand;
+        this.draw = "X";
+        this.gCoast = 0;
     }
 
     public void setType(NodeType type) {
@@ -34,6 +45,30 @@ public class Node {
 
     public NodeType getType() {
         return type;
+    }
+
+    public int getgCoast() {
+        return gCoast;
+    }
+
+    public int getStepCoast() {
+        return stepCoast;
+    }
+
+    public int getfVonN() {
+        return fVonN;
+    }
+
+    public void setgCoast(int gCoast) {
+        this.gCoast = gCoast;
+    }
+
+    public void setStepCoast(int stepCoast) {
+        this.stepCoast = stepCoast;
+    }
+
+    public void setfVonN(int fVonN) {
+        this.fVonN = fVonN;
     }
 
     public String draw(){
