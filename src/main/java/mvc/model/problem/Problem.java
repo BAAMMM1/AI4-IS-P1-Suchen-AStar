@@ -1,6 +1,8 @@
 package mvc.model.problem;
 
+import mvc.model.algorithm.AStar;
 import mvc.model.algorithm.Bfs;
+import mvc.model.algorithm.SucheMitEinheitlichenKosten;
 import mvc.model.algorithm.Tfs;
 
 import java.util.ArrayList;
@@ -202,6 +204,46 @@ public class Problem {
 
         this.field[tfs.getSource().getZustand()].setType(NodeType.START);
         this.field[tfs.getTarget().getZustand()].setType(NodeType.TARGET);
+
+    }
+
+    public void paintAlgorithmInToField(SucheMitEinheitlichenKosten smek){
+
+        for(Node node: smek.getCloseList()){
+            this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
+        }
+
+        for(Node node: smek.getOpenList()){
+            this.field[node.getZustand()].setType(NodeType.OPENLIST);
+        }
+
+        // TODO Path einzeichnen
+        for(Node node: smek.getPath()){
+            this.field[node.getZustand()].setType(NodeType.PATH);
+        }
+
+        this.field[smek.getSource().getZustand()].setType(NodeType.START);
+        this.field[smek.getTarget().getZustand()].setType(NodeType.TARGET);
+
+    }
+
+    public void paintAlgorithmInToField(AStar astar){
+
+        for(Node node: astar.getCloseList()){
+            this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
+        }
+
+        for(Node node: astar.getOpenList()){
+            this.field[node.getZustand()].setType(NodeType.OPENLIST);
+        }
+
+        // TODO Path einzeichnen
+        for(Node node: astar.getPath()){
+            this.field[node.getZustand()].setType(NodeType.PATH);
+        }
+
+        this.field[astar.getSource().getZustand()].setType(NodeType.START);
+        this.field[astar.getTarget().getZustand()].setType(NodeType.TARGET);
 
     }
 
