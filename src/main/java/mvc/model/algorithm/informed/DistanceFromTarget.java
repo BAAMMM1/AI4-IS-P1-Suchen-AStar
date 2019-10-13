@@ -1,10 +1,10 @@
-package mvc.model.algorithm;
+package mvc.model.algorithm.informed;
 
 import mvc.model.problem.Node;
 
 import java.util.Random;
 
-public class Heuristic {
+public class DistanceFromTarget extends AStarHeuristic{
 
     private int hCoast = 1;
 
@@ -13,30 +13,20 @@ public class Heuristic {
     private int xTarget;
     private int yTarget;
 
-    public Heuristic(Node target, int columns) {
+    public DistanceFromTarget(Node target, int columns) {
         this.target = target;
         this.columns = columns;
 
         this.xTarget = target.getZustand() % columns;
-        this.yTarget = target.getZustand() / columns; // Integer-
+        this.yTarget = target.getZustand() / columns; // Integer-Division
 
         System.out.println("x= " + xTarget +" y= " + yTarget);
 
 
     }
 
-    // h(node) = geschätze Kosten für billigsten Pfad vom Zustand an Knoten n zu einem Zielzustand
-    public int heuristic() {
-        return hCoast;
-    }
 
-    /*
-    public int calc(Node node){
-        return new Random().nextInt(100);
-    }
-    */
-
-    public int calc(Node node){
+    public int calcHVonN(Node node){
 
         int xNode = node.getZustand() % columns;
         int yNode = node.getZustand() / columns;
@@ -46,5 +36,6 @@ public class Heuristic {
 
         return xdistance + ydistance;
     }
+
 
 }
