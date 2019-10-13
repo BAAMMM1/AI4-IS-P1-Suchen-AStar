@@ -1,9 +1,9 @@
 package mvc.model;
 
-import mvc.model.algorithm.AStar;
-import mvc.model.algorithm.Bfs;
-import mvc.model.algorithm.SucheMitEinheitlichenKosten;
-import mvc.model.algorithm.Tfs;
+import mvc.model.algorithm.informed.AStar;
+import mvc.model.algorithm.uninformed.BreadthFirst;
+import mvc.model.algorithm.uninformed.UniformCost;
+import mvc.model.algorithm.uninformed.DepthFirst;
 import mvc.model.problem.Problem;
 
 public class Main {
@@ -13,19 +13,22 @@ public class Main {
 
         // 1. Feld setzten
         Problem problem = new Problem(50);
-        /*
+
+
         // Felder blocken
         problem.blockNode(5);
         problem.blockNode(6);
         problem.blockNode(89);
         problem.blockNode(12);
-        problem.blockNode(22);
+        problem.blockNode(29);
+        //problem.blockNode(22);
         problem.blockNode(32);
         problem.blockNode(33);
         problem.blockNode(34);
         problem.blockNode(81);
         problem.blockNode(91);
         problem.blockNode(71);
+        problem.blockNode(70);
         problem.blockNode(61);
         problem.blockNode(51);
 
@@ -33,37 +36,37 @@ public class Main {
         //problem.drawField();
 
         // Algorithmus durchlaufen lassen
-        Bfs bfs = new Bfs();
-        bfs.calculate(problem, 1520, 18);
+        BreadthFirst bfs = new BreadthFirst(problem, 1520, 18);
+        bfs.calculate();
 
         // Algorithmus in das Feld eintragen
-        problem.paintAlgorithmInToField(bfs);
+        problem.paintAlgorithmInToFieldWithDepth(bfs);
 
         // Feld ausgeben
         System.out.println();
         problem.drawField();
-        /*
+
         // Feld leeren vom Algortihmus
         System.out.println();
         problem.clearFieldFromAlgorithm();
 
-        // Feld ausgeben
-        System.out.println();
-        problem.drawField();
+        problem = new Problem(50);
 
-        Tfs tfs = new Tfs();
-        tfs.calculate(problem, 1520, 18);
+
+        DepthFirst tfs = new DepthFirst(problem, 1520, 18);
+        tfs.calculate();
         problem.paintAlgorithmInToField(tfs);
         System.out.println();
         problem.drawField();
-        */
+
 
         System.out.println();
         problem.clearFieldFromAlgorithm();
 
+        problem = new Problem(50);
         // Algorithmus durchlaufen lassen
-        SucheMitEinheitlichenKosten smek = new SucheMitEinheitlichenKosten();
-        smek.calculate(problem, 1520, 18);
+        UniformCost smek = new UniformCost(problem, 1520, 18);
+        smek.calculate();
 
         // Algorithmus in das Feld eintragen
         problem.paintAlgorithmInToField(smek);
@@ -72,9 +75,11 @@ public class Main {
         System.out.println();
         problem.drawField();
 
+        // Feld leeren vom Algortihmus
         System.out.println();
         problem.clearFieldFromAlgorithm();
 
+        problem = new Problem(50);
 
         problem.blockNode(67);
         problem.blockNode(68);
@@ -91,9 +96,10 @@ public class Main {
         problem.blockNode(128);
 
 
+
         // Algorithmus durchlaufen lassen
-        AStar aStar = new AStar();
-        aStar.calculate(problem, 1520, 22);
+        AStar aStar = new AStar(problem, 1520, 22);
+        aStar.calculate();
 
 
         // Algorithmus in das Feld eintragen

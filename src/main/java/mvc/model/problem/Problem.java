@@ -1,9 +1,10 @@
 package mvc.model.problem;
 
-import mvc.model.algorithm.AStar;
-import mvc.model.algorithm.Bfs;
-import mvc.model.algorithm.SucheMitEinheitlichenKosten;
-import mvc.model.algorithm.Tfs;
+import mvc.model.algorithm.*;
+import mvc.model.algorithm.informed.AStar;
+import mvc.model.algorithm.uninformed.BreadthFirst;
+import mvc.model.algorithm.uninformed.DepthFirst;
+import mvc.model.algorithm.uninformed.UniformCost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class Problem {
                 childUp = new Node(node.getZustand() - columns);
                 //Parent setzen
                 childUp.setParent(node);
+                childUp.setDepth(node.getDepth() + 1);
                 childs.add(childUp);
             }
 
@@ -78,6 +80,7 @@ public class Problem {
                 childDown = new Node(node.getZustand() + columns);
                 //Parent setzen
                 childDown.setParent(node);
+                childDown.setDepth(node.getDepth() + 1);
                 childs.add(childDown);
             }
 
@@ -97,6 +100,7 @@ public class Problem {
                 childRight = new Node(node.getZustand() + 1);
                 //Parent setzen
                 childRight.setParent(node);
+                childRight.setDepth(node.getDepth() + 1);
                 childs.add(childRight);
             }
 
@@ -116,6 +120,7 @@ public class Problem {
                 childleft = new Node(node.getZustand() - 1);
                 //Parent setzen
                 childleft.setParent(node);
+                childleft.setDepth(node.getDepth() + 1);
                 childs.add(childleft);
             }
 
@@ -167,85 +172,52 @@ public class Problem {
     }
 
     // Allgemeingültig güt Algortihmen machen
-    public void paintAlgorithmInToField(Bfs bfs){
+    public void paintAlgorithmInToField(SearchAlgorithm algorithm){
 
-        for(Node node: bfs.getCloseList()){
+        for(Node node: algorithm.getCloseList()){
             this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
         }
 
-        for(Node node: bfs.getOpenList()){
+        for(Node node: algorithm.getOpenList()){
             this.field[node.getZustand()].setType(NodeType.OPENLIST);
         }
 
-        // TODO Path einzeichnen
-        for(Node node: bfs.getPath()){
+        for(Node node: algorithm.getPath()){
             this.field[node.getZustand()].setType(NodeType.PATH);
         }
 
-        this.field[bfs.getSource().getZustand()].setType(NodeType.START);
-        this.field[bfs.getTarget().getZustand()].setType(NodeType.TARGET);
+        this.field[algorithm.getSource().getZustand()].setType(NodeType.START);
+        this.field[algorithm.getTarget().getZustand()].setType(NodeType.TARGET);
 
     }
 
-    public void paintAlgorithmInToField(Tfs tfs){
+    public void paintAlgorithmInToFieldWithDepth(SearchAlgorithm algorithm){
 
-        for(Node node: tfs.getCloseList()){
+        for(Node node: algorithm.getCloseList()){
             this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
+            this.field[node.getZustand()].setDraw("" + node.getDepth());
         }
 
-        for(Node node: tfs.getOpenList()){
+        for(Node node: algorithm.getOpenList()){
             this.field[node.getZustand()].setType(NodeType.OPENLIST);
+            this.field[node.getZustand()].setDraw("" + node.getDepth());
         }
 
-        // TODO Path einzeichnen
-        for(Node node: tfs.getPath()){
+        for(Node node: algorithm.getPath()){
             this.field[node.getZustand()].setType(NodeType.PATH);
+            this.field[node.getZustand()].setDraw("" + node.getDepth());
+            //System.out.println("depth: " + this.field[node.getZustand()].getDepth() + " " + this.field[node.getZustand()].draw());
         }
 
-        this.field[tfs.getSource().getZustand()].setType(NodeType.START);
-        this.field[tfs.getTarget().getZustand()].setType(NodeType.TARGET);
+        this.field[algorithm.getSource().getZustand()].setType(NodeType.START);
+        this.field[algorithm.getSource().getZustand()].setDraw("" + this.field[algorithm.getSource().getZustand()].getDepth());
+
+        this.field[algorithm.getTarget().getZustand()].setType(NodeType.TARGET);
+        this.field[algorithm.getTarget().getZustand()].setDraw("" + this.field[algorithm.getTarget().getZustand()].getDepth());
 
     }
 
-    public void paintAlgorithmInToField(SucheMitEinheitlichenKosten smek){
 
-        for(Node node: smek.getCloseList()){
-            this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
-        }
-
-        for(Node node: smek.getOpenList()){
-            this.field[node.getZustand()].setType(NodeType.OPENLIST);
-        }
-
-        // TODO Path einzeichnen
-        for(Node node: smek.getPath()){
-            this.field[node.getZustand()].setType(NodeType.PATH);
-        }
-
-        this.field[smek.getSource().getZustand()].setType(NodeType.START);
-        this.field[smek.getTarget().getZustand()].setType(NodeType.TARGET);
-
-    }
-
-    public void paintAlgorithmInToField(AStar astar){
-
-        for(Node node: astar.getCloseList()){
-            this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
-        }
-
-        for(Node node: astar.getOpenList()){
-            this.field[node.getZustand()].setType(NodeType.OPENLIST);
-        }
-
-        // TODO Path einzeichnen
-        for(Node node: astar.getPath()){
-            this.field[node.getZustand()].setType(NodeType.PATH);
-        }
-
-        this.field[astar.getSource().getZustand()].setType(NodeType.START);
-        this.field[astar.getTarget().getZustand()].setType(NodeType.TARGET);
-
-    }
 
     public void clearFieldFromAlgorithm(){
         for(int i = 0; i < this.field.length; i++){

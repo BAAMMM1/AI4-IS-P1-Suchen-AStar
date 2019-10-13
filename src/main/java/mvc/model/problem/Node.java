@@ -9,6 +9,8 @@ public class Node {
 
     private String draw;
 
+    private int depth;
+
     // Schrittkosten zum Knoten (Kosten an der Kante)
     private int stepCoast = 1;
 
@@ -22,6 +24,7 @@ public class Node {
         this.type = NodeType.FREE_UNDISCOVERED;
         this.zustand = zustand;
         this.type = type;
+        this.depth = 0;
         //this.draw = "" + zustand;
         this.draw = "X";
         this.gCoast = 0;
@@ -59,6 +62,10 @@ public class Node {
         return fVonN;
     }
 
+    public int getDepth() {
+        return depth;
+    }
+
     public void setgCoast(int gCoast) {
         this.gCoast = gCoast;
     }
@@ -71,16 +78,24 @@ public class Node {
         this.fVonN = fVonN;
     }
 
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public void setDraw(String draw) {
+        this.draw = draw;
+    }
+
     public String draw(){
 
         if(this.type == NodeType.FREE_UNDISCOVERED){
             return "\033[0;37m X" + "\033[0;30m";
 
         } else if(this.type == NodeType.START){
-            return "\033[42m S" + "\033[0;30m";
+            return "\033[41m " + this.draw + "\033[0;30m";
 
         } else if(this.type == NodeType.TARGET){
-            return "\033[41m Z" + "\033[0;30m";
+            return "\033[41m " + this.draw + "\033[0;30m";
 
         } else if(this.type == NodeType.BLOCKED){
             return "\033[40m X" + "\033[0;30m";
