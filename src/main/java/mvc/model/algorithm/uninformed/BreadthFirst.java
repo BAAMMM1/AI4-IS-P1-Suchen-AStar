@@ -15,38 +15,37 @@ public class BreadthFirst extends SearchAlgorithm {
         super(problem, source, target);
     }
 
-    // TODO schrittkosten
-
     public void calculate(){
 
-        if(this.getSource().equals(this.getTarget())){
+        if(this.getSource().equals(target)){
+
             System.out.println("Ziel gefunden: Source ist Target");
-            this.getPath().add(this.getSource());
+            path.add(source);
 
         } else {
 
             LinkedList<Node> queue = new LinkedList<>();
 
-            queue.add(this.getSource());
+            queue.add(source);
             Node current;
 
             boolean run = true;
             while(!queue.isEmpty() && run){
+
                 current = queue.get(0);
                 queue.remove(0);
 
-                this.getCloseList().add(current);
-                List<Node> childs = this.getProblem().expandNode(current);
+                closeList.add(current);
+                List<Node> childs = problem.expandNode(current);
 
-                // TODO Lambdas
                 // TODO Die einzelenen Step-Listen der Open-/Closelist in jeweils einer Liste von Listen speichern, damit man die Verlauf visualisieren kann.
 
                 for(Node child: childs){
-                    if(!queue.contains(child) && !this.getCloseList().contains(child)){
+                    if(!queue.contains(child) && !closeList.contains(child)){
 
-                        if(child.equals(this.getTarget())) {
+                        if(child.equals(target)) {
                             System.out.println("Ziel gefunden: " + child.toString());
-                            this.setPath(this.tracePath(child));
+                            path = this.tracePath(child);
                             run = false;
                             break;
                         }
@@ -57,7 +56,7 @@ public class BreadthFirst extends SearchAlgorithm {
                 }
             }
 
-            this.getOpenList().addAll(queue);
+            openList.addAll(queue);
 
         }
 

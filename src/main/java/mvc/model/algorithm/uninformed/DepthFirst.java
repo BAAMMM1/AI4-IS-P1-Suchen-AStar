@@ -20,32 +20,32 @@ public class DepthFirst extends SearchAlgorithm {
 
     public void calculate(){
 
-        if(this.getSource().equals(this.getTarget())){
+        if(source.equals(target)){
             System.out.println("Ziel gefunden: Source ist Target");
-            this.getPath().add(this.getSource());
+            path.add(source);
 
         } else {
 
             Stack<Node> stack = new Stack<>();
 
-            stack.add(this.getSource());
+            stack.add(source);
             Node current;
 
             boolean run = true;
             while(!stack.isEmpty() && run){
                 current = stack.pop();
 
-                getCloseList().add(current);
-                List<Node> childs = getProblem().expandNode(current);
+                closeList.add(current);
+                List<Node> childs = problem.expandNode(current);
 
                 // TODO Die einzelenen Step-Listen der Open-/Closelist in jeweils einer Liste von Listen speichern, damit man die Verlauf visualisieren kann.
 
                 for(Node child: childs){
-                    if(!stack.contains(child) && !getCloseList().contains(child)){
+                    if(!stack.contains(child) && !closeList.contains(child)){
 
-                        if(child.equals(this.getTarget())) {
+                        if(child.equals(target)) {
                             System.out.println("Ziel gefunden: " + child.toString());
-                            this.setPath(this.tracePath(child));
+                            path = this.tracePath(child);
                             run = false;
                             break;
                         }
@@ -56,12 +56,11 @@ public class DepthFirst extends SearchAlgorithm {
                 }
             }
 
-            this.getOpenList().addAll(stack);
+            openList.addAll(stack);
 
 
         };
 
-        // TODO Tiefe
         // TODO könnte man auch rekursiv machen
 
     }

@@ -34,7 +34,7 @@ public class Main {
 
         // Feld ausgeben
         //problem.drawField();
-
+        System.out.println(1);
         // Algorithmus durchlaufen lassen
         BreadthFirst bfs = new BreadthFirst(problem, 1520, 18);
         bfs.calculate();

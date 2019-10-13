@@ -7,14 +7,14 @@ import java.util.*;
 
 public abstract class SearchAlgorithm {
 
-    private Problem problem;
+    protected Problem problem;
 
-    private Node source;
-    private Node target;
+    protected Node source;
+    protected Node target;
 
-    private List<Node> openList;
-    private List<Node> closeList;
-    private List<Node> path;
+    protected List<Node> openList;
+    protected List<Node> closeList;
+    protected List<Node> path;
 
     public SearchAlgorithm(Problem problem, int source, int target) {
         this.problem = problem;
@@ -72,7 +72,4 @@ public abstract class SearchAlgorithm {
         return path;
     }
 
-    public void setPath(List<Node> path) {
-        this.path = path;
-    }
 }

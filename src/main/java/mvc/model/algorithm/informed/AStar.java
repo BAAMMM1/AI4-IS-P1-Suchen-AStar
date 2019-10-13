@@ -30,23 +30,23 @@ public class AStar extends SearchAlgorithm {
 
         this.heuristic = new DistanceFromTarget(this.getTarget(), getProblem().getColumns());
 
-        priorityQueue.add(this.getSource());
+        priorityQueue.add(source);
         Node current;
 
         boolean run = true;
         while(!priorityQueue.isEmpty() && run){
             current = priorityQueue.poll();
 
-            if(current.equals(this.getTarget())) {
+            if(current.equals(target)) {
                 System.out.println("Ziel gefunden: " + current.toString());
-                this.setPath(this.tracePath(current));
+                path = tracePath(current);
                 run = false;
                 System.out.println("target gCoast: " + current.getgCoast());
                 break;
             }
 
-            getCloseList().add(current);
-            List<Node> childs = getProblem().expandNode(current);
+            closeList.add(current);
+            List<Node> childs = problem.expandNode(current);
 
             // TODO Lambdas
             // TODO Die einzelenen Step-Listen der Open-/Closelist in jeweils einer Liste von Listen speichern, damit man die Verlauf visualisieren kann.
@@ -55,7 +55,7 @@ public class AStar extends SearchAlgorithm {
                 int currentPathCoastToChild = child.getgCoast();
                 int newPathCoast= current.getgCoast()+child.getStepCoast();
 
-                if(!priorityQueue.contains(child) && !getCloseList().contains(child)){
+                if(!priorityQueue.contains(child) && !closeList.contains(child)){
                     child.setgCoast(newPathCoast);
                     child.setfVonN(child.getgCoast()+ this.heuristic.calcHVonN(child));
                     priorityQueue.add(child);
@@ -67,7 +67,7 @@ public class AStar extends SearchAlgorithm {
             }
         }
 
-        this.getOpenList().addAll(priorityQueue);
+        openList.addAll(priorityQueue);
     }
 
 
