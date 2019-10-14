@@ -3,7 +3,7 @@ package mvc.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import mvc.model.problem.Problem;
+import mvc.model.field.Field;
 
 public class Controller {
 
@@ -13,7 +13,7 @@ public class Controller {
     @FXML
     Button button;
 
-    Problem suche;
+    Field suche;
 
     public Controller() {
 

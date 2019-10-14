@@ -1,15 +1,12 @@
-package mvc.model.problem;
+package mvc.model.field;
 
 import mvc.model.algorithm.*;
-import mvc.model.algorithm.informed.AStar;
-import mvc.model.algorithm.uninformed.BreadthFirst;
-import mvc.model.algorithm.uninformed.DepthFirst;
-import mvc.model.algorithm.uninformed.UniformCost;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class Problem {
+public class Field {
 
     /**
      * Die Spaltengröße des Felds
@@ -18,7 +15,7 @@ public class Problem {
 
     private Node[] field;
 
-    public Problem(int columns) {
+    public Field(int columns) {
         this.columns = columns;
         this.field = new Node[columns*columns];
 
@@ -29,6 +26,16 @@ public class Problem {
 
     public void blockNode(int i){
         this.field[i].setType(NodeType.BLOCKED);
+    }
+
+    public void blockNode(Set<Integer> blockSet){
+
+        if(blockSet != null) {
+            for (Integer value : blockSet) {
+                blockNode(value.intValue());
+            }
+        }
+
     }
 
 
@@ -42,97 +49,56 @@ public class Problem {
         this.expandDown(childs, node);
         this.expandLeft(childs, node);
 
-        /*
-        for (Node nodeChild: childs) {
-            System.out.println(nodeChild.getZustand());
-        }
-        */
-
         return childs;
     }
 
-    public Node expandUp(List<Node> childs, Node node){
-
-        Node childUp = null;
+    public void expandUp(List<Node> childs, Node node){
 
         if(node.getZustand() - columns >= 0){
+
             if(!(this.field[node.getZustand() - columns].getType() == NodeType.BLOCKED)) {
-                // TODO bei 3x3 ist 8 max, Node mit 9 dürfte es nicht geben. Abprüfen ob Node nicht über maximum geht
 
-                //childUp = new Node(node.getZustand() - columns);
-                childUp = this.field[node.getZustand() - columns];
-                //Parent setzen
-                //childUp.setParent(node);
-                childs.add(childUp);
+                childs.add(this.field[node.getZustand() - columns]);
+
             }
-
         }
-
-        return childUp;
 
     }
 
-    public Node expandDown(List<Node> childs, Node node){
-
-        Node childDown = null;
+    public void expandDown(List<Node> childs, Node node){
 
         if(node.getZustand() + columns < this.field.length){
             if(!(this.field[node.getZustand() + columns].getType() == NodeType.BLOCKED)) {
 
-                //childDown = new Node();
-                childDown = this.field[node.getZustand() + columns];
-                //Parent setzen
-                //childDown.setParent(node);
-                childs.add(childDown);
-            }
+                childs.add(this.field[node.getZustand() + columns]);
 
+            }
 
         }
 
-        return childDown;
-
     }
 
-    public Node expandRight(List<Node> childs, Node node){
-
-        Node childRight = null;
+    public void expandRight(List<Node> childs, Node node){
 
         if(node.getZustand() % columns < columns - 1){
             if(!(this.field[node.getZustand() + 1].getType() == NodeType.BLOCKED)) {
 
-                //childRight = new Node();
-                childRight = this.field[node.getZustand() + 1];
-                //Parent setzen
-                //childRight.setParent(node);
-                childs.add(childRight);
+                childs.add(this.field[node.getZustand() + 1]);
             }
-
 
         }
 
-        return node;
-
     }
 
-    public Node expandLeft(List<Node> childs, Node node){
-
-        Node childleft = null;
+    public void expandLeft(List<Node> childs, Node node){
 
         if(node.getZustand() % columns > 0){
             if(!(this.field[node.getZustand() - 1].getType() == NodeType.BLOCKED)) {
 
-                //childleft = new Node(node.getZustand() - 1);
-                childleft = this.field[node.getZustand() - 1];
-                //Parent setzen
-                //childleft.setParent(node);
-                childs.add(childleft);
+                childs.add(this.field[node.getZustand() - 1]);
             }
 
-
-
         }
-
-        return childleft;
 
     }
 
@@ -210,7 +176,6 @@ public class Problem {
         for(Node node: algorithm.getPath()){
             this.field[node.getZustand()].setType(NodeType.PATH);
             this.field[node.getZustand()].setDraw("" + node.getDepth());
-            //System.out.println("depth: " + this.field[node.getZustand()].getDepth() + " " + this.field[node.getZustand()].draw());
         }
 
         this.field[algorithm.getSource().getZustand()].setType(NodeType.START);
@@ -229,13 +194,6 @@ public class Problem {
                 this.field[i].setType(NodeType.FREE_UNDISCOVERED);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Problem problem = new Problem(4);
-        Node node = new Node(0);
-
-        problem.expandNode(node);
     }
 
 

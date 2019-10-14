@@ -1,4 +1,4 @@
-package mvc.model.problem;
+package mvc.model.field;
 
 public class Node {
 
@@ -15,10 +15,10 @@ public class Node {
     private int stepCoast = 1;
 
     // Die addieren StepCoast zu dem Knoten, d.h. die Pfadkosten zum Knoten
-    private int gCoast;
+    private int gCost;
 
     // f(n) = g(n) + (hn)
-    private int fVonN;
+    private int fcost;
 
     public Node(int zustand) {
         this.type = NodeType.FREE_UNDISCOVERED;
@@ -27,7 +27,7 @@ public class Node {
         this.depth = 0;
         //this.draw = "" + zustand;
         this.draw = "X";
-        this.gCoast = 0;
+        this.gCost = 0;
     }
 
     public void setType(NodeType type) {
@@ -51,32 +51,32 @@ public class Node {
         return type;
     }
 
-    public int getgCoast() {
-        return gCoast;
+    public int getgCost() {
+        return gCost;
     }
 
     public int getStepCoast() {
         return stepCoast;
     }
 
-    public int getfVonN() {
-        return fVonN;
+    public int getFcost() {
+        return fcost;
     }
 
     public int getDepth() {
         return depth;
     }
 
-    public void setgCoast(int gCoast) {
-        this.gCoast = gCoast;
+    public void setgCost(int gCost) {
+        this.gCost = gCost;
     }
 
     public void setStepCoast(int stepCoast) {
         this.stepCoast = stepCoast;
     }
 
-    public void setfVonN(int fVonN) {
-        this.fVonN = fVonN;
+    public void setFcost(int fcost) {
+        this.fcost = fcost;
     }
 
     public void setDepth(int depth) {

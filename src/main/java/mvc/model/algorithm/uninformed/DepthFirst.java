@@ -1,21 +1,18 @@
 package mvc.model.algorithm.uninformed;
 
 import mvc.model.algorithm.SearchAlgorithm;
-import mvc.model.problem.Node;
-import mvc.model.problem.NodeType;
-import mvc.model.problem.Problem;
+import mvc.model.field.Node;
+import mvc.model.field.NodeType;
+import mvc.model.field.Field;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-// TODO Schrittkosten
 public class DepthFirst extends SearchAlgorithm {
 
 
-    public DepthFirst(Problem problem, int source, int target) {
-        super(problem, source, target);
+    public DepthFirst(Field field, int source, int target) {
+        super(field, source, target);
     }
 
     public void calculate(){
@@ -36,9 +33,8 @@ public class DepthFirst extends SearchAlgorithm {
                 current = stack.pop();
 
                 closeList.add(current);
-                List<Node> childs = problem.expandNode(current);
+                List<Node> childs = field.expandNode(current);
 
-                // TODO Die einzelenen Step-Listen der Open-/Closelist in jeweils einer Liste von Listen speichern, damit man die Verlauf visualisieren kann.
 
                 for(Node child: childs){
                     if(!stack.contains(child) && !closeList.contains(child)){
@@ -59,10 +55,7 @@ public class DepthFirst extends SearchAlgorithm {
 
             openList.addAll(stack);
 
-
-        };
-
-        // TODO könnte man auch rekursiv machen
+        }
 
     }
 

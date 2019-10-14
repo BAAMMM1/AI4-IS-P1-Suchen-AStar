@@ -1,9 +1,9 @@
 package mvc.model.algorithm.uninformed;
 
 import mvc.model.algorithm.SearchAlgorithm;
-import mvc.model.problem.Node;
-import mvc.model.problem.NodeType;
-import mvc.model.problem.Problem;
+import mvc.model.field.Node;
+import mvc.model.field.NodeType;
+import mvc.model.field.Field;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,8 +11,8 @@ import java.util.List;
 public class BreadthFirst extends SearchAlgorithm {
 
 
-    public BreadthFirst(Problem problem, int source, int target) {
-        super(problem, source, target);
+    public BreadthFirst(Field field, int source, int target) {
+        super(field, source, target);
     }
 
     public void calculate(){
@@ -36,20 +36,20 @@ public class BreadthFirst extends SearchAlgorithm {
                 queue.remove(0);
 
                 closeList.add(current);
-                List<Node> childs = problem.expandNode(current);
-
-                // TODO Die einzelenen Step-Listen der Open-/Closelist in jeweils einer Liste von Listen speichern, damit man die Verlauf visualisieren kann.
+                List<Node> childs = field.expandNode(current);
 
                 for(Node child: childs){
+
                     if(!queue.contains(child) && !closeList.contains(child)){
                         child.setParent(current);
 
                         if(child.equals(target)) {
-                            System.out.println("Ziel gefunden: " + child.toString() + "bei Tiefe: " + child.getDepth());
+                            System.out.println("Ziel gefunden: " + child.toString() + " bei Tiefe: " + child.getDepth());
                             path = this.tracePath(child);
                             run = false;
                             break;
                         }
+
                         queue.add(child);
                         child.setType(NodeType.OPENLIST);
 

@@ -1,34 +1,30 @@
 package mvc.model.algorithm.informed;
 
 import mvc.model.algorithm.SearchAlgorithm;
-import mvc.model.problem.Node;
-import mvc.model.problem.NodeType;
-import mvc.model.problem.Problem;
+import mvc.model.field.Node;
+import mvc.model.field.NodeType;
+import mvc.model.field.Field;
 
 import java.util.*;
 
 public class AStar extends SearchAlgorithm {
 
+    private AStarHeuristic heuristic;
 
+    public AStar(Field field, int source, int target) {
+        super(field, source, target);
+        this.heuristic = new DistanceFromTarget(this.target, field.getColumns());
+    }
 
-    private DistanceFromTarget heuristic;
-
-    public AStar(Problem problem, int source, int target) {
-        super(problem, source, target);
+    public AStar(Field field, int source, int target, AStarHeuristic heuristic) {
+        super(field, source, target);
+        this.heuristic = heuristic;
     }
 
 
     public void calculate(){
 
-
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                return Integer.compare(o1.getfVonN(), o2.getfVonN());
-            }
-        });
-
-        this.heuristic = new DistanceFromTarget(this.getTarget(), getProblem().getColumns());
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getFcost));
 
         priorityQueue.add(source);
         Node current;
@@ -41,29 +37,35 @@ public class AStar extends SearchAlgorithm {
                 System.out.println("Ziel gefunden: " + current.toString());
                 path = tracePath(current);
                 run = false;
-                System.out.println("target gCoast: " + current.getgCoast());
+                System.out.println("target gCoast: " + current.getgCost());
                 break;
             }
 
             closeList.add(current);
-            List<Node> childs = problem.expandNode(current);
+            List<Node> childs = field.expandNode(current);
 
-            // TODO Die einzelenen Step-Listen der Open-/Closelist in jeweils einer Liste von Listen speichern, damit man die Verlauf visualisieren kann.
 
             for(Node child: childs){
-                int currentPathCoastToChild = child.getgCoast();
-                int newPathCoast= current.getgCoast()+child.getStepCoast();
+
+
+                int pathCostToChildOverCurrent= current.getgCost() + child.getStepCoast();
 
                 if(!priorityQueue.contains(child) && !closeList.contains(child)){
+
                     child.setParent(current);
-                    child.setgCoast(newPathCoast);
-                    child.setfVonN(child.getgCoast()+ this.heuristic.calcHVonN(child));
+
+                    child.setgCost(pathCostToChildOverCurrent);
+                    child.setFcost(child.getgCost()+ heuristic.hCost(child));
+
                     priorityQueue.add(child);
                     child.setType(NodeType.OPENLIST);
-                } else if(priorityQueue.contains(child) && currentPathCoastToChild > newPathCoast){
+
+                } else if(priorityQueue.contains(child) && child.getgCost() > pathCostToChildOverCurrent){ // Gibt es bereits einen Weg zum Child, aber ist der Weg über diesen Knoten günstiger zum Kind als vorher?
+
                     child.setParent(current);
-                    child.setgCoast(newPathCoast);
-                    child.setfVonN(child.getgCoast()+ this.heuristic.calcHVonN(child));
+                    child.setgCost(pathCostToChildOverCurrent);
+                    child.setFcost(child.getgCost()+ heuristic.hCost(child));
+
                 }
             }
         }

@@ -1,8 +1,9 @@
 package mvc.model.algorithm.informed;
 
-import mvc.model.problem.Node;
+import mvc.model.field.Node;
 
 public abstract class AStarHeuristic {
 
-    public abstract int calcHVonN(Node node);
+    public abstract int hCost(Node node);
+
 }

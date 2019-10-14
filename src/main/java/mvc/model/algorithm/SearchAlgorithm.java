@@ -1,13 +1,13 @@
 package mvc.model.algorithm;
 
-import mvc.model.problem.Node;
-import mvc.model.problem.Problem;
+import mvc.model.field.Node;
+import mvc.model.field.Field;
 
 import java.util.*;
 
 public abstract class SearchAlgorithm {
 
-    protected Problem problem;
+    protected Field field;
 
     protected Node source;
     protected Node target;
@@ -16,10 +16,10 @@ public abstract class SearchAlgorithm {
     protected List<Node> closeList;
     protected List<Node> path;
 
-    public SearchAlgorithm(Problem problem, int source, int target) {
-        this.problem = problem;
-        this.source = problem.getField()[source];
-        this.target = problem.getField()[target];
+    public SearchAlgorithm(Field field, int source, int target) {
+        this.field = field;
+        this.source = field.getField()[source];
+        this.target = field.getField()[target];
         this.openList = new ArrayList<Node>();
         this.closeList = new ArrayList<Node>();
         this.path = new ArrayList<Node>();
@@ -27,7 +27,7 @@ public abstract class SearchAlgorithm {
 
     public abstract void calculate();
 
-    public List<Node> tracePath(Node node){
+    protected List<Node> tracePath(Node node){
 
 //        node.setDepth(node.getParent().getDepth() + 1);
 
@@ -41,15 +41,14 @@ public abstract class SearchAlgorithm {
             currenNode = currenNode.getParent();
         }
 
-        System.out.println(result.get(0).getDepth());
         Collections.reverse(result);
 
         return result;
 
     }
 
-    public Problem getProblem() {
-        return problem;
+    public Field getField() {
+        return field;
     }
 
     public Node getSource() {

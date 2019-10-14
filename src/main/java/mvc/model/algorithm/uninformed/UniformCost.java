@@ -1,29 +1,22 @@
 package mvc.model.algorithm.uninformed;
 
 import mvc.model.algorithm.SearchAlgorithm;
-import mvc.model.problem.Node;
-import mvc.model.problem.NodeType;
-import mvc.model.problem.Problem;
+import mvc.model.field.Node;
+import mvc.model.field.NodeType;
+import mvc.model.field.Field;
 
 import java.util.*;
 
 public class UniformCost extends SearchAlgorithm {
 
 
-    public UniformCost(Problem problem, int source, int target) {
-        super(problem, source, target);
+    public UniformCost(Field field, int source, int target) {
+        super(field, source, target);
     }
 
     public void calculate(){
 
-
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                return Integer.compare(o1.getgCoast(), o2.getgCoast());
-            }
-        });
-
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getgCost));
 
         priorityQueue.add(source);
         Node current;
@@ -36,28 +29,28 @@ public class UniformCost extends SearchAlgorithm {
                 System.out.println("Ziel gefunden: " + current.toString());
                 path = tracePath(current);
                 run = false;
-                System.out.println("target gCoast: " + current.getgCoast());
+                System.out.println("target gCoast: " + current.getgCost());
                 break;
             }
 
             closeList.add(current);
-            List<Node> childs = problem.expandNode(current);
-
-            // TODO Lambdas
-            // TODO Die einzelenen Step-Listen der Open-/Closelist in jeweils einer Liste von Listen speichern, damit man die Verlauf visualisieren kann.
+            List<Node> childs = field.expandNode(current);
 
             for(Node child: childs){
-                int currentPathCoastToChild = child.getgCoast();
-                int newPathCoast= current.getgCoast()+child.getStepCoast();
+
+                int pathCostToChildOverCurrent= current.getgCost() + child.getStepCoast();
 
                 if(!priorityQueue.contains(child) && !closeList.contains(child)){
+
                     child.setParent(current);
-                    child.setgCoast(newPathCoast);
+                    child.setgCost(pathCostToChildOverCurrent);
+
                     priorityQueue.add(child);
                     child.setType(NodeType.OPENLIST);
-                } else if(priorityQueue.contains(child) && currentPathCoastToChild > newPathCoast){
+
+                } else if(priorityQueue.contains(child) && child.getgCost() > pathCostToChildOverCurrent){ // Gibt es bereits einen Weg zum Child, aber ist der Weg über diesen Knoten günstiger zum Kind als vorher?
                     child.setParent(current);
-                    child.setgCoast(newPathCoast);
+                    child.setgCost(pathCostToChildOverCurrent);
                 }
             }
         }
