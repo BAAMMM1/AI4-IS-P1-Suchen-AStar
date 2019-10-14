@@ -11,6 +11,8 @@ import java.nio.file.Paths;
 
 public class Main extends Application {
 
+    // Schöner comment
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader fxmlLoader = new FXMLLoader();
