@@ -1,12 +1,12 @@
-package mvc.model.problem;
+package mvc.model.field;
 
-import mvc.model.algorithm.Bfs;
-import mvc.model.algorithm.Tfs;
+import mvc.model.algorithm.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class Problem {
+public class Field {
 
     /**
      * Die Spaltengröße des Felds
@@ -15,7 +15,7 @@ public class Problem {
 
     private Node[] field;
 
-    public Problem(int columns) {
+    public Field(int columns) {
         this.columns = columns;
         this.field = new Node[columns*columns];
 
@@ -26,6 +26,16 @@ public class Problem {
 
     public void blockNode(int i){
         this.field[i].setType(NodeType.BLOCKED);
+    }
+
+    public void blockNode(Set<Integer> blockSet){
+
+        if(blockSet != null) {
+            for (Integer value : blockSet) {
+                blockNode(value.intValue());
+            }
+        }
+
     }
 
 
@@ -39,89 +49,56 @@ public class Problem {
         this.expandDown(childs, node);
         this.expandLeft(childs, node);
 
-        /*
-        for (Node nodeChild: childs) {
-            System.out.println(nodeChild.getZustand());
-        }
-        */
-
         return childs;
     }
 
-    public Node expandUp(List<Node> childs, Node node){
-
-        Node childUp = null;
+    public void expandUp(List<Node> childs, Node node){
 
         if(node.getZustand() - columns >= 0){
+
             if(!(this.field[node.getZustand() - columns].getType() == NodeType.BLOCKED)) {
-                // TODO bei 3x3 ist 8 max, Node mit 9 dürfte es nicht geben. Abprüfen ob Node nicht über maximum geht
-                childUp = new Node(node.getZustand() - columns);
-                //Parent setzen
-                childUp.setParent(node);
-                childs.add(childUp);
+
+                childs.add(this.field[node.getZustand() - columns]);
+
             }
-
         }
-
-        return childUp;
 
     }
 
-    public Node expandDown(List<Node> childs, Node node){
-
-        Node childDown = null;
+    public void expandDown(List<Node> childs, Node node){
 
         if(node.getZustand() + columns < this.field.length){
             if(!(this.field[node.getZustand() + columns].getType() == NodeType.BLOCKED)) {
-                childDown = new Node(node.getZustand() + columns);
-                //Parent setzen
-                childDown.setParent(node);
-                childs.add(childDown);
-            }
 
+                childs.add(this.field[node.getZustand() + columns]);
+
+            }
 
         }
 
-        return childDown;
-
     }
 
-    public Node expandRight(List<Node> childs, Node node){
-
-        Node childRight = null;
+    public void expandRight(List<Node> childs, Node node){
 
         if(node.getZustand() % columns < columns - 1){
             if(!(this.field[node.getZustand() + 1].getType() == NodeType.BLOCKED)) {
-                childRight = new Node(node.getZustand() + 1);
-                //Parent setzen
-                childRight.setParent(node);
-                childs.add(childRight);
+
+                childs.add(this.field[node.getZustand() + 1]);
             }
 
-
         }
-
-        return node;
 
     }
 
-    public Node expandLeft(List<Node> childs, Node node){
-
-        Node childleft = null;
+    public void expandLeft(List<Node> childs, Node node){
 
         if(node.getZustand() % columns > 0){
             if(!(this.field[node.getZustand() - 1].getType() == NodeType.BLOCKED)) {
-                childleft = new Node(node.getZustand() - 1);
-                //Parent setzen
-                childleft.setParent(node);
-                childs.add(childleft);
+
+                childs.add(this.field[node.getZustand() - 1]);
             }
 
-
-
         }
-
-        return childleft;
 
     }
 
@@ -165,45 +142,51 @@ public class Problem {
     }
 
     // Allgemeingültig güt Algortihmen machen
-    public void paintAlgorithmInToField(Bfs bfs){
+    public void paintAlgorithmInToField(SearchAlgorithm algorithm){
 
-        for(Node node: bfs.getCloseList()){
+        for(Node node: algorithm.getCloseList()){
             this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
         }
 
-        for(Node node: bfs.getOpenList()){
+        for(Node node: algorithm.getOpenList()){
             this.field[node.getZustand()].setType(NodeType.OPENLIST);
         }
 
-        // TODO Path einzeichnen
-        for(Node node: bfs.getPath()){
+        for(Node node: algorithm.getPath()){
             this.field[node.getZustand()].setType(NodeType.PATH);
         }
 
-        this.field[bfs.getSource().getZustand()].setType(NodeType.START);
-        this.field[bfs.getTarget().getZustand()].setType(NodeType.TARGET);
+        this.field[algorithm.getSource().getZustand()].setType(NodeType.START);
+        this.field[algorithm.getTarget().getZustand()].setType(NodeType.TARGET);
 
     }
 
-    public void paintAlgorithmInToField(Tfs tfs){
+    public void paintAlgorithmInToFieldWithDepth(SearchAlgorithm algorithm){
 
-        for(Node node: tfs.getCloseList()){
+        for(Node node: algorithm.getCloseList()){
             this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
+            this.field[node.getZustand()].setDraw("" + node.getDepth());
         }
 
-        for(Node node: tfs.getOpenList()){
+        for(Node node: algorithm.getOpenList()){
             this.field[node.getZustand()].setType(NodeType.OPENLIST);
+            this.field[node.getZustand()].setDraw("" + node.getDepth());
         }
 
-        // TODO Path einzeichnen
-        for(Node node: tfs.getPath()){
+        for(Node node: algorithm.getPath()){
             this.field[node.getZustand()].setType(NodeType.PATH);
+            this.field[node.getZustand()].setDraw("" + node.getDepth());
         }
 
-        this.field[tfs.getSource().getZustand()].setType(NodeType.START);
-        this.field[tfs.getTarget().getZustand()].setType(NodeType.TARGET);
+        this.field[algorithm.getSource().getZustand()].setType(NodeType.START);
+        this.field[algorithm.getSource().getZustand()].setDraw("" + this.field[algorithm.getSource().getZustand()].getDepth());
+
+        this.field[algorithm.getTarget().getZustand()].setType(NodeType.TARGET);
+        this.field[algorithm.getTarget().getZustand()].setDraw("" + this.field[algorithm.getTarget().getZustand()].getDepth());
 
     }
+
+
 
     public void clearFieldFromAlgorithm(){
         for(int i = 0; i < this.field.length; i++){
@@ -211,13 +194,6 @@ public class Problem {
                 this.field[i].setType(NodeType.FREE_UNDISCOVERED);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Problem problem = new Problem(4);
-        Node node = new Node(0);
-
-        problem.expandNode(node);
     }
 
 

@@ -1,58 +1,117 @@
 package mvc.model;
 
-import mvc.model.algorithm.Bfs;
-import mvc.model.algorithm.Tfs;
-import mvc.model.problem.Problem;
+import mvc.model.algorithm.informed.AStar;
+import mvc.model.algorithm.informed.DistanceFromTarget;
+import mvc.model.algorithm.uninformed.BreadthFirst;
+import mvc.model.algorithm.uninformed.UniformCost;
+import mvc.model.algorithm.uninformed.DepthFirst;
+import mvc.model.field.Field;
 
 public class Main {
 
     public static void main(String[] args) {
 
+
         // 1. Feld setzten
-        Problem problem = new Problem(10);
+        Field field = new Field(50);
+
 
         // Felder blocken
-        problem.blockNode(5);
-        problem.blockNode(6);
-        problem.blockNode(89);
-        problem.blockNode(12);
-        problem.blockNode(22);
-        problem.blockNode(32);
-        problem.blockNode(33);
-        problem.blockNode(34);
-        problem.blockNode(81);
-        problem.blockNode(91);
-        problem.blockNode(71);
-        problem.blockNode(61);
-        problem.blockNode(51);
+        field.blockNode(5);
+        field.blockNode(6);
+        field.blockNode(89);
+        field.blockNode(12);
+        field.blockNode(29);
+        //problem.blockNode(22);
+        field.blockNode(32);
+        field.blockNode(33);
+        field.blockNode(34);
+        field.blockNode(81);
+        field.blockNode(91);
+        field.blockNode(71);
+        field.blockNode(70);
+        field.blockNode(61);
+        field.blockNode(51);
 
         // Feld ausgeben
-        problem.drawField();
-
+        //problem.drawField();
+        System.out.println(1);
         // Algorithmus durchlaufen lassen
-        Bfs bfs = new Bfs();
-        bfs.calculate(problem, 55, 18);
+        BreadthFirst bfs = new BreadthFirst(field, 1520, 18);
+        bfs.calculate();
 
         // Algorithmus in das Feld eintragen
-        problem.paintAlgorithmInToField(bfs);
+        field.paintAlgorithmInToFieldWithDepth(bfs);
 
         // Feld ausgeben
         System.out.println();
-        problem.drawField();
+        field.drawField();
+
 
         // Feld leeren vom Algortihmus
         System.out.println();
-        problem.clearFieldFromAlgorithm();
+        field.clearFieldFromAlgorithm();
+
+        field = new Field(50);
+
+
+        DepthFirst tfs = new DepthFirst(field, 1520, 18);
+        tfs.calculate();
+        field.paintAlgorithmInToField(tfs);
+        System.out.println();
+        field.drawField();
+
+
+        System.out.println();
+        field.clearFieldFromAlgorithm();
+
+
+        field = new Field(50);
+        // Algorithmus durchlaufen lassen
+        UniformCost smek = new UniformCost(field, 1520, 18);
+        smek.calculate();
+
+        // Algorithmus in das Feld eintragen
+        field.paintAlgorithmInToFieldWithDepth(smek);
 
         // Feld ausgeben
         System.out.println();
-        problem.drawField();
+        field.drawField();
 
-        Tfs tfs = new Tfs();
-        tfs.calculate(problem, 55, 18);
-        problem.paintAlgorithmInToField(tfs);
+        // Feld leeren vom Algortihmus
         System.out.println();
-        problem.drawField();
+        field.clearFieldFromAlgorithm();
+
+        field = new Field(50);
+
+        field.blockNode(67);
+        field.blockNode(68);
+        field.blockNode(69);
+        field.blockNode(70);
+        field.blockNode(71);
+        field.blockNode(121);
+        field.blockNode(122);
+        field.blockNode(123);
+        field.blockNode(124);
+        field.blockNode(125);
+        field.blockNode(126);
+        field.blockNode(127);
+        field.blockNode(128);
+
+
+
+        // Algorithmus durchlaufen lassen
+        AStar aStar = new AStar(field, 1520, 22, new DistanceFromTarget(field.getField()[22], field.getColumns()));
+        aStar.calculate();
+
+
+        // Algorithmus in das Feld eintragen
+        field.paintAlgorithmInToFieldWithDepth(aStar);
+
+        // Feld ausgeben
+        System.out.println();
+        field.drawField();
+
 
     }
 }
