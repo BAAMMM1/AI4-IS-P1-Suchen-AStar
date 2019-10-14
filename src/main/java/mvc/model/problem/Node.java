@@ -44,6 +44,7 @@ public class Node {
 
     public void setParent(Node parent) {
         this.parent = parent;
+        this.depth = parent.getDepth() + 1;
     }
 
     public NodeType getType() {

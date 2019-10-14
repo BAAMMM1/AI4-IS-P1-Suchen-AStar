@@ -58,10 +58,10 @@ public class Problem {
         if(node.getZustand() - columns >= 0){
             if(!(this.field[node.getZustand() - columns].getType() == NodeType.BLOCKED)) {
                 // TODO bei 3x3 ist 8 max, Node mit 9 dürfte es nicht geben. Abprüfen ob Node nicht über maximum geht
+
                 childUp = new Node(node.getZustand() - columns);
                 //Parent setzen
                 childUp.setParent(node);
-                childUp.setDepth(node.getDepth() + 1);
                 childs.add(childUp);
             }
 
@@ -77,10 +77,10 @@ public class Problem {
 
         if(node.getZustand() + columns < this.field.length){
             if(!(this.field[node.getZustand() + columns].getType() == NodeType.BLOCKED)) {
+
                 childDown = new Node(node.getZustand() + columns);
                 //Parent setzen
                 childDown.setParent(node);
-                childDown.setDepth(node.getDepth() + 1);
                 childs.add(childDown);
             }
 
@@ -97,10 +97,10 @@ public class Problem {
 
         if(node.getZustand() % columns < columns - 1){
             if(!(this.field[node.getZustand() + 1].getType() == NodeType.BLOCKED)) {
+
                 childRight = new Node(node.getZustand() + 1);
                 //Parent setzen
                 childRight.setParent(node);
-                childRight.setDepth(node.getDepth() + 1);
                 childs.add(childRight);
             }
 
@@ -117,10 +117,10 @@ public class Problem {
 
         if(node.getZustand() % columns > 0){
             if(!(this.field[node.getZustand() - 1].getType() == NodeType.BLOCKED)) {
+
                 childleft = new Node(node.getZustand() - 1);
                 //Parent setzen
                 childleft.setParent(node);
-                childleft.setDepth(node.getDepth() + 1);
                 childs.add(childleft);
             }
 
