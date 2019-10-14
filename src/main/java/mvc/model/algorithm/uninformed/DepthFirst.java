@@ -42,6 +42,7 @@ public class DepthFirst extends SearchAlgorithm {
 
                 for(Node child: childs){
                     if(!stack.contains(child) && !closeList.contains(child)){
+                        child.setParent(current);
 
                         if(child.equals(target)) {
                             System.out.println("Ziel gefunden: " + child.toString());

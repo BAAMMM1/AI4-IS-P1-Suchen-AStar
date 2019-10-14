@@ -55,11 +55,13 @@ public class AStar extends SearchAlgorithm {
                 int newPathCoast= current.getgCoast()+child.getStepCoast();
 
                 if(!priorityQueue.contains(child) && !closeList.contains(child)){
+                    child.setParent(current);
                     child.setgCoast(newPathCoast);
                     child.setfVonN(child.getgCoast()+ this.heuristic.calcHVonN(child));
                     priorityQueue.add(child);
                     child.setType(NodeType.OPENLIST);
                 } else if(priorityQueue.contains(child) && currentPathCoastToChild > newPathCoast){
+                    child.setParent(current);
                     child.setgCoast(newPathCoast);
                     child.setfVonN(child.getgCoast()+ this.heuristic.calcHVonN(child));
                 }

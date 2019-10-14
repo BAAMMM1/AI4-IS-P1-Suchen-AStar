@@ -59,9 +59,10 @@ public class Problem {
             if(!(this.field[node.getZustand() - columns].getType() == NodeType.BLOCKED)) {
                 // TODO bei 3x3 ist 8 max, Node mit 9 dürfte es nicht geben. Abprüfen ob Node nicht über maximum geht
 
-                childUp = new Node(node.getZustand() - columns);
+                //childUp = new Node(node.getZustand() - columns);
+                childUp = this.field[node.getZustand() - columns];
                 //Parent setzen
-                childUp.setParent(node);
+                //childUp.setParent(node);
                 childs.add(childUp);
             }
 
@@ -78,9 +79,10 @@ public class Problem {
         if(node.getZustand() + columns < this.field.length){
             if(!(this.field[node.getZustand() + columns].getType() == NodeType.BLOCKED)) {
 
-                childDown = new Node(node.getZustand() + columns);
+                //childDown = new Node();
+                childDown = this.field[node.getZustand() + columns];
                 //Parent setzen
-                childDown.setParent(node);
+                //childDown.setParent(node);
                 childs.add(childDown);
             }
 
@@ -98,9 +100,10 @@ public class Problem {
         if(node.getZustand() % columns < columns - 1){
             if(!(this.field[node.getZustand() + 1].getType() == NodeType.BLOCKED)) {
 
-                childRight = new Node(node.getZustand() + 1);
+                //childRight = new Node();
+                childRight = this.field[node.getZustand() + 1];
                 //Parent setzen
-                childRight.setParent(node);
+                //childRight.setParent(node);
                 childs.add(childRight);
             }
 
@@ -118,9 +121,10 @@ public class Problem {
         if(node.getZustand() % columns > 0){
             if(!(this.field[node.getZustand() - 1].getType() == NodeType.BLOCKED)) {
 
-                childleft = new Node(node.getZustand() - 1);
+                //childleft = new Node(node.getZustand() - 1);
+                childleft = this.field[node.getZustand() - 1];
                 //Parent setzen
-                childleft.setParent(node);
+                //childleft.setParent(node);
                 childs.add(childleft);
             }
 

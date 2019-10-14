@@ -51,10 +51,12 @@ public class UniformCost extends SearchAlgorithm {
                 int newPathCoast= current.getgCoast()+child.getStepCoast();
 
                 if(!priorityQueue.contains(child) && !closeList.contains(child)){
+                    child.setParent(current);
                     child.setgCoast(newPathCoast);
                     priorityQueue.add(child);
                     child.setType(NodeType.OPENLIST);
                 } else if(priorityQueue.contains(child) && currentPathCoastToChild > newPathCoast){
+                    child.setParent(current);
                     child.setgCoast(newPathCoast);
                 }
             }

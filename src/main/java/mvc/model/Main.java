@@ -46,6 +46,7 @@ public class Main {
         System.out.println();
         problem.drawField();
 
+
         // Feld leeren vom Algortihmus
         System.out.println();
         problem.clearFieldFromAlgorithm();
@@ -55,7 +56,7 @@ public class Main {
 
         DepthFirst tfs = new DepthFirst(problem, 1520, 18);
         tfs.calculate();
-        problem.paintAlgorithmInToField(tfs);
+        problem.paintAlgorithmInToFieldWithDepth(tfs);
         System.out.println();
         problem.drawField();
 
@@ -63,13 +64,14 @@ public class Main {
         System.out.println();
         problem.clearFieldFromAlgorithm();
 
+
         problem = new Problem(50);
         // Algorithmus durchlaufen lassen
         UniformCost smek = new UniformCost(problem, 1520, 18);
         smek.calculate();
 
         // Algorithmus in das Feld eintragen
-        problem.paintAlgorithmInToField(smek);
+        problem.paintAlgorithmInToFieldWithDepth(smek);
 
         // Feld ausgeben
         System.out.println();
@@ -103,10 +105,12 @@ public class Main {
 
 
         // Algorithmus in das Feld eintragen
-        problem.paintAlgorithmInToField(aStar);
+        problem.paintAlgorithmInToFieldWithDepth(aStar);
 
         // Feld ausgeben
         System.out.println();
         problem.drawField();
+
+
     }
 }

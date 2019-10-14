@@ -29,7 +29,7 @@ public abstract class SearchAlgorithm {
 
     public List<Node> tracePath(Node node){
 
-        node.setDepth(node.getParent().getDepth() + 1);
+//        node.setDepth(node.getParent().getDepth() + 1);
 
         List<Node> result = new ArrayList<>();
         Node currenNode = node;

@@ -42,9 +42,10 @@ public class BreadthFirst extends SearchAlgorithm {
 
                 for(Node child: childs){
                     if(!queue.contains(child) && !closeList.contains(child)){
+                        child.setParent(current);
 
                         if(child.equals(target)) {
-                            System.out.println("Ziel gefunden: " + child.toString());
+                            System.out.println("Ziel gefunden: " + child.toString() + "bei Tiefe: " + child.getDepth());
                             path = this.tracePath(child);
                             run = false;
                             break;
