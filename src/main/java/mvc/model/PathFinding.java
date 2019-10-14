@@ -26,7 +26,7 @@ public class PathFinding {
         initAlgorithms();
     }
 
-    public void calc(int fieldRows, Set<Integer> blockSet, String algortihmName, int source, int target){ // TODO Blocklist
+    public void calc(int fieldRows, Set<Integer> blockSet, String algortihmName, int source, int target){
         System.out.println("Führe Pathfinding aus: FieldRows: " + fieldRows + " Algorithmus: " + algortihmName + " Source: " + source + " Target: " + target);
         Field field = new Field(fieldRows);
 
