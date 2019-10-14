@@ -48,7 +48,6 @@ public class AStar extends SearchAlgorithm {
             closeList.add(current);
             List<Node> childs = problem.expandNode(current);
 
-            // TODO Lambdas
             // TODO Die einzelenen Step-Listen der Open-/Closelist in jeweils einer Liste von Listen speichern, damit man die Verlauf visualisieren kann.
 
             for(Node child: childs){
