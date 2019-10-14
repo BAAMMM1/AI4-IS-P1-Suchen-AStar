@@ -2,9 +2,7 @@ package mvc.model.field;
 
 import mvc.model.algorithm.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Field {
 
@@ -15,9 +13,13 @@ public class Field {
 
     private Node[] field;
 
+    private Set<Integer> blockSet;
+
     public Field(int columns) {
         this.columns = columns;
         this.field = new Node[columns*columns];
+
+        this.blockSet = new HashSet<>();
 
         for(int i = 0; i < this.field.length; i++) {
             this.field[i] = new Node(i);
@@ -30,9 +32,12 @@ public class Field {
 
     public void blockNode(int i){
         this.field[i].setType(NodeType.BLOCKED);
+        blockSet.add(i);
     }
 
     public void blockNode(Set<Integer> blockSet){
+
+        this.blockSet.addAll(blockSet);
 
         if(blockSet != null) {
             for (Integer value : blockSet) {
@@ -190,7 +195,17 @@ public class Field {
 
     }
 
+    public Set<Integer> getBlockSet() {
+        return blockSet;
+    }
 
+    @Override
+    public String toString() {
+        return "Field{" +
+                "columns=" + columns +
+                ", field=" + Arrays.toString(field) +
+                '}';
+    }
 
     public void clearFieldFromAlgorithm(){
         for(int i = 0; i < this.field.length; i++){

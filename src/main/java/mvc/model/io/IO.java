@@ -32,10 +32,13 @@ public class IO {
 
     public static void main(String[] args) throws IOException {
         Field field = new Field(15);
+        field.blockNode(2);
+        field.blockNode(3);
+
         IO io = new IO();
         io.save("db/field", field);
 
-        System.out.println(io.load("db/field.json").getColumns());
+        System.out.println(io.load("db/field.json").getBlockSet());
     }
 
 }
