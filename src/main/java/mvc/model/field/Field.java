@@ -24,6 +24,10 @@ public class Field {
         }
     }
 
+    public Field() {
+    }
+
+
     public void blockNode(int i){
         this.field[i].setType(NodeType.BLOCKED);
     }

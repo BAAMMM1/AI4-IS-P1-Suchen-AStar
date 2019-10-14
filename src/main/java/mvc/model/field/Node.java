@@ -1,10 +1,14 @@
 package mvc.model.field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Node {
 
     private int zustand;
 
     private NodeType type;
+
+    @JsonIgnore // Da null, wenn noch kein Algorithmus durchgelaufen ist, stört sich JSON an dem null beim laden
     private Node parent;
 
     private String draw;
@@ -19,6 +23,9 @@ public class Node {
 
     // f(n) = g(n) + (hn)
     private int fcost;
+
+    public Node() {
+    }
 
     public Node(int zustand) {
         this.type = NodeType.FREE_UNDISCOVERED;
