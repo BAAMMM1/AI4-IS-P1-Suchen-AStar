@@ -132,7 +132,6 @@ public class Controller {
         draw_closedList(closedList);
         draw_path(pathList);
 
-
 //        Andere Möglichkeit:
 //        ArrayList<List> solution[] = new ArrayList[3];
 //        solution[] = deinemethode(source, target, block);

@@ -1,10 +1,13 @@
 package mvc.model.field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Node {
 
     private int zustand;
 
     private NodeType type;
+
     private Node parent;
 
     private String draw;
@@ -23,7 +26,7 @@ public class Node {
     public Node(int zustand) {
         this.type = NodeType.FREE_UNDISCOVERED;
         this.zustand = zustand;
-        this.type = type;
+        //this.type = type;
         this.depth = 0;
         //this.draw = "" + zustand;
         this.draw = "X";
