@@ -38,7 +38,7 @@
       </MenuBar>
       <AnchorPane layoutX="259.0" layoutY="27.0" prefHeight="691.0" prefWidth="780.0">
          <children>
-            <GridPane id="gridpane" fx:id="gridpane" gridLinesVisible="true" onMouseClicked="#clickGrid" prefHeight="632.0" prefWidth="695.0">
+            <GridPane id="gridpane" fx:id="gridpane" gridLinesVisible="true" onMouseDragged="#clickGrid" onMousePressed="#clickGrid" prefHeight="632.0" prefWidth="695.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -59,11 +59,11 @@
                   <AnchorPane prefHeight="87.0" prefWidth="258.0">
                      <children>
                         <Label layoutX="60.0" layoutY="18.0" text="Grid Size" />
-                        <TextField layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="40.0" promptText="GridSize" text="10" />
+                        <TextField fx:id="grid_resize_textfield" layoutX="14.0" layoutY="14.0" onAction="#grid_resize_input" onInputMethodTextChanged="#grid_resize_input" prefHeight="25.0" prefWidth="40.0" promptText="GridSize" text="15" />
                       <Button layoutX="153.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Generate" />
                         <Button layoutX="153.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Random" />
-                        <Label layoutX="57.0" layoutY="46.0" text="Blockfactor" />
-                        <TextField layoutX="14.0" layoutY="42.0" prefHeight="25.0" prefWidth="40.0" text="1.0" />
+                        <Label layoutX="57.0" layoutY="46.0" text="GridFiledSize" />
+                        <TextField fx:id="grid_fieldsize_textfield" layoutX="14.0" layoutY="42.0" onAction="#grid_fieldresize_input" prefHeight="25.0" prefWidth="40.0" text="40" />
                      </children>
                   </AnchorPane>
                </content>
