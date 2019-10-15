@@ -329,7 +329,7 @@ public class Controller {
          gridpane.setHalignment(circle, HPos.CENTER);
         gridpane.add(circle, column,row);
 
-//      Add Line, muss aber Fallunterscheidung gemacht werden um set Start X und End Y zu setzen
+//      Add Line, muss aber Fallunterscheidung gemacht werden um set Start X/Y Koordinate und End X/Y Koordiante zu setzen
 //        Line line = new Line();
 //        line.setFill(Color.web("#FFFF00"));
 //        gridpane.add(line, column, row);

@@ -29,6 +29,9 @@ public class PathFinding {
     public void calc(int fieldRows, Set<Integer> blockSet, String algortihmName, int source, int target){ // TODO Blocklist
         System.out.println("Führe Pathfinding aus: FieldRows: " + fieldRows + " Algorithmus: " + algortihmName + " Source: " + source + " Target: " + target);
         Field field = new Field(fieldRows);
+        openList = new ArrayList<>();
+        closeList = new ArrayList<>();
+        path = new ArrayList<>();
 
         field.blockNode(blockSet);
 
