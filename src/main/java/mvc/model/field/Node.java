@@ -8,7 +8,6 @@ public class Node {
 
     private NodeType type;
 
-    @JsonIgnore // Da null, wenn noch kein Algorithmus durchgelaufen ist, stört sich JSON an dem null beim laden
     private Node parent;
 
     private String draw;
@@ -24,13 +23,10 @@ public class Node {
     // f(n) = g(n) + (hn)
     private int fcost;
 
-    public Node() {
-    }
-
     public Node(int zustand) {
         this.type = NodeType.FREE_UNDISCOVERED;
         this.zustand = zustand;
-        this.type = type;
+        //this.type = type;
         this.depth = 0;
         //this.draw = "" + zustand;
         this.draw = "X";
