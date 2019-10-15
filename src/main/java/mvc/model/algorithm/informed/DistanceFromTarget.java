@@ -4,16 +4,9 @@ import mvc.model.field.Node;
 
 public class DistanceFromTarget extends AStarHeuristic{
 
-    private int columns;
-    private int xTarget;
-    private int yTarget;
 
     public DistanceFromTarget(Node target, int columns) {
-
-        this.columns = columns;
-        this.xTarget = target.getZustand() % columns;
-        this.yTarget = target.getZustand() / columns;
-
+        super(target, columns);
     }
 
 
@@ -22,10 +15,10 @@ public class DistanceFromTarget extends AStarHeuristic{
         int xNode = node.getZustand() % columns;
         int yNode = node.getZustand() / columns;
 
-        int xdistance = Math.abs(this.xTarget - xNode);
-        int ydistance = Math.abs(this.yTarget - yNode);
+        int dx = Math.abs(xNode - xTarget);
+        int dy = Math.abs(yNode - yTarget);
 
-        return xdistance + ydistance;
+        return (dx + dy);
     }
 
 
