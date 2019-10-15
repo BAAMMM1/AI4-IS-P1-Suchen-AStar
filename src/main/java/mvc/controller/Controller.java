@@ -101,7 +101,6 @@ public class Controller {
         // hier müssen übergabe der Listen an model/Algorithm entstehen
 
 
-
 //        Andere Möglichkeit:
 //        ArrayList<List> solution[] = new ArrayList[3];
 //        solution[] = deinemethode(source, target, block);

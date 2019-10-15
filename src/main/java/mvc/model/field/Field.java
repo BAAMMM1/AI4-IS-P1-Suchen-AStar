@@ -33,9 +33,8 @@ public class Field {
 
     public void blockNode(Set<Integer> blockSet){
 
-        this.blockSet.addAll(blockSet);
-
         if(blockSet != null) {
+            this.blockSet.addAll(blockSet);
             for (Integer value : blockSet) {
                 blockNode(value.intValue());
             }

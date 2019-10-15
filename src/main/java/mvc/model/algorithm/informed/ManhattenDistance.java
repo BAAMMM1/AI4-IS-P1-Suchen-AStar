@@ -17,8 +17,6 @@ public class ManhattenDistance extends AStarHeuristic{
     @Override
     public int hCost(Node node) {
 
-        int d = 1;
-
         int xNode = node.getZustand() % columns;
         int yNode = node.getZustand() / columns;
 

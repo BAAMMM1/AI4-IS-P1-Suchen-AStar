@@ -20,8 +20,6 @@ public class EuclideanDistance extends AStarHeuristic{
     @Override
     public int hCost(Node node) {
 
-        int d = 1; // TODO d?
-
         int xNode = node.getZustand() % columns;
         int yNode = node.getZustand() / columns;
 
