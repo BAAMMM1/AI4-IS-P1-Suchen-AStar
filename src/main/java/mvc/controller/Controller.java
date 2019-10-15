@@ -6,14 +6,17 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import mvc.model.PathFinding;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,16 +26,17 @@ import java.util.List;
 
 
 public class Controller {
-    int gridsize = 15;
+    Integer gridsize = 15;
     int gridfieldsize = 40;
     int circleradius = 10;
     Set<Integer> block = new HashSet<>();
-    int source;
-    int target;
-    int mode;
-    ArrayList<List> openList;
-    ArrayList<List> closedList;
-    ArrayList<List> pathList;
+    Integer source;
+    Integer target;
+    Integer mode;
+    List<Integer> openList;
+    List<Integer> closedList;
+    List<Integer> pathList;
+    PathFinding pathFinding;
 
     @FXML
     GridPane gridpane;
@@ -52,6 +56,12 @@ public class Controller {
     @FXML
     ChoiceBox choiceBox_Algorithm;
 
+    @FXML
+    TextField grid_resize_textfield;
+
+    @FXML
+    TextField grid_fieldsize_textfield;
+
     public Controller() {
     }
 
@@ -59,6 +69,14 @@ public class Controller {
     @FXML
     private void initialize() {
         System.out.println("starte Initialize");
+        openList=new ArrayList<>();
+        closedList=new ArrayList<>();
+        pathList=new ArrayList<>();
+        block=new HashSet<>();
+        target=null;
+        source=null;
+        pathFinding = new PathFinding();
+
 
         // Setzen der Standardeinstellung im Algorithm Bereich zum Bearbeiten
         // hier: Mode 1: Block setzen
@@ -66,13 +84,13 @@ public class Controller {
         block_Button.setSelected(false);
 
         // Setzen der verfügbaren Such-Algorithm
-        List<String> choiceBox_Algorithm_Names_Placeholder = new ArrayList<>(); // TODO Wenn Pathfinding da, dann hier Mehtodenaufruf
-        choiceBox_Algorithm_Names_Placeholder.add("Test");
-        choiceBox_Algorithm.setItems(FXCollections.observableArrayList(choiceBox_Algorithm_Names_Placeholder));
+
+        choiceBox_Algorithm.setItems(FXCollections.observableArrayList(pathFinding.avaiableAlgortihm()));
 
         // Aufbau der Spielfläche
         gridpane.getRowConstraints().clear();
         gridpane.getColumnConstraints().clear();
+        gridpane.getChildren().clear();
         for (int a = 0; a < gridsize; a++) {
             gridpane.getRowConstraints().add(new RowConstraints());
             gridpane.getColumnConstraints().add(new ColumnConstraints());
@@ -100,6 +118,15 @@ public class Controller {
     public void start(){
         // hier müssen übergabe der Listen an model/Algorithm entstehen
 
+        pathFinding.calc(gridsize, block, choiceBox_Algorithm.getValue().toString(),source, target);
+
+        this.openList = pathFinding.getOpenList();
+        this.closedList = pathFinding.getCloseList();
+        this.pathList = pathFinding.getPath();
+
+        draw_openList (openList);
+        draw_closedList(closedList);
+        draw_path(pathList);
 
 //        Andere Möglichkeit:
 //        ArrayList<List> solution[] = new ArrayList[3];
@@ -109,6 +136,46 @@ public class Controller {
 //        this.pathList = solution[2];
 
 
+    }
+
+    private void draw_openList(List<Integer> openList) {
+        for (int i= 0; i < openList.size(); i++ ){
+            int tmpcolumn = openList.get(i) % gridsize;
+            int tmprow = openList.get(i)/gridsize;
+            if (openList.get(i)==source) continue;
+            addOpenList(tmpcolumn, tmprow);
+        }
+    }
+
+    private void draw_closedList(List<Integer> openList) {
+        for (int i= 0; i < openList.size(); i++ ){
+            int tmpcolumn = openList.get(i) % gridsize;
+            int tmprow = openList.get(i)/gridsize;
+            if (openList.get(i)==source) continue;
+            addClosedList(tmpcolumn, tmprow);
+        }
+    }
+
+    private void draw_path(List<Integer> openList) {
+        for (int i= 0; i < openList.size()-2; i++ ){
+            int tmpcolumn = openList.get(i+1) % gridsize;
+            int tmprow = openList.get(i+1)/gridsize;
+            addPath(tmpcolumn, tmprow);
+        }
+    }
+
+    public void grid_resize_input(){
+        Integer a = Integer.parseInt(grid_resize_textfield.getText());
+        gridsize = a;
+        System.out.println("gridsize ist nun: "+ gridsize);
+        initialize();
+    }
+
+    public void grid_fieldresize_input(){
+        Integer a = Integer.parseInt(grid_fieldsize_textfield.getText());
+        gridfieldsize = a;
+        System.out.println("gridfieldsize ist nun: "+ a);
+        initialize();
     }
 
     public void click_Block_Button() {
@@ -161,29 +228,37 @@ public class Controller {
                         block.add(colIndex%gridsize + rowIndex*gridsize);
                         System.out.println("gespeichert in Blocklist: " + block.toString());
                         break;
-                case 2: //if (source != null || (colIndex%gridsize + rowIndex*gridsize) != target){
+                case 2: if  ((target == null || target != colIndex%gridsize + rowIndex*gridsize)
+                              && (source != null && source != colIndex%gridsize + rowIndex*gridsize)){
                             tmpcolIndex = source%gridsize;
                             tmprowIndex = source/gridsize;
                             blankCell(tmpcolIndex, tmprowIndex);
                             System.out.print("Source war " + source + " ");
-                          //  }
-                        //if (target == null || (colIndex%gridsize + rowIndex*gridsize) != target){
+                         }
+                        if ((source == null
+                                || (source != colIndex%gridsize + rowIndex*gridsize))
+                            && (target == null
+                             || colIndex%gridsize + rowIndex*gridsize != target)){
                             source = (colIndex%gridsize + rowIndex*gridsize);
                             addSource(colIndex, rowIndex);
                             System.out.println("Source nun Feld: "+ source);
-                        //}
+                        }
                         break;
-                case 3: //if (target!= null || (colIndex%gridsize + rowIndex*gridsize) != source){
+                case 3: if ((source == null || source != colIndex%gridsize + rowIndex*gridsize)
+                            && (target != null && target != colIndex%gridsize + rowIndex*gridsize)){
                             tmpcolIndex = target%gridsize;
                             tmprowIndex = target/gridsize;
                             blankCell(tmpcolIndex, tmprowIndex);
                             System.out.print("Target war: "+ target + " ");
-                        //    }
-                        //if (source ==null || (colIndex%gridsize + rowIndex*gridsize) != source){
+                            }
+                        if ((target == null
+                                || target != colIndex%gridsize + rowIndex*gridsize)
+                            && (source == null
+                                    || source != colIndex%gridsize + rowIndex*gridsize)){
                             target = (colIndex%gridsize + rowIndex*gridsize);
                             addTarget(colIndex, rowIndex);
                             System.out.println("Target nun Feld: "+ target);
-                        //    }
+                            }
                         break;
                 case 4: if (block.contains(colIndex%gridsize + rowIndex*gridsize)){
                             block.remove(colIndex%gridsize + rowIndex*gridsize);
@@ -225,49 +300,80 @@ public class Controller {
     }
 
     private void addOpenList(int column, int row){
-        Circle circle = new Circle(circleradius);
-        circle.setFill(Paint.valueOf("green"));
-        gridpane.setHalignment(circle, HPos.CENTER);
-        gridpane.add(circle, column,row);
+       // Circle circle = new Circle(circleradius);
+       // circle.setFill(Paint.valueOf("green"));
+       // gridpane.setHalignment(circle, HPos.CENTER);
+       // gridpane.add(circle, column,row);
+        Rectangle green_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
+        green_rechtangle.setFill(Color.web("#98FB98"));
+        gridpane.add(green_rechtangle, column, row);
+
     }
 
     private void addClosedList(int column, int row){
-        Circle circle = new Circle(circleradius);
-        circle.setFill(Paint.valueOf("cyan"));
-        gridpane.setHalignment(circle, HPos.CENTER);
-        gridpane.add(circle, column,row);
+//        Circle circle = new Circle(circleradius);
+//        circle.setFill(Paint.valueOf("cyan"));
+//        gridpane.setHalignment(circle, HPos.CENTER);
+//        gridpane.add(circle, column,row);
+        Rectangle cyan_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
+        //cyan_rechtangle.setFill(Paint.valueOf("lightblue"));
+        cyan_rechtangle.setFill(Color.web("#AFEEEE"));
+        gridpane.add(cyan_rechtangle, column, row);
     }
 
     private void addPath(int column, int row){
-        Rectangle purple_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
-        purple_rechtangle.setFill(Paint.valueOf("purple"));
-        gridpane.add(purple_rechtangle, column, row);
+//      Add Cicle, guter Kompromiss bis Linie gezeichnet werden kann
+         Circle circle = new Circle(circleradius);
+         circle.setFill(Color.web("#FFFF00"));
+         gridpane.setHalignment(circle, HPos.CENTER);
+        gridpane.add(circle, column,row);
+
+//      Add Line, muss aber Fallunterscheidung gemacht werden um set Start X/Y Koordinate und End X/Y Koordiante zu setzen
+//        Line line = new Line();
+//        line.setFill(Color.web("#FFFF00"));
+//        gridpane.add(line, column, row);
+
+//      Add Rectangle ist kpl ausgefüllt, sieht sehr aggressiv derzeit aus
+//        Rectangle purple_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
+//        purple_rechtangle.setFill(Color.web("#FFFF00"));
+//        gridpane.add(purple_rechtangle, column, row);
     }
 
     private void addBlock(int column, int row){
         Rectangle black_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
-        black_rechtangle.setFill(Paint.valueOf("black"));
+        black_rechtangle.setFill(Color.web("#808080"));
         gridpane.add(black_rechtangle, column, row);
     }
 
     private void blankCell(int column, int row){
         Rectangle blank_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
-        blank_rechtangle.setStroke(Paint.valueOf("black"));
+        blank_rechtangle.setStroke(Paint.valueOf("grey"));
+        blank_rechtangle.setStrokeWidth(1.0);
         blank_rechtangle.setFill(Paint.valueOf("white"));
         gridpane.add(blank_rechtangle, column, row);
+        Rectangle another_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
+        another_rechtangle.setStroke(Paint.valueOf("grey"));
+        another_rechtangle.setFill(Paint.valueOf("white"));
+        another_rechtangle.setStrokeWidth(0.01);
+        gridpane.add(another_rechtangle, column, row);
     }
 
     private void addSource(int column, int row) {
         Rectangle green_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
-        green_rechtangle.setFill(Paint.valueOf("green"));
+        green_rechtangle.setFill(Color.web("#00DD00"));
+        System.out.println("paint of green : " + Paint.valueOf("green").toString());
+
         gridpane.add(green_rechtangle, column, row);
     }
 
     private void addTarget(int column, int row) {
         Rectangle red_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
-        red_rechtangle.setFill(Paint.valueOf("red"));
+        red_rechtangle.setFill(Color.web("#EE4400"));
         gridpane.add(red_rechtangle, column, row);
     }
+
+
+
 
     // -> ich weiß das das rendundant ist und man das auch auslagern könnte in add rectanglerype (string object, int x, int y) -> object = source target way oder block
 }
