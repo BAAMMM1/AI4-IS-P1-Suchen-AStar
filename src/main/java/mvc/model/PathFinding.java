@@ -2,6 +2,7 @@ package mvc.model;
 
 import mvc.model.algorithm.SearchAlgorithm;
 import mvc.model.algorithm.informed.AStar;
+import mvc.model.algorithm.informed.InformedAlgorithm;
 import mvc.model.algorithm.informed.heurisitc.Heuristic;
 import mvc.model.field.Field;
 import mvc.model.field.Node;
@@ -17,6 +18,7 @@ public class PathFinding {
 
     private Map<String, String> algorithmMap;
     private Map<String, String> heuristicMap;
+    private Map<String, String> informedMap;
     private List<Integer> openList;
     private List<Integer> closeList;
     private List<Integer> path;
@@ -24,11 +26,13 @@ public class PathFinding {
     public PathFinding() {
         algorithmMap = new HashMap<String, String>();
         heuristicMap = new HashMap<String, String>();
+        informedMap = new HashMap<>();
         openList = new ArrayList<>();
         closeList = new ArrayList<>();
         path = new ArrayList<>();
         initAlgorithms();
         initHeuristic();
+        initInformedAlgorithm();
     }
 
 
@@ -143,13 +147,25 @@ public class PathFinding {
     private void initHeuristic()  {
 
         Reflections reflections = new Reflections("mvc.model.algorithm", new SubTypesScanner(false));
-        Set<Class<? extends Heuristic>> heuristics = reflections.getSubTypesOf(Heuristic.class);
+        Set<Class<? extends Heuristic>> informedAlgorithms = reflections.getSubTypesOf(Heuristic.class);
 
-        for(Class object: heuristics){
+        for(Class object: informedAlgorithms){
             heuristicMap.put(object.getSimpleName(), object.getName());
         }
 
         System.out.println("Verfügbare Heuristiken: " + heuristicMap.keySet());
+    }
+
+    private void initInformedAlgorithm()  {
+
+        Reflections reflections = new Reflections("mvc.model.algorithm", new SubTypesScanner(false));
+        Set<Class<? extends InformedAlgorithm>> heuristics = reflections.getSubTypesOf(InformedAlgorithm.class);
+
+        for(Class object: heuristics){
+            informedMap.put(object.getSimpleName(), object.getName());
+        }
+
+        System.out.println("Verfügbare informierte Algorithmen: " + informedMap.keySet());
     }
     
     public List<String> avaiableAlgortihm(){
@@ -168,7 +184,7 @@ public class PathFinding {
 
     public List<String> avaiableInformedAlgorithm(){
         List<String> result = new ArrayList<>();
-        result.add("AStar");
+        result.addAll(informedMap.keySet());
         System.out.println("Übergebe informierte Algorithmen: " + result);
         return result;
     }
@@ -231,6 +247,7 @@ public class PathFinding {
 
         System.out.println(pathFinding.avaiableAlgortihm());
         System.out.println(pathFinding.avaiableHeuristic());
+        System.out.println(pathFinding.avaiableInformedAlgorithm());
 
         pathFinding.calc(15,null, "DepthFirst", null, 1, 10);
         pathFinding.calc(15,null, "UniformCost", null, 1, 10);
