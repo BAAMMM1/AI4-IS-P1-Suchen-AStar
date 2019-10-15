@@ -1,6 +1,10 @@
 package mvc.model;
 
 import mvc.model.algorithm.informed.*;
+import mvc.model.algorithm.informed.heurisitc.DiagonalDistance;
+import mvc.model.algorithm.informed.heurisitc.DistanceFromTarget;
+import mvc.model.algorithm.informed.heurisitc.EuclideanDistance;
+import mvc.model.algorithm.informed.heurisitc.ManhattenDistance;
 import mvc.model.algorithm.uninformed.BreadthFirst;
 import mvc.model.algorithm.uninformed.UniformCost;
 import mvc.model.algorithm.uninformed.DepthFirst;

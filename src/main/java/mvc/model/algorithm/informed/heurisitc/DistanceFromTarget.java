@@ -1,8 +1,8 @@
-package mvc.model.algorithm.informed;
+package mvc.model.algorithm.informed.heurisitc;
 
 import mvc.model.field.Node;
 
-public class DistanceFromTarget extends AStarHeuristic{
+public class DistanceFromTarget extends Heuristic {
 
 
     public DistanceFromTarget(Node target, int columns) {

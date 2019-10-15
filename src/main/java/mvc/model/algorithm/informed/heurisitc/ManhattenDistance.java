@@ -1,8 +1,8 @@
-package mvc.model.algorithm.informed;
+package mvc.model.algorithm.informed.heurisitc;
 
 import mvc.model.field.Node;
 
-public class ManhattenDistance extends AStarHeuristic{
+public class ManhattenDistance extends Heuristic {
 
     public ManhattenDistance(Node target, int columns) {
         super(target, columns);

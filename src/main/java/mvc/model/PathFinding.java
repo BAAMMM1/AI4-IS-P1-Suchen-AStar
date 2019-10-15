@@ -2,7 +2,7 @@ package mvc.model;
 
 import mvc.model.algorithm.SearchAlgorithm;
 import mvc.model.algorithm.informed.AStar;
-import mvc.model.algorithm.informed.AStarHeuristic;
+import mvc.model.algorithm.informed.heurisitc.Heuristic;
 import mvc.model.field.Field;
 import mvc.model.field.Node;
 import org.reflections.Reflections;
@@ -143,7 +143,7 @@ public class PathFinding {
     private void initHeuristic()  {
 
         Reflections reflections = new Reflections("mvc.model.algorithm", new SubTypesScanner(false));
-        Set<Class<? extends AStarHeuristic>> heuristics = reflections.getSubTypesOf(AStarHeuristic.class);
+        Set<Class<? extends Heuristic>> heuristics = reflections.getSubTypesOf(Heuristic.class);
 
         for(Class object: heuristics){
             heuristicMap.put(object.getSimpleName(), object.getName());
@@ -199,17 +199,17 @@ public class PathFinding {
 
     }
 
-    private AStarHeuristic getHeuristic(String heuristicName, Node target, int columns){
+    private Heuristic getHeuristic(String heuristicName, Node target, int columns){
 
 
-        AStarHeuristic heuristic = null;
+        Heuristic heuristic = null;
 
         try {
             Class<?> clazz = Class.forName(heuristicMap.get(heuristicName));
 
             Constructor<?> ctor = clazz.getConstructors()[0];
 
-            heuristic = (AStarHeuristic) ctor.newInstance(target, columns);
+            heuristic = (Heuristic) ctor.newInstance(target, columns);
 
         } catch (InstantiationException e) {
             e.printStackTrace();

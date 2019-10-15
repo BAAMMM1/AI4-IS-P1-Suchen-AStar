@@ -1,8 +1,8 @@
-package mvc.model.algorithm.informed;
+package mvc.model.algorithm.informed.heurisitc;
 
 import mvc.model.field.Node;
 
-public class DiagonalDistance extends AStarHeuristic {
+public class DiagonalDistance extends Heuristic {
 
 
     public DiagonalDistance(Node target, int columns) {
