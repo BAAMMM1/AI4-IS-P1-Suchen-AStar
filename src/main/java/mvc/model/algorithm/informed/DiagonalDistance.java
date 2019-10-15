@@ -18,9 +18,6 @@ public class DiagonalDistance extends AStarHeuristic {
     @Override
     public int hCost(Node node) {
 
-        int d = 1;      // TODO d?
-        int d2 = 1;     // TODO d2?
-
         int xNode = node.getZustand() % columns;
         int yNode = node.getZustand() / columns;
 
