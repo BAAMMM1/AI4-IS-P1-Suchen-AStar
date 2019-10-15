@@ -165,6 +165,13 @@ public class PathFinding {
         return result;
     }
 
+    public List<String> avaiableInformedAlgorithm(){
+        List<String> result = new ArrayList<>();
+        result.add("AStar");
+        System.out.println("Übergebe informierte Algorithmen: " + result);
+        return result;
+    }
+
     private SearchAlgorithm getAlgorithm(String algorithmName, Field field, int source, int target){
 
 
@@ -220,6 +227,9 @@ public class PathFinding {
 
     public static void main(String[] args) {
         PathFinding pathFinding = new PathFinding();
+
+        System.out.println(pathFinding.avaiableAlgortihm());
+        System.out.println(pathFinding.avaiableHeuristic());
 
         pathFinding.calc(15,null, "DepthFirst", null, 1, 10);
         pathFinding.calc(15,null, "UniformCost", null, 1, 10);
