@@ -59,6 +59,7 @@ public class PathFinding {
 
     }
 
+    // comment
     public void calc(int fieldColumns, Set<Integer> blockSet, String algortihmName, String aStarHeuristic, int source, int target){
 
         System.out.println("Führe Pathfinding aus: FieldRows: " + fieldColumns + " Algorithmus: " + algortihmName + " Source: " + source + " Target: " + target);
