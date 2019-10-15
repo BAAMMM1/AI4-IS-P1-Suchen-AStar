@@ -65,6 +65,10 @@ public class Controller {
     public Controller() {
     }
 
+    //TODO: Commit and Push nicht Standardgemäß auf "Master" sondern auf "gui" Branch
+    //TODO: LOAD/SAVE
+    //TODO: Heurisitk anzeigen
+    //TODO: Ausführen Heuristik
 
     @FXML
     private void initialize() {
