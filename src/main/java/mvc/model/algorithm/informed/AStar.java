@@ -11,10 +11,6 @@ import java.util.*;
 public class AStar extends InformedAlgorithm {
 
 
-    public AStar(Field field, int source, int target) {
-        super(field, source, target, new ManhattenDistance(field.getField()[target], field.getColumns()));
-    }
-
     public AStar(Field field, int source, int target, Heuristic heuristic) {
         super(field, source, target, heuristic);
         this.heuristic = heuristic;
