@@ -135,11 +135,11 @@ public class PathFinding {
         return new ArrayList<>(uninformedMap.keySet());
     }
 
-    public List<String> loadHeuristic() {
+    public List<String> getHeuristic() {
         return new ArrayList<>(heuristicMap.keySet());
     }
 
-    public List<String> loadInformedAlgorithm() {
+    public List<String> getInformedAlgorithm() {
         return new ArrayList<>(informedMap.keySet());
     }
 
