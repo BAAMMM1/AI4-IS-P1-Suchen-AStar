@@ -39,12 +39,12 @@
                         <ToggleButton fx:id="source_Button" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#click_source_Button" prefHeight="25.0" prefWidth="100.0" text="Source" />
                         <ToggleButton fx:id="target_Button" layoutX="131.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#click_target_Button" prefHeight="25.0" prefWidth="100.0" text="Target" />
                         <ToggleButton fx:id="block_Button" layoutX="14.0" layoutY="44.0" mnemonicParsing="false" onMouseClicked="#click_Block_Button" prefHeight="25.0" prefWidth="100.0" text="Block" />
-                        <ChoiceBox fx:id="choiceBox_Algorithm" layoutX="14.0" layoutY="95.0" onContextMenuRequested="#visibility_heuristic" prefHeight="25.0" prefWidth="217.0" />
-                        <Label fx:id="textfield_Algorithm" layoutX="14.0" layoutY="79.0" text="Choice Algorithm" />
+                        <ChoiceBox fx:id="choiceBox_Algorithm" layoutX="14.0" layoutY="95.0" onContextMenuRequested="#visibility_heuristic" onMouseClicked="#visibility_heuristic" prefHeight="25.0" prefWidth="217.0" />
+                        <Label fx:id="label_Algorithm" layoutX="14.0" layoutY="79.0" text="Choice Algorithm" />
                         <Button layoutX="15.0" layoutY="181.0" mnemonicParsing="false" onMouseClicked="#start" prefHeight="25.0" prefWidth="78.0" text="Start / Stop" />
                         <ToggleButton fx:id="clear_Button" layoutX="131.0" layoutY="44.0" mnemonicParsing="false" onMouseClicked="#click_clear_Button" prefHeight="25.0" prefWidth="100.0" text="Clear Field" />
                         <ChoiceBox fx:id="choiceBox_Heuristik" layoutX="14.0" layoutY="143.0" prefHeight="25.0" prefWidth="217.0" visible="false" />
-                        <Label fx:id="textfield_Heuristik" layoutX="14.0" layoutY="127.0" text="Choice Heuristik" visible="false" />
+                        <Label fx:id="label_Heuristik" layoutX="14.0" layoutY="127.0" text="Choice Heuristik" visible="false" />
                      </children>
                   </AnchorPane>
                </content>

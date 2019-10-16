@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.ColumnConstraints;
@@ -15,11 +16,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.control.MenuBar;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import mvc.model.PathFinding;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -66,7 +65,7 @@ public class Controller {
     TextField grid_fieldsize_textfield;
 
     @FXML
-    TextField textField_Heuristik;
+    Label label_Heuristik;
 
     @FXML
     ChoiceBox choiceBox_Heuristik;
@@ -106,8 +105,8 @@ public class Controller {
         // Setzen der verfügbaren Such-Algorithm
 
         List<String> allAlgortihm = new ArrayList<>();
-        allAlgortihm.addAll(pathFinding.avaiableAlgortihm());
-        allAlgortihm.addAll(pathFinding.avaiableInformedAlgorithm());
+        allAlgortihm.addAll(pathFinding.getUninformedAlgorithm());
+        allAlgortihm.addAll(pathFinding.getInformedAlgorithm());
 
         choiceBox_Algorithm.setItems(FXCollections.observableArrayList(allAlgortihm));
 
@@ -142,10 +141,18 @@ public class Controller {
         System.out.println("Mouse entered cell "+ colIndex + "/"+ rowIndex);
     }*/
 
-    public void start(){
+    public void start() throws Exception {
         // hier müssen übergabe der Listen an model/Algorithm entstehen
 
-        pathFinding.calc(gridsize, block, choiceBox_Algorithm.getValue().toString(),source, target);
+        if (choiceBox_Heuristik==null){
+            pathFinding.uninformedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(),source, target);
+        } else if (choiceBox_Heuristik != null) {
+            pathFinding.informedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(),choiceBox_Heuristik.getValue().toString(), source, target);
+        } else{
+            throw new Exception();
+        }
+
+
         // TODO calc with heuristic wenn ausgewählt heuristik
         this.openList = pathFinding.getOpenList();
         this.closedList = pathFinding.getCloseList();
@@ -167,15 +174,18 @@ public class Controller {
 
     @FXML
     private void visibility_heuristic(){
-        if (pathFinding.avaiableInformedAlgorithm().contains(choiceBox_Algorithm.getValue())){
-            textField_Heuristik.setVisible(true);
+        if (pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())){
+            label_Heuristik.setVisible(true);
             choiceBox_Heuristik.setVisible(true);
+            label_Heuristik.setManaged(false);
+            label_Heuristik.managedProperty().bind(label_Heuristik.visibleProperty());
         }else{
-            textField_Heuristik.setVisible(false);
+            label_Heuristik.setVisible(false);
             choiceBox_Heuristik.setVisible(false);
         }
 
     };
+
 
     private void draw_openList(List<Integer> openList) {
         for (int i= 0; i < openList.size(); i++ ){
