@@ -1,8 +1,8 @@
-package mvc.model.algorithm.informed;
+package mvc.model.algorithm.informed.heurisitc;
 
 import mvc.model.field.Node;
 
-public abstract class AStarHeuristic {
+public abstract class Heuristic {
 
     protected int columns;
     protected int xTarget;
@@ -10,7 +10,7 @@ public abstract class AStarHeuristic {
     protected int d;
     protected int d2;
 
-    public AStarHeuristic(Node target, int columns) {
+    public Heuristic(Node target, int columns) {
         this.columns = columns;
         this.xTarget = target.getZustand() % columns;
         this.yTarget = target.getZustand() / columns;

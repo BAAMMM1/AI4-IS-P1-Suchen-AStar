@@ -1,8 +1,8 @@
-package mvc.model.algorithm.informed;
+package mvc.model.algorithm.informed.heurisitc;
 
 import mvc.model.field.Node;
 
-public class EuclideanDistance extends AStarHeuristic{
+public class EuclideanDistance extends Heuristic {
 
 
 

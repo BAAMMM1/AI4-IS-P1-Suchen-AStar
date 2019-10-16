@@ -8,7 +8,7 @@ import mvc.model.field.Field;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BreadthFirst extends SearchAlgorithm {
+public class BreadthFirst extends UninformedAlgorithm {
 
 
     public BreadthFirst(Field field, int source, int target) {

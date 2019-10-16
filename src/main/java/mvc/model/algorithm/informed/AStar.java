@@ -1,23 +1,18 @@
 package mvc.model.algorithm.informed;
 
-import mvc.model.algorithm.SearchAlgorithm;
+import mvc.model.algorithm.informed.heurisitc.Heuristic;
+import mvc.model.algorithm.informed.heurisitc.ManhattenDistance;
 import mvc.model.field.Node;
 import mvc.model.field.NodeType;
 import mvc.model.field.Field;
 
 import java.util.*;
 
-public class AStar extends SearchAlgorithm {
+public class AStar extends InformedAlgorithm {
 
-    private AStarHeuristic heuristic;
 
-    public AStar(Field field, int source, int target) {
-        super(field, source, target);
-        this.heuristic = new DistanceFromTarget(this.target, field.getColumns());
-    }
-
-    public AStar(Field field, int source, int target, AStarHeuristic heuristic) {
-        super(field, source, target);
+    public AStar(Field field, int source, int target, Heuristic heuristic) {
+        super(field, source, target, heuristic);
         this.heuristic = heuristic;
     }
 

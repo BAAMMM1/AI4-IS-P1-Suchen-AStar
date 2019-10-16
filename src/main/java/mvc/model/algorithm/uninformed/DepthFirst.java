@@ -8,7 +8,7 @@ import mvc.model.field.Field;
 import java.util.List;
 import java.util.Stack;
 
-public class DepthFirst extends SearchAlgorithm {
+public class DepthFirst extends UninformedAlgorithm {
 
 
     public DepthFirst(Field field, int source, int target) {

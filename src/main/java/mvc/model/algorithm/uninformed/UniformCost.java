@@ -7,7 +7,7 @@ import mvc.model.field.Field;
 
 import java.util.*;
 
-public class UniformCost extends SearchAlgorithm {
+public class UniformCost extends UninformedAlgorithm {
 
 
     public UniformCost(Field field, int source, int target) {
