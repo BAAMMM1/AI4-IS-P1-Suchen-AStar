@@ -4,26 +4,20 @@ package mvc.controller;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.control.MenuBar;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import mvc.model.PathFinding;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Controller {
@@ -66,7 +60,7 @@ public class Controller {
     TextField grid_fieldsize_textfield;
 
     @FXML
-    TextField textField_Heuristik;
+    Label label_Heuristik;
 
     @FXML
     ChoiceBox choiceBox_Heuristik;
@@ -104,12 +98,16 @@ public class Controller {
         block_Button.setSelected(false);
 
         // Setzen der verfügbaren Such-Algorithm
-
-        List<String> allAlgortihm = new ArrayList<>();
-        allAlgortihm.addAll(pathFinding.avaiableAlgortihm());
-        allAlgortihm.addAll(pathFinding.avaiableInformedAlgorithm());
-
+        List<Object> allAlgortihm = new ArrayList<>();
+        allAlgortihm.addAll(pathFinding.getUninformedAlgorithm());
+        allAlgortihm.add(new Separator());
+        allAlgortihm.addAll(pathFinding.getInformedAlgorithm());
         choiceBox_Algorithm.setItems(FXCollections.observableArrayList(allAlgortihm));
+
+        // Setzen der Heuristik
+        List<String> allHeuristik = new ArrayList<>();
+        allHeuristik.addAll(pathFinding.getHeuristic());
+        choiceBox_Heuristik.setItems(FXCollections.observableArrayList(allHeuristik));
 
         // Aufbau der Spielfläche
         cleargrid(gridpane);
@@ -142,10 +140,18 @@ public class Controller {
         System.out.println("Mouse entered cell "+ colIndex + "/"+ rowIndex);
     }*/
 
-    public void start(){
+    public void start() throws Exception {
         // hier müssen übergabe der Listen an model/Algorithm entstehen
 
-        pathFinding.calc(gridsize, block, choiceBox_Algorithm.getValue().toString(),source, target);
+        if (choiceBox_Heuristik.getValue()==null && pathFinding.getUninformedAlgorithm().contains(choiceBox_Algorithm.getValue())){
+            pathFinding.uninformedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(),source, target);
+        } else if (choiceBox_Heuristik.getValue() != null) {
+            pathFinding.informedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(),choiceBox_Heuristik.getValue().toString(), source, target);
+        } else{
+            throw new Exception();
+        }
+
+
         // TODO calc with heuristic wenn ausgewählt heuristik
         this.openList = pathFinding.getOpenList();
         this.closedList = pathFinding.getCloseList();
@@ -167,15 +173,61 @@ public class Controller {
 
     @FXML
     private void visibility_heuristic(){
-        if (pathFinding.avaiableInformedAlgorithm().contains(choiceBox_Algorithm.getValue())){
-            textField_Heuristik.setVisible(true);
+        System.out.println(choiceBox_Algorithm.getValue());
+        if (pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())){
+            label_Heuristik.setVisible(true);
             choiceBox_Heuristik.setVisible(true);
         }else{
-            textField_Heuristik.setVisible(false);
+            label_Heuristik.setVisible(false);
             choiceBox_Heuristik.setVisible(false);
+            choiceBox_Heuristik.setValue(null);
         }
 
     };
+
+    @FXML
+    private void click_button_rest_grid(){
+        cleargrid(gridpane);
+        draw_target();
+        draw_source();
+        draw_block();
+    }
+
+    private void draw_block() {
+
+
+        Iterator<Integer> it = block.iterator();
+        while (it.hasNext()){
+            Integer next = it.next();
+            int tmpcolumn = next % gridsize;
+            int tmprow = next/gridsize;
+            addBlock(tmpcolumn, tmprow);
+        }
+
+        /*
+        List<Integer> blockList = block.stream().collect(Collectors.toList());
+        for (int i= 0; i < blockList.size(); i++ ){
+            int tmpcolumn = blockList.get(i) % gridsize;
+            int tmprow = blockList.get(i)/gridsize;
+            addBlock(tmpcolumn, tmprow);
+        }
+        */
+
+
+        // set 35,36,40-> set get 36
+    }
+
+    private void draw_source() {
+        int tmpcolumn = source % gridsize;
+        int tmprow = source/gridsize;
+        addSource(tmpcolumn, tmprow);
+    }
+
+    private void draw_target() {
+        int tmpcolumn = target % gridsize;
+        int tmprow = target/gridsize;
+        addTarget(tmpcolumn, tmprow);
+    }
 
     private void draw_openList(List<Integer> openList) {
         for (int i= 0; i < openList.size(); i++ ){
