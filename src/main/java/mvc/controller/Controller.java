@@ -14,6 +14,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.control.MenuBar;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import mvc.model.PathFinding;
@@ -28,7 +29,6 @@ import java.util.List;
 public class Controller {
     Integer gridsize = 15;
     int gridfieldsize = 40;
-    int circleradius = 10;
     Set<Integer> block = new HashSet<>();
     Integer source;
     Integer target;
@@ -40,6 +40,9 @@ public class Controller {
 
     @FXML
     GridPane gridpane;
+
+//    @FXML
+//    GridPane gridpane2;
 
     @FXML
     ToggleButton block_Button;
@@ -62,6 +65,17 @@ public class Controller {
     @FXML
     TextField grid_fieldsize_textfield;
 
+    @FXML
+    TextField textField_Heuristik;
+
+    @FXML
+    ChoiceBox choiceBox_Heuristik;
+
+
+
+    @FXML
+    MenuBar menuBar;
+
     public Controller() {
     }
 
@@ -81,6 +95,8 @@ public class Controller {
         source=null;
         pathFinding = new PathFinding();
 
+        //menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+
 
         // Setzen der Standardeinstellung im Algorithm Bereich zum Bearbeiten
         // hier: Mode 1: Block setzen
@@ -89,27 +105,34 @@ public class Controller {
 
         // Setzen der verfügbaren Such-Algorithm
 
-        choiceBox_Algorithm.setItems(FXCollections.observableArrayList(pathFinding.avaiableAlgortihm()));
+        List<String> allAlgortihm = new ArrayList<>();
+        allAlgortihm.addAll(pathFinding.avaiableAlgortihm());
+        allAlgortihm.addAll(pathFinding.avaiableInformedAlgorithm());
+
+        choiceBox_Algorithm.setItems(FXCollections.observableArrayList(allAlgortihm));
 
         // Aufbau der Spielfläche
-        gridpane.getRowConstraints().clear();
-        gridpane.getColumnConstraints().clear();
-        gridpane.getChildren().clear();
-        for (int a = 0; a < gridsize; a++) {
-            gridpane.getRowConstraints().add(new RowConstraints());
-            gridpane.getColumnConstraints().add(new ColumnConstraints());
-
-            for (int i = 0; i < gridsize; i++) {
-                for (int j = 0; j < gridsize; j++) {
-                    blankCell(i,j);
-                }
-            }
-        }
+        cleargrid(gridpane);
+        //cleargrid(gridpane2);
         System.out.println("beende Initialize");
     }
 //  Erkenntnis: Gridpane bzw View ist nicht darauf ausgelegt, das man felder ausliest um deren Attribute vergleichen zu könne
 //  https://stackoverflow.com/questions/20655024/javafx-gridpane-retrieve-specific-cell-content
 
+    private void cleargrid(GridPane gp){
+        gp.getRowConstraints().clear();
+        gp.getColumnConstraints().clear();
+        gp.getChildren().clear();
+        for (int a = 0; a < gridsize; a++) {
+            gp.getRowConstraints().add(new RowConstraints());
+            gp.getColumnConstraints().add(new ColumnConstraints());
+        }
+        for (int i = 0; i < gridsize; i++) {
+            for (int j = 0; j < gridsize; j++) {
+                blankCell(i,j);
+            }
+        }
+    }
 
 /*    @FXML
     private void mouseEntered(MouseEvent e) {
@@ -123,7 +146,7 @@ public class Controller {
         // hier müssen übergabe der Listen an model/Algorithm entstehen
 
         pathFinding.calc(gridsize, block, choiceBox_Algorithm.getValue().toString(),source, target);
-
+        // TODO calc with heuristic wenn ausgewählt heuristik
         this.openList = pathFinding.getOpenList();
         this.closedList = pathFinding.getCloseList();
         this.pathList = pathFinding.getPath();
@@ -141,6 +164,18 @@ public class Controller {
 
 
     }
+
+    @FXML
+    private void visibility_heuristic(){
+        if (pathFinding.avaiableInformedAlgorithm().contains(choiceBox_Algorithm.getValue())){
+            textField_Heuristik.setVisible(true);
+            choiceBox_Heuristik.setVisible(true);
+        }else{
+            textField_Heuristik.setVisible(false);
+            choiceBox_Heuristik.setVisible(false);
+        }
+
+    };
 
     private void draw_openList(List<Integer> openList) {
         for (int i= 0; i < openList.size(); i++ ){
@@ -327,7 +362,7 @@ public class Controller {
 
     private void addPath(int column, int row){
 //      Add Cicle, guter Kompromiss bis Linie gezeichnet werden kann
-         Circle circle = new Circle(circleradius);
+         Circle circle = new Circle(gridfieldsize/3);
          circle.setFill(Color.web("#FFFF00"));
          gridpane.setHalignment(circle, HPos.CENTER);
         gridpane.add(circle, column,row);

@@ -12,47 +12,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1023.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.controller.Controller">
+<AnchorPane prefHeight="594.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.controller.Controller">
    <children>
-      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1023.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <AnchorPane layoutX="259.0" layoutY="27.0" prefHeight="691.0" prefWidth="780.0">
-         <children>
-            <GridPane id="gridpane" fx:id="gridpane" gridLinesVisible="true" onMouseDragged="#clickGrid" onMousePressed="#clickGrid" prefHeight="632.0" prefWidth="695.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutY="27.0" prefHeight="691.0" prefWidth="246.0">
+      <AnchorPane layoutY="27.0">
          <children>
             <TitledPane animated="false" prefHeight="97.0" prefWidth="243.0" text="Grid">
                <content>
@@ -68,22 +32,24 @@
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane animated="false" layoutY="113.0" prefHeight="176.0" prefWidth="253.0" text="Algorithm">
+            <TitledPane animated="false" layoutY="113.0" prefHeight="246.0" prefWidth="253.0" text="Algorithm">
                <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="186.0" prefWidth="336.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="251.0">
                      <children>
-                        <ToggleButton fx:id="source_Button" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#click_source_Button" prefHeight="25.0" prefWidth="66.0" text="Source" />
-                        <ToggleButton fx:id="target_Button" layoutX="90.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#click_target_Button" prefHeight="25.0" prefWidth="66.0" text="Target" />
-                        <ToggleButton fx:id="block_Button" layoutX="165.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#click_Block_Button" prefHeight="25.0" prefWidth="66.0" text="Block" />
-                        <ChoiceBox fx:id="choiceBox_Algorithm" layoutX="14.0" layoutY="63.0" prefHeight="25.0" prefWidth="217.0" />
-                        <Label layoutX="14.0" layoutY="47.0" text="Choice Algorithm" />
-                        <Button layoutX="15.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#start" prefHeight="25.0" prefWidth="78.0" text="Start / Stop" />
-                        <ToggleButton fx:id="clear_Button" layoutX="153.0" layoutY="103.0" mnemonicParsing="false" onMouseClicked="#click_clear_Button" prefHeight="25.0" prefWidth="78.0" text="Clear Field" />
+                        <ToggleButton fx:id="source_Button" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#click_source_Button" prefHeight="25.0" prefWidth="100.0" text="Source" />
+                        <ToggleButton fx:id="target_Button" layoutX="131.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#click_target_Button" prefHeight="25.0" prefWidth="100.0" text="Target" />
+                        <ToggleButton fx:id="block_Button" layoutX="14.0" layoutY="44.0" mnemonicParsing="false" onMouseClicked="#click_Block_Button" prefHeight="25.0" prefWidth="100.0" text="Block" />
+                        <ChoiceBox fx:id="choiceBox_Algorithm" layoutX="14.0" layoutY="95.0" onContextMenuRequested="#visibility_heuristic" prefHeight="25.0" prefWidth="217.0" />
+                        <Label fx:id="textfield_Algorithm" layoutX="14.0" layoutY="79.0" text="Choice Algorithm" />
+                        <Button layoutX="15.0" layoutY="181.0" mnemonicParsing="false" onMouseClicked="#start" prefHeight="25.0" prefWidth="78.0" text="Start / Stop" />
+                        <ToggleButton fx:id="clear_Button" layoutX="131.0" layoutY="44.0" mnemonicParsing="false" onMouseClicked="#click_clear_Button" prefHeight="25.0" prefWidth="100.0" text="Clear Field" />
+                        <ChoiceBox fx:id="choiceBox_Heuristik" layoutX="14.0" layoutY="143.0" prefHeight="25.0" prefWidth="217.0" visible="false" />
+                        <Label fx:id="textfield_Heuristik" layoutX="14.0" layoutY="127.0" text="Choice Heuristik" visible="false" />
                      </children>
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane animated="false" layoutY="289.0" prefHeight="210.0" prefWidth="253.0" text="Performance">
+            <TitledPane animated="false" layoutY="359.0" prefHeight="210.0" prefWidth="253.0" text="Performance">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -94,5 +60,43 @@
             </TitledPane>
          </children>
       </AnchorPane>
+      <AnchorPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <MenuBar prefHeight="23.0" prefWidth="28.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children></AnchorPane>
+    <AnchorPane layoutX="256.0" layoutY="29.0" minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="238.0">
+         <children>
+            <GridPane id="gridpane" fx:id="gridpane" gridLinesVisible="true" onMouseDragged="#clickGrid" onMousePressed="#clickGrid" prefHeight="80.0" prefWidth="80.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
    </children>
-</Pane>
+</AnchorPane>

@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import mvc.controller.Controller;
 
 import java.net.URL;
 import java.nio.file.Paths;
@@ -22,9 +23,10 @@ public class Main extends Application {
         System.out.println("das hindert mich nicht : " + url);
 
         Parent root = fxmlLoader.load(url);
-        primaryStage.setTitle("Title");
-
-        primaryStage.setScene(new Scene(root, 1000, 800));
+        // Controller mFxmlDocumentController = fxmlLoader.getController();
+        primaryStage.setTitle("AI-IS-P1-Suchen");
+        //primaryStage.sizeToScene();;
+        primaryStage.setScene(new Scene(root, 874, 647));
         primaryStage.show();
 
     }
