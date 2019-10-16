@@ -32,7 +32,7 @@ public class PathFinding {
         initHeuristic();
     }
 
-
+    // commit
     public void uninformedCalc(int fieldColumns, Set<Integer> blockSet, String uninformedAlgorithmName, int source, int target) throws Exception {
         System.out.println("Pathfinding uninformiert: FieldRows: " + fieldColumns + " Algorithmus: "
                 + uninformedAlgorithmName + " Source: " + source + " Target: " + target);
@@ -135,11 +135,11 @@ public class PathFinding {
         return new ArrayList<>(uninformedMap.keySet());
     }
 
-    public List<String> loadHeuristic() {
+    public List<String> getHeuristic() {
         return new ArrayList<>(heuristicMap.keySet());
     }
 
-    public List<String> loadInformedAlgorithm() {
+    public List<String> getInformedAlgorithm() {
         return new ArrayList<>(informedMap.keySet());
     }
 
