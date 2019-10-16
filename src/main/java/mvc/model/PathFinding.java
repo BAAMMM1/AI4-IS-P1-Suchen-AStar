@@ -32,7 +32,7 @@ public class PathFinding {
         initHeuristic();
     }
 
-
+    // commit
     public void uninformedCalc(int fieldColumns, Set<Integer> blockSet, String uninformedAlgorithmName, int source, int target) throws Exception {
         System.out.println("Pathfinding uninformiert: FieldRows: " + fieldColumns + " Algorithmus: "
                 + uninformedAlgorithmName + " Source: " + source + " Target: " + target);
