@@ -177,8 +177,7 @@ public class Controller {
         if (pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())){
             label_Heuristik.setVisible(true);
             choiceBox_Heuristik.setVisible(true);
-            label_Heuristik.setManaged(false);
-            label_Heuristik.managedProperty().bind(label_Heuristik.visibleProperty());
+
         }else{
             label_Heuristik.setVisible(false);
             choiceBox_Heuristik.setVisible(false);
