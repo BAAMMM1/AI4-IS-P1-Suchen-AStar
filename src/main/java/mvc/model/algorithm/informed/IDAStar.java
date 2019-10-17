@@ -10,7 +10,7 @@ public class IDAStar extends InformedAlgorithm {
     }
 
     @Override
-    public void calculate() {
+    public void execute() {
 
     }
 
