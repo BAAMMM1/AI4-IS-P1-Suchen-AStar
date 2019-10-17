@@ -16,7 +16,6 @@ public class BreadthFirst extends UninformedAlgorithm {
     }
 
     public void execute(){
-        System.out.println("Source: " + source);
 
         if(this.getSource().equals(target)){
 
@@ -28,8 +27,6 @@ public class BreadthFirst extends UninformedAlgorithm {
             LinkedList<Node> queue = new LinkedList<>();
 
             addOpenList(queue, source);
-            //queue.add(source);
-            //snapShots.add(new NodeSnapShot(source, NodeType.OPENLIST));;
 
             Node current;
 
@@ -39,11 +36,7 @@ public class BreadthFirst extends UninformedAlgorithm {
                 current = queue.get(0);
 
                 removeOpenList(queue, current);
-                //queue.remove(0);
-
                 addCloseList(queue, current);
-                //closeList.add(current);
-                //snapShots.add(new NodeSnapShot(current, NodeType.CLOSELIST));
 
                 List<Node> childs = field.expandNode(current);
 
@@ -60,23 +53,13 @@ public class BreadthFirst extends UninformedAlgorithm {
                         }
 
                         addOpenList(queue, child);
-                        //queue.add(child);
-                        //snapShots.add(new NodeSnapShot(child, NodeType.OPENLIST));
 
                         child.setType(NodeType.OPENLIST);
 
                     }
                 }
             }
-
-            //openList.addAll(queue);
-
-
         }
-
-
     }
-
-
 
 }
