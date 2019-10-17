@@ -2,8 +2,7 @@ package mvc.model.field;
 
 public enum NodeType {
 
-    // TODO Type Openlist, Closelist usw.
-    START("Start"), TARGET("Target"), BLOCKED("Blocked"), FREE_UNDISCOVERED("Free_Undisovered"), OPENLIST("Openlist"), DISCOVERED_CLOSELIST("Discovered_Closelist"), PATH("Path") ;
+    SOURCE("Source"), TARGET("Target"), BLOCKED("Blocked"), UNDISCOVERED("Undisovered"), OPENLIST("Openlist"), CLOSELIST("Closelist"), PATH("Path") ;
 
     private String name;
 
