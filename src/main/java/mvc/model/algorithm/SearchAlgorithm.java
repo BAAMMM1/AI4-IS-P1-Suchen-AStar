@@ -16,6 +16,9 @@ public abstract class SearchAlgorithm {
     protected List<Node> closeList;
     protected List<Node> path;
 
+    private long startTime;
+    private long endTime;
+
     public SearchAlgorithm(Field field, int source, int target) {
         this.field = field;
         this.source = field.getField()[source];
@@ -25,7 +28,13 @@ public abstract class SearchAlgorithm {
         this.path = new ArrayList<Node>();
     }
 
-    public abstract void calculate();
+    public void calculate(){
+        startTime();
+        execute();
+        endTime();
+    }
+
+    protected abstract void execute();
 
     protected List<Node> tracePath(Node node){
 
@@ -37,6 +46,7 @@ public abstract class SearchAlgorithm {
         result.add(node);
 
         while(currenNode.getParent() != null){
+            //System.out.println(currenNode);
             result.add(currenNode.getParent());
             currenNode = currenNode.getParent();
         }
@@ -69,6 +79,22 @@ public abstract class SearchAlgorithm {
 
     public List<Node> getPath() {
         return path;
+    }
+
+    public int getStorageComplexity(){
+        return openList.size() + closeList.size();
+    }
+
+    protected void startTime(){
+        startTime = System.currentTimeMillis();
+    }
+
+    protected void endTime(){
+        endTime = System.currentTimeMillis();
+    }
+
+    public long getTime(){
+        return endTime - startTime;
     }
 
 }

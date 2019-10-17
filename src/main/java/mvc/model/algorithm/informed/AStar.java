@@ -17,7 +17,7 @@ public class AStar extends InformedAlgorithm {
     }
 
 
-    public void calculate(){
+    public void execute(){
 
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getFcost));
 

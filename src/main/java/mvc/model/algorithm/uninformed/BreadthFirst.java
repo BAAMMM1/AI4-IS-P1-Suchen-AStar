@@ -15,7 +15,7 @@ public class BreadthFirst extends UninformedAlgorithm {
         super(field, source, target);
     }
 
-    public void calculate(){
+    public void execute(){
 
         if(this.getSource().equals(target)){
 

@@ -1,17 +1,16 @@
 package mvc.model.algorithm.uninformed;
 
-import mvc.model.algorithm.SearchAlgorithm;
+import mvc.model.field.Field;
 import mvc.model.field.Node;
 import mvc.model.field.NodeType;
-import mvc.model.field.Field;
 
 import java.util.List;
 import java.util.Stack;
 
-public class DepthFirst extends UninformedAlgorithm {
+public class IterativeDeepeningDepthFirst extends UninformedAlgorithm {
 
 
-    public DepthFirst(Field field, int source, int target) {
+    public IterativeDeepeningDepthFirst(Field field, int source, int target) {
         super(field, source, target);
     }
 

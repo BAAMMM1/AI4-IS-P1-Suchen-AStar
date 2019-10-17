@@ -42,6 +42,9 @@ public class Main {
         // Algorithmus durchlaufen lassen
         BreadthFirst bfs = new BreadthFirst(field, 1520, 18);
         bfs.calculate();
+        System.out.println("BFS");
+        System.out.println("Storage: " + bfs.getStorageComplexity());
+        System.out.println("Time: " + bfs.getTime());
 
         // Algorithmus in das Feld eintragen
         field.paintAlgorithmInToFieldWithDepth(bfs);
@@ -60,6 +63,10 @@ public class Main {
 
         DepthFirst tfs = new DepthFirst(field, 1520, 18);
         tfs.calculate();
+        System.out.println("TFS");
+        System.out.println("Storage: " + tfs.getStorageComplexity());
+        System.out.println("Time: " + tfs.getTime());
+
         field.paintAlgorithmInToField(tfs);
         System.out.println();
         field.drawField();
@@ -73,6 +80,10 @@ public class Main {
         // Algorithmus durchlaufen lassen
         UniformCost smek = new UniformCost(field, 1520, 18);
         smek.calculate();
+
+        System.out.println("SMEK");
+        System.out.println("Storage: " + smek.getStorageComplexity());
+        System.out.println("Time: " + smek.getTime());
 
         // Algorithmus in das Feld eintragen
         field.paintAlgorithmInToFieldWithDepth(smek);
@@ -106,6 +117,9 @@ public class Main {
         // Algorithmus durchlaufen lassen
         AStar aStar = new AStar(field, 1520, 22, new DistanceFromTarget(field.getField()[22], field.getColumns()));
         aStar.calculate();
+        System.out.println("AStar");
+        System.out.println("Storage: " + aStar.getStorageComplexity());
+        System.out.println("Time: " + aStar.getTime());
 
 
         // Algorithmus in das Feld eintragen
