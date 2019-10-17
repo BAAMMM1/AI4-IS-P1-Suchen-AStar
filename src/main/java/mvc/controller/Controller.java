@@ -4,7 +4,6 @@ package mvc.controller;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
-import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
@@ -14,10 +13,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import mvc.model.PathFinding;
+import mvc.model.io.CheckPointDTO;
+import mvc.model.io.IO;
 
+import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class Controller {
@@ -27,6 +30,9 @@ public class Controller {
     Integer source;
     Integer target;
     Integer mode;
+    Stage stage;
+    IO io;
+    URI uri;
     List<Integer> openList;
     List<Integer> closedList;
     List<Integer> pathList;
@@ -65,22 +71,23 @@ public class Controller {
     @FXML
     ChoiceBox choiceBox_Heuristik;
 
-
-
     @FXML
     MenuBar menuBar;
+
+    @FXML
+    MenuItem menuitem_load;
+
+    @FXML
+    MenuItem menuitem_save;
+
 
     public Controller() {
     }
 
-    //TODO: Commit and Push nicht Standardgemäß auf "Master" sondern auf "gui" Branch
-    //TODO: LOAD/SAVE
-    //TODO: Heurisitk anzeigen
-    //TODO: Ausführen Heuristik supi
-
     @FXML
     private void initialize() {
         System.out.println("starte Initialize");
+        //Initialisierung der Variablen
         openList=new ArrayList<>();
         closedList=new ArrayList<>();
         pathList=new ArrayList<>();
@@ -88,9 +95,8 @@ public class Controller {
         target=null;
         source=null;
         pathFinding = new PathFinding();
-
-        //menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
-
+        io = new IO();
+        stage = new Stage();
 
         // Setzen der Standardeinstellung im Algorithm Bereich zum Bearbeiten
         // hier: Mode 1: Block setzen
@@ -111,34 +117,48 @@ public class Controller {
 
         // Aufbau der Spielfläche
         cleargrid(gridpane);
-        //cleargrid(gridpane2);
+
         System.out.println("beende Initialize");
     }
 //  Erkenntnis: Gridpane bzw View ist nicht darauf ausgelegt, das man felder ausliest um deren Attribute vergleichen zu könne
 //  https://stackoverflow.com/questions/20655024/javafx-gridpane-retrieve-specific-cell-content
 
-    private void cleargrid(GridPane gp){
-        gp.getRowConstraints().clear();
-        gp.getColumnConstraints().clear();
-        gp.getChildren().clear();
-        for (int a = 0; a < gridsize; a++) {
-            gp.getRowConstraints().add(new RowConstraints());
-            gp.getColumnConstraints().add(new ColumnConstraints());
-        }
-        for (int i = 0; i < gridsize; i++) {
-            for (int j = 0; j < gridsize; j++) {
-                blankCell(i,j);
-            }
-        }
+
+    /*******************************************
+     ***            File Section             ***
+     *******************************************/
+
+    public void menuitem_load_action(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load Field");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(("Field File(*.json"), "*.json"));
+        String uristring = new String();
+        String absolutepath = new String();
+        uri = fileChooser.showOpenDialog(stage).getAbsoluteFile().toURI();
+
+        CheckPointDTO checkPointDTO = io.load(uri);
+
+        this.gridsize = checkPointDTO.getGridSize();
+        this.source = checkPointDTO.getSource();
+        this.target = checkPointDTO.getTarget();
+        this.block = checkPointDTO.getBlockSet();
+        clickButtonResetGrid();
     }
 
-/*    @FXML
-    private void mouseEntered(MouseEvent e) {
-        Node source = (Node)e.getSource() ;
-        Integer colIndex = gridpane.getColumnIndex(source);
-        Integer rowIndex = gridpane.getRowIndex(source);
-        System.out.println("Mouse entered cell "+ colIndex + "/"+ rowIndex);
-    }*/
+    public void menuitem_save_action(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Field");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(("Field File(*.json"), "*.json"));
+        URI url = null;
+
+        url = fileChooser.showSaveDialog(stage).getAbsoluteFile().toURI();
+
+        System.out.println("URL der ausgewählten Datei zum Speichern ist: "+ url.toString());
+
+        System.out.println("dabei Gridsize: "+ gridsize + " und Block: "+ block.toString() + " und Source: " + source + " und Target: " +target);
+
+        io.save(url, gridsize, block,source, target);
+    }
 
     public void start() throws Exception {
         // hier müssen übergabe der Listen an model/Algorithm entstehen
@@ -151,15 +171,13 @@ public class Controller {
             throw new Exception();
         }
 
-
-        // TODO calc with heuristic wenn ausgewählt heuristik
         this.openList = pathFinding.getOpenList();
         this.closedList = pathFinding.getCloseList();
         this.pathList = pathFinding.getPath();
 
-        draw_openList (openList);
-        draw_closedList(closedList);
-        draw_path(pathList);
+        drawOpenList(openList);
+        drawClosedList(closedList);
+        drawPath(pathList);
 
 //        Andere Möglichkeit:
 //        ArrayList<List> solution[] = new ArrayList[3];
@@ -185,91 +203,114 @@ public class Controller {
 
     };
 
-    @FXML
-    private void click_button_rest_grid(){
-        cleargrid(gridpane);
-        draw_target();
-        draw_source();
-        draw_block();
-    }
-
-    private void draw_block() {
 
 
-        Iterator<Integer> it = block.iterator();
-        while (it.hasNext()){
-            Integer next = it.next();
-            int tmpcolumn = next % gridsize;
-            int tmprow = next/gridsize;
-            addBlock(tmpcolumn, tmprow);
+    private void drawBlock() {
+        if (block != null) {
+            Iterator<Integer> it = block.iterator();
+            while (it.hasNext()) {
+                Integer next = it.next();
+                int tmpcolumn = next % gridsize;
+                int tmprow = next / gridsize;
+                drawBlock(tmpcolumn, tmprow);
+            }
         }
-
         /*
+        Stream Exercise
         List<Integer> blockList = block.stream().collect(Collectors.toList());
         for (int i= 0; i < blockList.size(); i++ ){
             int tmpcolumn = blockList.get(i) % gridsize;
             int tmprow = blockList.get(i)/gridsize;
             addBlock(tmpcolumn, tmprow);
+        }*/
+
+
+    }
+
+    private void cleargrid(GridPane gp){
+        gp.getRowConstraints().clear();
+        gp.getColumnConstraints().clear();
+        gp.getChildren().clear();
+        for (int a = 0; a < gridsize; a++) {
+            gp.getRowConstraints().add(new RowConstraints());
+            gp.getColumnConstraints().add(new ColumnConstraints());
         }
-        */
-
-
-        // set 35,36,40-> set get 36
+        for (int i = 0; i < gridsize; i++) {
+            for (int j = 0; j < gridsize; j++) {
+                blankCell(i,j);
+            }
+        }
     }
 
-    private void draw_source() {
-        int tmpcolumn = source % gridsize;
-        int tmprow = source/gridsize;
-        addSource(tmpcolumn, tmprow);
+    private void drawSource() {
+        if (source != null){
+            int tmpcolumn = source % gridsize;
+            int tmprow = source/gridsize;
+            drawSource(tmpcolumn, tmprow);
+        }
     }
 
-    private void draw_target() {
-        int tmpcolumn = target % gridsize;
-        int tmprow = target/gridsize;
-        addTarget(tmpcolumn, tmprow);
+    private void drawTarget() {
+        if (target != null) {
+            int tmpcolumn = target % gridsize;
+            int tmprow = target / gridsize;
+            drawTarget(tmpcolumn, tmprow);
+        }
     }
 
-    private void draw_openList(List<Integer> openList) {
+    private void drawOpenList(List<Integer> openList) {
         for (int i= 0; i < openList.size(); i++ ){
             int tmpcolumn = openList.get(i) % gridsize;
             int tmprow = openList.get(i)/gridsize;
             if (openList.get(i)==source) continue;
-            addOpenList(tmpcolumn, tmprow);
+            drawOpenList(tmpcolumn, tmprow);
         }
     }
 
-    private void draw_closedList(List<Integer> openList) {
+    private void drawClosedList(List<Integer> openList) {
         for (int i= 0; i < openList.size(); i++ ){
             int tmpcolumn = openList.get(i) % gridsize;
             int tmprow = openList.get(i)/gridsize;
             if (openList.get(i)==source) continue;
-            addClosedList(tmpcolumn, tmprow);
+            drawClosedList(tmpcolumn, tmprow);
         }
     }
 
-    private void draw_path(List<Integer> openList) {
+    private void drawPath(List<Integer> openList) {
         for (int i= 0; i < openList.size()-2; i++ ){
             int tmpcolumn = openList.get(i+1) % gridsize;
             int tmprow = openList.get(i+1)/gridsize;
-            addPath(tmpcolumn, tmprow);
+            drawPath(tmpcolumn, tmprow);
         }
     }
 
-    public void grid_resize_input(){
+    /*******************************************
+     ***        GUI-Action Section           ***
+     *******************************************/
+
+    public void actionGridResizeInput(){
         Integer a = Integer.parseInt(grid_resize_textfield.getText());
         gridsize = a;
         System.out.println("gridsize ist nun: "+ gridsize);
         initialize();
     }
 
-    public void grid_fieldresize_input(){
+    public void actionGridFieldresizeInput(){
         Integer a = Integer.parseInt(grid_fieldsize_textfield.getText());
         gridfieldsize = a;
         System.out.println("gridfieldsize ist nun: "+ a);
         initialize();
     }
 
-    public void click_Block_Button() {
+    @FXML
+    private void clickButtonResetGrid(){
+        cleargrid(gridpane);
+        drawTarget();
+        drawSource();
+        drawBlock();
+    }
+
+    public void clickBlockButton() {
         mode = 1;
         block_Button.setSelected(true);
         clear_Button.setSelected(false);
@@ -277,7 +318,7 @@ public class Controller {
         source_Button.setSelected(false);
     }
 
-    public void click_source_Button(){
+    public void clickSourceButton(){
         mode = 2;
         block_Button.setSelected(false);
         clear_Button.setSelected(false);
@@ -285,7 +326,7 @@ public class Controller {
         source_Button.setSelected(true);
     }
 
-    public void click_target_Button(){
+    public void clickTargetButton(){
         mode = 3;
         block_Button.setSelected(false);
         clear_Button.setSelected(false);
@@ -293,7 +334,7 @@ public class Controller {
         source_Button.setSelected(false);
     }
 
-    public void click_clear_Button(){
+    public void clickClearButton(){
         mode = 4;
         block_Button.setSelected(false);
         clear_Button.setSelected(true);
@@ -315,7 +356,7 @@ public class Controller {
 
             switch (mode){
                 case 0: break;
-                case 1: addBlock(colIndex, rowIndex);
+                case 1: drawBlock(colIndex, rowIndex);
                         block.add(colIndex%gridsize + rowIndex*gridsize);
                         System.out.println("gespeichert in Blocklist: " + block.toString());
                         break;
@@ -331,7 +372,7 @@ public class Controller {
                             && (target == null
                              || colIndex%gridsize + rowIndex*gridsize != target)){
                             source = (colIndex%gridsize + rowIndex*gridsize);
-                            addSource(colIndex, rowIndex);
+                            drawSource(colIndex, rowIndex);
                             System.out.println("Source nun Feld: "+ source);
                         }
                         break;
@@ -347,7 +388,7 @@ public class Controller {
                             && (source == null
                                     || source != colIndex%gridsize + rowIndex*gridsize)){
                             target = (colIndex%gridsize + rowIndex*gridsize);
-                            addTarget(colIndex, rowIndex);
+                            drawTarget(colIndex, rowIndex);
                             System.out.println("Target nun Feld: "+ target);
                             }
                         break;
@@ -361,79 +402,30 @@ public class Controller {
         }
     }
 
-    private Node getNodeFromGridPane(GridPane griPa, int col, int row) {
-        for (Node node : griPa.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return node;
-            }
-        }
-        return null;
-        // Wenn 10er grid, dann auch möglich mit gridpane.getChildren.get(col*10+row)
-        // sprich 2/2 auf 10er wäre der gleiche Node wie getChildren.get(22)
-        //oder 1column/3row im 5er grid == getChildren.get(14) -> 0. row 0-4; 1. row 5-8, 3. row 13,*14*,15,16 ->
-        /*
 
-        Quelle https://stackoverflow.com/questions/50012463/how-can-i-click-a-gridpane-cell-and-have-it-perform-an-action
-        if (clickedNode != gridmane) {
-    // click on descendant node
-    Node parent = clickedNode.getParent();
-    while (parent != gridmane) {
-        clickedNode = parent;
-        parent = clickedNode.getParent();
-    }
-    Integer colIndex = GridPane.getColumnIndex(clickedNode);
-    Integer rowIndex = GridPane.getRowIndex(clickedNode);
-    System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
-}
-         */
+    /*******************************************
+     ***            Draw Section             ***
+     *******************************************/
 
 
-    }
-
-    private void addOpenList(int column, int row){
-       // Circle circle = new Circle(circleradius);
-       // circle.setFill(Paint.valueOf("green"));
-       // gridpane.setHalignment(circle, HPos.CENTER);
-       // gridpane.add(circle, column,row);
-        Rectangle green_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
-        green_rechtangle.setFill(Color.web("#98FB98"));
-        gridpane.add(green_rechtangle, column, row);
-
-    }
-
-    private void addClosedList(int column, int row){
-//        Circle circle = new Circle(circleradius);
-//        circle.setFill(Paint.valueOf("cyan"));
-//        gridpane.setHalignment(circle, HPos.CENTER);
-//        gridpane.add(circle, column,row);
-        Rectangle cyan_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
-        //cyan_rechtangle.setFill(Paint.valueOf("lightblue"));
-        cyan_rechtangle.setFill(Color.web("#AFEEEE"));
-        gridpane.add(cyan_rechtangle, column, row);
-    }
-
-    private void addPath(int column, int row){
-//      Add Cicle, guter Kompromiss bis Linie gezeichnet werden kann
-         Circle circle = new Circle(gridfieldsize/3);
-         circle.setFill(Color.web("#FFFF00"));
-         gridpane.setHalignment(circle, HPos.CENTER);
-        gridpane.add(circle, column,row);
-
-//      Add Line, muss aber Fallunterscheidung gemacht werden um set Start X/Y Koordinate und End X/Y Koordiante zu setzen
-//        Line line = new Line();
-//        line.setFill(Color.web("#FFFF00"));
-//        gridpane.add(line, column, row);
-
-//      Add Rectangle ist kpl ausgefüllt, sieht sehr aggressiv derzeit aus
-//        Rectangle purple_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
-//        purple_rechtangle.setFill(Color.web("#FFFF00"));
-//        gridpane.add(purple_rechtangle, column, row);
-    }
-
-    private void addBlock(int column, int row){
+    private void drawBlock(int column, int row){
         Rectangle black_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
         black_rechtangle.setFill(Color.web("#808080"));
         gridpane.add(black_rechtangle, column, row);
+    }
+
+    private void drawSource(int column, int row) {
+        Rectangle green_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
+        green_rechtangle.setFill(Color.web("#00DD00"));
+        System.out.println("paint of green : " + Paint.valueOf("green").toString());
+
+        gridpane.add(green_rechtangle, column, row);
+    }
+
+    private void drawTarget(int column, int row) {
+        Rectangle red_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
+        red_rechtangle.setFill(Color.web("#EE4400"));
+        gridpane.add(red_rechtangle, column, row);
     }
 
     private void blankCell(int column, int row){
@@ -449,22 +441,44 @@ public class Controller {
         gridpane.add(another_rechtangle, column, row);
     }
 
-    private void addSource(int column, int row) {
-        Rectangle green_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
-        green_rechtangle.setFill(Color.web("#00DD00"));
-        System.out.println("paint of green : " + Paint.valueOf("green").toString());
-
+    private void drawOpenList(int column, int row){
+        // Circle circle = new Circle(circleradius);
+        // circle.setFill(Paint.valueOf("green"));
+        // gridpane.setHalignment(circle, HPos.CENTER);
+        // gridpane.add(circle, column,row);
+        Rectangle green_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
+        green_rechtangle.setFill(Color.web("#98FB98"));
         gridpane.add(green_rechtangle, column, row);
+
     }
 
-    private void addTarget(int column, int row) {
-        Rectangle red_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
-        red_rechtangle.setFill(Color.web("#EE4400"));
-        gridpane.add(red_rechtangle, column, row);
+    private void drawClosedList(int column, int row){
+//        Circle circle = new Circle(circleradius);
+//        circle.setFill(Paint.valueOf("cyan"));
+//        gridpane.setHalignment(circle, HPos.CENTER);
+//        gridpane.add(circle, column,row);
+        Rectangle cyan_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
+        //cyan_rechtangle.setFill(Paint.valueOf("lightblue"));
+        cyan_rechtangle.setFill(Color.web("#AFEEEE"));
+        gridpane.add(cyan_rechtangle, column, row);
     }
 
+    private void drawPath(int column, int row){
+//      Add Cicle, guter Kompromiss bis Linie gezeichnet werden kann
+        Circle circle = new Circle(gridfieldsize/3);
+        circle.setFill(Color.web("#FFFF00"));
+        gridpane.setHalignment(circle, HPos.CENTER);
+        gridpane.add(circle, column,row);
 
+//      Add Line, muss aber Fallunterscheidung gemacht werden um set Start X/Y Koordinate und End X/Y Koordiante zu setzen
+//        Line line = new Line();
+//        line.setFill(Color.web("#FFFF00"));
+//        gridpane.add(line, column, row);
 
+//      Add Rectangle ist kpl ausgefüllt, sieht sehr aggressiv derzeit aus
+//        Rectangle purple_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
+//        purple_rechtangle.setFill(Color.web("#FFFF00"));
+//        gridpane.add(purple_rechtangle, column, row);
+    }
 
-    // -> ich weiß das das rendundant ist und man das auch auslagern könnte in add rectanglerype (string object, int x, int y) -> object = source target way oder block
 }
