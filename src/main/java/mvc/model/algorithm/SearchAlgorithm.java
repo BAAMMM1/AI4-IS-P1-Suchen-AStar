@@ -46,7 +46,7 @@ public abstract class SearchAlgorithm {
         result.add(node);
 
         while(currenNode.getParent() != null){
-            System.out.println(currenNode);
+            //System.out.println(currenNode);
             result.add(currenNode.getParent());
             currenNode = currenNode.getParent();
         }
@@ -94,7 +94,7 @@ public abstract class SearchAlgorithm {
     }
 
     public long getTime(){
-        return startTime - endTime;
+        return endTime - startTime;
     }
 
 }
