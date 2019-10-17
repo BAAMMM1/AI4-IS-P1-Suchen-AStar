@@ -41,7 +41,7 @@ public class Main {
         System.out.println(1);
         // Algorithmus durchlaufen lassen
         BreadthFirst bfs = new BreadthFirst(field, 1520, 18);
-        bfs.calculate();
+        bfs.execute();
 
         // Algorithmus in das Feld eintragen
         field.paintAlgorithmInToFieldWithDepth(bfs);
@@ -59,7 +59,7 @@ public class Main {
 
 
         DepthFirst tfs = new DepthFirst(field, 1520, 18);
-        tfs.calculate();
+        tfs.execute();
         field.paintAlgorithmInToField(tfs);
         System.out.println();
         field.drawField();
@@ -72,7 +72,7 @@ public class Main {
         field = new Field(50);
         // Algorithmus durchlaufen lassen
         UniformCost smek = new UniformCost(field, 1520, 18);
-        smek.calculate();
+        smek.execute();
 
         // Algorithmus in das Feld eintragen
         field.paintAlgorithmInToFieldWithDepth(smek);
@@ -105,7 +105,7 @@ public class Main {
 
         // Algorithmus durchlaufen lassen
         AStar aStar = new AStar(field, 1520, 22, new DistanceFromTarget(field.getField()[22], field.getColumns()));
-        aStar.calculate();
+        aStar.execute();
 
 
         // Algorithmus in das Feld eintragen
@@ -139,7 +139,7 @@ public class Main {
 
         // Algorithmus durchlaufen lassen
         AStar aStar2 = new AStar(field, 1520, 22, new DiagonalDistance(field.getField()[22], field.getColumns()));
-        aStar2.calculate();
+        aStar2.execute();
 
 
         // Algorithmus in das Feld eintragen
@@ -173,7 +173,7 @@ public class Main {
 
         // Algorithmus durchlaufen lassen
         AStar aStar4 = new AStar(field, 1520, 22, new EuclideanDistance(field.getField()[22], field.getColumns()));
-        aStar4.calculate();
+        aStar4.execute();
 
 
         // Algorithmus in das Feld eintragen
@@ -207,7 +207,7 @@ public class Main {
 
         // Algorithmus durchlaufen lassen
         AStar aStar5 = new AStar(field, 1520, 22, new ManhattenDistance(field.getField()[22], field.getColumns()));
-        aStar5.calculate();
+        aStar5.execute();
 
 
         // Algorithmus in das Feld eintragen

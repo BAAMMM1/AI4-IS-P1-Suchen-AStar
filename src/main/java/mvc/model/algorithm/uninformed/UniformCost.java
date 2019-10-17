@@ -14,7 +14,7 @@ public class UniformCost extends UninformedAlgorithm {
         super(field, source, target);
     }
 
-    public void calculate(){
+    public void execute(){
 
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getgCost));
 
