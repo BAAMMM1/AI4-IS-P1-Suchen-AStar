@@ -1,7 +1,5 @@
 package mvc.model.field;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Node {
 
     private int zustand;
@@ -24,7 +22,7 @@ public class Node {
     private int fcost;
 
     public Node(int zustand) {
-        this.type = NodeType.FREE_UNDISCOVERED;
+        this.type = NodeType.UNDISCOVERED;
         this.zustand = zustand;
         //this.type = type;
         this.depth = 0;
@@ -97,10 +95,10 @@ public class Node {
 
     public String draw(){
 
-        if(this.type == NodeType.FREE_UNDISCOVERED){
+        if(this.type == NodeType.UNDISCOVERED){
             return "\033[0;37m X" + "\033[0;30m";
 
-        } else if(this.type == NodeType.START){
+        } else if(this.type == NodeType.SOURCE){
             return "\033[41m " + this.draw + "\033[0;30m";
 
         } else if(this.type == NodeType.TARGET){
@@ -109,7 +107,7 @@ public class Node {
         } else if(this.type == NodeType.BLOCKED){
             return "\033[40m X" + "\033[0;30m";
 
-        } else if(this.type == NodeType.DISCOVERED_CLOSELIST){
+        } else if(this.type == NodeType.CLOSELIST){
             return "\033[46m " + this.draw + "\033[0;30m";
 
         } else if(this.type == NodeType.OPENLIST){

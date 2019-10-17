@@ -2,6 +2,7 @@ package mvc.model.algorithm;
 
 import mvc.model.field.Node;
 import mvc.model.field.Field;
+import mvc.model.field.NodeSnapShot;
 
 import java.util.*;
 
@@ -15,6 +16,7 @@ public abstract class SearchAlgorithm {
     protected List<Node> openList;
     protected List<Node> closeList;
     protected List<Node> path;
+    protected List<NodeSnapShot> snapShots;
 
     private long startTime;
     private long endTime;
@@ -26,6 +28,7 @@ public abstract class SearchAlgorithm {
         this.openList = new ArrayList<Node>();
         this.closeList = new ArrayList<Node>();
         this.path = new ArrayList<Node>();
+        this.snapShots = new ArrayList<>();
     }
 
     public void calculate(){
@@ -97,4 +100,7 @@ public abstract class SearchAlgorithm {
         return endTime - startTime;
     }
 
+    public List<NodeSnapShot> getSnapShots() {
+        return snapShots;
+    }
 }

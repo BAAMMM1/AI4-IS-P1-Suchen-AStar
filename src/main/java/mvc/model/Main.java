@@ -42,6 +42,7 @@ public class Main {
         // Algorithmus durchlaufen lassen
         BreadthFirst bfs = new BreadthFirst(field, 1520, 18);
         bfs.calculate();
+        System.out.println(bfs.getSnapShots());
         System.out.println("BFS");
         System.out.println("Storage: " + bfs.getStorageComplexity());
         System.out.println("Time: " + bfs.getTime());

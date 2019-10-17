@@ -1,7 +1,7 @@
 package mvc.model.algorithm.uninformed;
 
-import mvc.model.algorithm.SearchAlgorithm;
 import mvc.model.field.Node;
+import mvc.model.field.NodeSnapShot;
 import mvc.model.field.NodeType;
 import mvc.model.field.Field;
 
@@ -16,6 +16,7 @@ public class BreadthFirst extends UninformedAlgorithm {
     }
 
     public void execute(){
+        snapShots.add(new NodeSnapShot(source, NodeType.SOURCE));
 
         if(this.getSource().equals(target)){
 
@@ -27,6 +28,8 @@ public class BreadthFirst extends UninformedAlgorithm {
             LinkedList<Node> queue = new LinkedList<>();
 
             queue.add(source);
+            snapShots.add(new NodeSnapShot(source, NodeType.OPENLIST));
+
             Node current;
 
             boolean run = true;
@@ -36,6 +39,8 @@ public class BreadthFirst extends UninformedAlgorithm {
                 queue.remove(0);
 
                 closeList.add(current);
+                snapShots.add(new NodeSnapShot(current, NodeType.CLOSELIST));
+
                 List<Node> childs = field.expandNode(current);
 
                 for(Node child: childs){
@@ -51,6 +56,8 @@ public class BreadthFirst extends UninformedAlgorithm {
                         }
 
                         queue.add(child);
+                        snapShots.add(new NodeSnapShot(child, NodeType.OPENLIST));
+
                         child.setType(NodeType.OPENLIST);
 
                     }
@@ -59,8 +66,10 @@ public class BreadthFirst extends UninformedAlgorithm {
 
             openList.addAll(queue);
 
+
         }
 
+        snapShots.add(new NodeSnapShot(target, NodeType.TARGET));
     }
 
 

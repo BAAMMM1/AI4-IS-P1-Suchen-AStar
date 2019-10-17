@@ -149,7 +149,7 @@ public class Field {
     public void paintAlgorithmInToField(SearchAlgorithm algorithm){
 
         for(Node node: algorithm.getCloseList()){
-            this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
+            this.field[node.getZustand()].setType(NodeType.CLOSELIST);
         }
 
         for(Node node: algorithm.getOpenList()){
@@ -160,7 +160,7 @@ public class Field {
             this.field[node.getZustand()].setType(NodeType.PATH);
         }
 
-        this.field[algorithm.getSource().getZustand()].setType(NodeType.START);
+        this.field[algorithm.getSource().getZustand()].setType(NodeType.SOURCE);
         this.field[algorithm.getTarget().getZustand()].setType(NodeType.TARGET);
 
     }
@@ -168,7 +168,7 @@ public class Field {
     public void paintAlgorithmInToFieldWithDepth(SearchAlgorithm algorithm){
 
         for(Node node: algorithm.getCloseList()){
-            this.field[node.getZustand()].setType(NodeType.DISCOVERED_CLOSELIST);
+            this.field[node.getZustand()].setType(NodeType.CLOSELIST);
             this.field[node.getZustand()].setDraw("" + node.getDepth());
         }
 
@@ -182,7 +182,7 @@ public class Field {
             this.field[node.getZustand()].setDraw("" + node.getDepth());
         }
 
-        this.field[algorithm.getSource().getZustand()].setType(NodeType.START);
+        this.field[algorithm.getSource().getZustand()].setType(NodeType.SOURCE);
         this.field[algorithm.getSource().getZustand()].setDraw("" + this.field[algorithm.getSource().getZustand()].getDepth());
 
         this.field[algorithm.getTarget().getZustand()].setType(NodeType.TARGET);
@@ -205,7 +205,7 @@ public class Field {
     public void clearFieldFromAlgorithm(){
         for(int i = 0; i < this.field.length; i++){
             if(this.field[i].getType() != NodeType.BLOCKED){
-                this.field[i].setType(NodeType.FREE_UNDISCOVERED);
+                this.field[i].setType(NodeType.UNDISCOVERED);
             }
         }
     }

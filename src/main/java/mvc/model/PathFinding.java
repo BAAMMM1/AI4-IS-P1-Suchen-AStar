@@ -6,6 +6,7 @@ import mvc.model.algorithm.informed.heurisitc.Heuristic;
 import mvc.model.algorithm.uninformed.UninformedAlgorithm;
 import mvc.model.field.Field;
 import mvc.model.field.Node;
+import mvc.model.field.NodeSnapShot;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
@@ -156,6 +157,10 @@ public class PathFinding {
     public List<Integer> getPath() {
         if(searchAlgorithm == null) return new ArrayList<>();
         return searchAlgorithm.getPath().stream().map(Node::getZustand).collect(Collectors.toList());
+    }
+
+    public List<NodeSnapShot> getSnapShots(){
+        return searchAlgorithm.getSnapShots();
     }
 
 
