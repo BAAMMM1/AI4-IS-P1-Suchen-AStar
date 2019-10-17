@@ -22,6 +22,8 @@ public abstract class SearchAlgorithm {
     private long startTime;
     private long endTime;
 
+    // TODO Methoden add open, close ...., remove open, close, path für die anderen Algorithmen
+
     public SearchAlgorithm(Field field, int source, int target) {
         this.field = field;
         this.source = field.getField()[source];
@@ -32,7 +34,7 @@ public abstract class SearchAlgorithm {
         this.snapShots = new ArrayList<>();
     }
 
-    public void calculate(){
+    public void calculate() {
         this.openList = new ArrayList<Node>();
         this.closeList = new ArrayList<Node>();
         this.path = new ArrayList<Node>();
@@ -49,7 +51,7 @@ public abstract class SearchAlgorithm {
 
     protected abstract void execute();
 
-    protected List<Node> tracePath(Node node){
+    protected List<Node> tracePath(Node node) {
 
 //        node.setDepth(node.getParent().getDepth() + 1);
 
@@ -58,7 +60,7 @@ public abstract class SearchAlgorithm {
 
         result.add(node);
 
-        while(currenNode.getParent() != null){
+        while (currenNode.getParent() != null) {
             //System.out.println(currenNode);
             result.add(currenNode.getParent());
             currenNode = currenNode.getParent();
@@ -72,31 +74,31 @@ public abstract class SearchAlgorithm {
     }
 
 
-    protected void addOpenList(Collection<Node> collection, Node node){
+    protected void addOpenList(Collection<Node> collection, Node node) {
         snapShots.add(new NodeSnapShot(node, NodeType.OPENLIST));
 
         collection.add(node);
         openList.add(node);
     }
 
-    protected void removeOpenList(Collection<Node> collection, Node node){
+    protected void removeOpenList(Collection<Node> collection, Node node) {
         collection.remove(node);
         openList.remove(node);
     }
 
-    protected void addCloseList(Collection<Node> collection, Node node){
+    protected void addCloseList(Collection<Node> collection, Node node) {
         snapShots.add(new NodeSnapShot(node, NodeType.CLOSELIST));
 
         collection.add(node);
         closeList.add(node);
     }
 
-    protected void removeCloseList(Collection<Node> collection, Node node){
+    protected void removeCloseList(Collection<Node> collection, Node node) {
         collection.remove(node);
         closeList.remove(node);
     }
 
-    protected void addPath(Node node){
+    protected void addPath(Node node) {
         path.add(node);
         snapShots.add(new NodeSnapShot(node, NodeType.PATH));
     }
@@ -125,19 +127,19 @@ public abstract class SearchAlgorithm {
         return path;
     }
 
-    public int getStorageComplexity(){
+    public int getStorageComplexity() {
         return openList.size() + closeList.size();
     }
 
-    protected void startTime(){
+    protected void startTime() {
         startTime = System.currentTimeMillis();
     }
 
-    protected void endTime(){
+    protected void endTime() {
         endTime = System.currentTimeMillis();
     }
 
-    public long getTime(){
+    public long getTime() {
         return endTime - startTime;
     }
 
