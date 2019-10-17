@@ -43,6 +43,7 @@ public class Main {
         BreadthFirst bfs = new BreadthFirst(field, 1520, 18);
         bfs.calculate();
         System.out.println(bfs.getSnapShots());
+        System.out.println(bfs.getOpenList());
         System.out.println("BFS");
         System.out.println("Storage: " + bfs.getStorageComplexity());
         System.out.println("Time: " + bfs.getTime());
@@ -54,6 +55,7 @@ public class Main {
         System.out.println();
         field.drawField();
 
+        /*
 
         // Feld leeren vom Algortihmus
         System.out.println();
@@ -231,6 +233,7 @@ public class Main {
         // Feld ausgeben
         System.out.println();
         field.drawField();
+        */
 
 
     }

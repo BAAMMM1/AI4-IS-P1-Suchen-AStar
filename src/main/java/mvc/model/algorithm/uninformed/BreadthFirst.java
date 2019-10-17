@@ -16,19 +16,20 @@ public class BreadthFirst extends UninformedAlgorithm {
     }
 
     public void execute(){
-        snapShots.add(new NodeSnapShot(source, NodeType.SOURCE));
+        System.out.println("Source: " + source);
 
         if(this.getSource().equals(target)){
 
             System.out.println("Ziel gefunden: Source ist Target");
-            path.add(source);
+            addPath(source);
 
         } else {
 
             LinkedList<Node> queue = new LinkedList<>();
 
-            queue.add(source);
-            snapShots.add(new NodeSnapShot(source, NodeType.OPENLIST));
+            addOpenList(queue, source);
+            //queue.add(source);
+            //snapShots.add(new NodeSnapShot(source, NodeType.OPENLIST));;
 
             Node current;
 
@@ -36,10 +37,13 @@ public class BreadthFirst extends UninformedAlgorithm {
             while(!queue.isEmpty() && run){
 
                 current = queue.get(0);
-                queue.remove(0);
 
-                closeList.add(current);
-                snapShots.add(new NodeSnapShot(current, NodeType.CLOSELIST));
+                removeOpenList(queue, current);
+                //queue.remove(0);
+
+                addCloseList(queue, current);
+                //closeList.add(current);
+                //snapShots.add(new NodeSnapShot(current, NodeType.CLOSELIST));
 
                 List<Node> childs = field.expandNode(current);
 
@@ -55,8 +59,9 @@ public class BreadthFirst extends UninformedAlgorithm {
                             break;
                         }
 
-                        queue.add(child);
-                        snapShots.add(new NodeSnapShot(child, NodeType.OPENLIST));
+                        addOpenList(queue, child);
+                        //queue.add(child);
+                        //snapShots.add(new NodeSnapShot(child, NodeType.OPENLIST));
 
                         child.setType(NodeType.OPENLIST);
 
@@ -64,12 +69,12 @@ public class BreadthFirst extends UninformedAlgorithm {
                 }
             }
 
-            openList.addAll(queue);
+            //openList.addAll(queue);
 
 
         }
 
-        snapShots.add(new NodeSnapShot(target, NodeType.TARGET));
+
     }
 
 

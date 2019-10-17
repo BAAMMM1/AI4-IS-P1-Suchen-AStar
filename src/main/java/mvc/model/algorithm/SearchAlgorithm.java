@@ -3,6 +3,7 @@ package mvc.model.algorithm;
 import mvc.model.field.Node;
 import mvc.model.field.Field;
 import mvc.model.field.NodeSnapShot;
+import mvc.model.field.NodeType;
 
 import java.util.*;
 
@@ -32,9 +33,18 @@ public abstract class SearchAlgorithm {
     }
 
     public void calculate(){
+        this.openList = new ArrayList<Node>();
+        this.closeList = new ArrayList<Node>();
+        this.path = new ArrayList<Node>();
+        this.snapShots = new ArrayList<>();
+
+        snapShots.add(new NodeSnapShot(source, NodeType.SOURCE));
+        snapShots.add(new NodeSnapShot(target, NodeType.TARGET));
+
         startTime();
         execute();
         endTime();
+
     }
 
     protected abstract void execute();
@@ -52,12 +62,43 @@ public abstract class SearchAlgorithm {
             //System.out.println(currenNode);
             result.add(currenNode.getParent());
             currenNode = currenNode.getParent();
+            snapShots.add(new NodeSnapShot(currenNode, NodeType.PATH));
         }
 
         Collections.reverse(result);
 
         return result;
 
+    }
+
+
+    protected void addOpenList(Collection<Node> collection, Node node){
+        snapShots.add(new NodeSnapShot(node, NodeType.OPENLIST));
+
+        collection.add(node);
+        openList.add(node);
+    }
+
+    protected void removeOpenList(Collection<Node> collection, Node node){
+        collection.remove(node);
+        openList.remove(node);
+    }
+
+    protected void addCloseList(Collection<Node> collection, Node node){
+        snapShots.add(new NodeSnapShot(node, NodeType.CLOSELIST));
+
+        collection.add(node);
+        closeList.add(node);
+    }
+
+    protected void removeCloseList(Collection<Node> collection, Node node){
+        collection.remove(node);
+        closeList.remove(node);
+    }
+
+    protected void addPath(Node node){
+        path.add(node);
+        snapShots.add(new NodeSnapShot(node, NodeType.PATH));
     }
 
     public Field getField() {
