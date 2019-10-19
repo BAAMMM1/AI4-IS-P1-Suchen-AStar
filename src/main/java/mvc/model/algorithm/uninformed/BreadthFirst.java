@@ -20,13 +20,14 @@ public class BreadthFirst extends UninformedAlgorithm {
         if(this.getSource().equals(target)){
 
             System.out.println("Ziel gefunden: Source ist Target");
-            addPath(source);
+            pathAdd(source);
 
         } else {
 
             LinkedList<Node> queue = new LinkedList<>();
 
-            addOpenList(queue, source);
+            queue.add(source);
+            snapShotsAdd(source);
 
             Node current;
 
@@ -34,9 +35,9 @@ public class BreadthFirst extends UninformedAlgorithm {
             while(!queue.isEmpty() && run){
 
                 current = queue.get(0);
+                queue.remove(current);
 
-                removeOpenList(queue, current);
-                addCloseList(queue, current);
+                closeListAdd(current);
 
                 List<Node> childs = field.expandNode(current);
 
@@ -47,18 +48,20 @@ public class BreadthFirst extends UninformedAlgorithm {
 
                         if(child.equals(target)) {
                             System.out.println("Ziel gefunden: " + child.toString() + " bei Tiefe: " + child.getDepth());
-                            path = this.tracePath(child);
+                            tracePath(child);
                             run = false;
                             break;
                         }
 
-                        addOpenList(queue, child);
-
                         child.setType(NodeType.OPENLIST);
+                        queue.add(child);
+                        snapShotsAdd(child);
 
                     }
                 }
             }
+
+            openList.addAll(queue); // Hier addAll, weil wir auf einer lokalen Queue arbeiten und anschlißened alle die noch in der Queue sind abspeichern wollen
         }
     }
 

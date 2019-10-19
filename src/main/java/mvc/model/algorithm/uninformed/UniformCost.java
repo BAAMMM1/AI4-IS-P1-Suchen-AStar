@@ -19,6 +19,7 @@ public class UniformCost extends UninformedAlgorithm {
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getgCost));
 
         priorityQueue.add(source);
+        snapShotsAdd(source);
         Node current;
 
         boolean run = true;
@@ -27,13 +28,13 @@ public class UniformCost extends UninformedAlgorithm {
 
             if(current.equals(target)) {
                 System.out.println("Ziel gefunden: " + current.toString());
-                path = tracePath(current);
+                tracePath(current);
                 run = false;
                 System.out.println("target gCoast: " + current.getgCost());
                 break;
             }
 
-            closeList.add(current);
+            closeListAdd(current);
             List<Node> childs = field.expandNode(current);
 
             for(Node child: childs){
@@ -45,12 +46,15 @@ public class UniformCost extends UninformedAlgorithm {
                     child.setParent(current);
                     child.setgCost(pathCostToChildOverCurrent);
 
-                    priorityQueue.add(child);
                     child.setType(NodeType.OPENLIST);
+                    priorityQueue.add(child);
+                    snapShotsAdd(child);
 
                 } else if(priorityQueue.contains(child) && child.getgCost() > pathCostToChildOverCurrent){ // Gibt es bereits einen Weg zum Child, aber ist der Weg über diesen Knoten günstiger zum Kind als vorher?
                     child.setParent(current);
                     child.setgCost(pathCostToChildOverCurrent);
+                    priorityQueue.add(child);
+
                 }
             }
         }

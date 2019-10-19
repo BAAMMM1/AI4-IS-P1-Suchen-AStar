@@ -53,7 +53,7 @@ public abstract class SearchAlgorithm {
 
     protected abstract void execute();
 
-    protected List<Node> tracePath(Node node) {
+    protected void tracePath(Node node) {
 
 //        node.setDepth(node.getParent().getDepth() + 1);
 
@@ -71,36 +71,24 @@ public abstract class SearchAlgorithm {
 
         Collections.reverse(result);
 
-        return result;
+        path = result;
 
     }
 
 
-    protected void addOpenList(Collection<Node> collection, Node node) {
-        snapShots.add(new NodeSnapShot(node, NodeType.OPENLIST));
 
-        collection.add(node);
-        openList.add(node);
+    protected void snapShotsAdd(Node node){
+        snapShots.add(new NodeSnapShot(node, node.getType()));
     }
 
-    protected void removeOpenList(Collection<Node> collection, Node node) {
-        collection.remove(node);
-        openList.remove(node);
-    }
 
-    protected void addCloseList(Collection<Node> collection, Node node) {
+    protected void closeListAdd(Node node) {
         snapShots.add(new NodeSnapShot(node, NodeType.CLOSELIST));
-
-        collection.add(node);
         closeList.add(node);
     }
 
-    protected void removeCloseList(Collection<Node> collection, Node node) {
-        collection.remove(node);
-        closeList.remove(node);
-    }
 
-    protected void addPath(Node node) {
+    protected void pathAdd(Node node) {
         path.add(node);
         snapShots.add(new NodeSnapShot(node, NodeType.PATH));
     }
