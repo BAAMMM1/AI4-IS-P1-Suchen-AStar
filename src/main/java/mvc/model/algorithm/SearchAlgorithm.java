@@ -24,6 +24,7 @@ public abstract class SearchAlgorithm {
 
     // TODO Methoden add open, close ...., remove open, close, path für die anderen Algorithmen
     // TODO openList zur Collection, dann hat jeder Algorithmus eine openList, in die er seine Collection-Art setzen kann. Dann bei addPath() usw. keine übergabe mehr
+    // TODO Pathfinding, alles für die Perfomance übergeben. (Anzahl an Knoten, Anzahl an geblockten Knoten, Anzahl an freien Knoten)
 
     public SearchAlgorithm(Field field, int source, int target) {
         this.field = field;
