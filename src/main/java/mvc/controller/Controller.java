@@ -1,6 +1,9 @@
 package mvc.controller;
 
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -15,6 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import mvc.model.PathFinding;
 import mvc.model.field.NodeType;
 import mvc.model.io.CheckPointDTO;
@@ -36,6 +40,7 @@ public class Controller {
     IO io;
     URI uri;
     List<NodeSnapShot> historyline;
+    List<NodeSnapShot> historylineforThread;
     List<Integer> openList;
     List<Integer> closedList;
     List<Integer> pathList;
@@ -179,9 +184,12 @@ public class Controller {
         this.pathList = pathFinding.getPath();
 
         this.historyline = pathFinding.getSnapShots();
+        this.historylineforThread = pathFinding.getSnapShots();
 //        historyline.addAll(pathFinding.getSnapShots()); -> funktioniert aber nur, wenn sie vorher initialisiert wurde -> new Arraylist, da an null nicht geaddet werden kann
 
-        drawHistoryline(historyline);
+        //drawHistorylineThread(historyline);
+        drawHistorylineTimeLine(historyline);
+
 //        drawOpenList(openList);
 //        drawClosedList(closedList);
 //        drawPath(pathList);
@@ -198,6 +206,7 @@ public class Controller {
     }
 
     // TODO Darstellung nicht erst nachdem fertiggezeichnet wurde sondern sofortige Darstellung -> er wartet mit Zeit aber erst nach Abschluss ist sichtbar
+    // -> https://stackoverflow.com/questions/26454149/make-javafx-wait-and-continue-with-code
     private void drawHistoryline(List<NodeSnapShot> historyline) {
         if (historyline != null) {
             for (int i = 0; i < historyline.size(); i++) {
@@ -210,6 +219,7 @@ public class Controller {
                 if (historyline.get(i).getSnapShotTyp().equals(NodeType.PATH)) {
                     drawPath(historyline.get(i).getNode().getZustand());
                 }
+
                 try {
                     Thread.sleep(new Long(10));
                 } catch (InterruptedException e) {
@@ -218,6 +228,92 @@ public class Controller {
             }
         }
     }
+
+    private void drawHistorylineRecursive(List<NodeSnapShot> historyline) {
+        if (historyline != null) {
+            if (historyline.size() != 0){
+                if (historyline.get(0).getSnapShotTyp().equals(NodeType.OPENLIST)) {
+                    drawOpenList(historyline.get(0).getNode().getZustand());
+                }
+                if (historyline.get(0).getSnapShotTyp().equals(NodeType.CLOSELIST)) {
+                    drawClosedList(historyline.get(0).getNode().getZustand());
+                }
+                if (historyline.get(0).getSnapShotTyp().equals(NodeType.PATH)) {
+                    drawPath(historyline.get(0).getNode().getZustand());
+                }
+                historyline.remove(0);
+
+                // Durch Platform.runLater wird wohl die gui sofort aktualisiert, da parallel ein Runner gestartet wird. Problem hier ist das unterbringen einer Pause für den Runner
+                // Platform.runLater wird z.b. gerne benutzt um z.b. den Status anzeigen zu lassen (kopieren 0-100%) und wird nur bei einfachen operationen durchgeführt
+                // https://stackoverflow.com/questions/13784333/platform-runlater-and-task-in-javafx
+                // interessante Info zu Thread ->  http://fxexperience.com/2011/07/worker-threading-in-javafx-2-0/ -> arbeiten mit Worker
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawHistorylineRecursive(historyline);
+                    }
+                });
+
+            }
+        }
+    }
+
+    private void drawHistorylineTimeLine(List<NodeSnapShot> historyline) {
+        if (historyline != null) {
+            ArrayList<KeyFrame> keyFrameArrayList = new ArrayList<>();
+            for (int a = 0; a < historyline.size();a++){
+                keyFrameArrayList.add(new KeyFrame(Duration.millis(a*50), e -> forkeyframeaction()));
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // TODO PathList needs to be added at hinstoryline else here
+            keyFrameArrayList.add(new KeyFrame(Duration.millis(historyline.size()*50), e -> drawPath(pathList)));
+
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().addAll(keyFrameArrayList);
+            Platform.runLater(timeline::play);
+        }
+    }
+
+    public void forkeyframeaction(){
+            if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.OPENLIST)) {
+                drawOpenList(historylineforThread.get(0).getNode().getZustand());
+            }
+            if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.CLOSELIST)) {
+                drawClosedList(historylineforThread.get(0).getNode().getZustand());
+            }
+            if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.PATH)) {
+                drawPath(historylineforThread.get(0).getNode().getZustand());
+            }
+            historylineforThread.remove(0);
+
+    }
+
+    // https://stackoverflow.com/questions/39235545/add-delay-after-platform-runlater-runnable   v^ both, for Thread and Timeline
+
+    private void drawHistorylineThread(List<NodeSnapShot> historyline) {
+        if (historyline != null) {
+            Thread thread = new Thread(() -> {
+                try {
+                    for (int i = 0; i < historyline.size(); i++) {
+                        if (historyline.get(i).getSnapShotTyp().equals(NodeType.OPENLIST)) {
+                            drawOpenList(historyline.get(i).getNode().getZustand());
+                        }
+                        if (historyline.get(i).getSnapShotTyp().equals(NodeType.CLOSELIST)) {
+                            drawClosedList(historyline.get(i).getNode().getZustand());
+                        }
+                        if (historyline.get(i).getSnapShotTyp().equals(NodeType.PATH)) {
+                            drawPath(historyline.get(i).getNode().getZustand());
+                        }
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException exc) {
+                    throw new Error("Unexpexted Draw interruption error");
+                }
+            });
+            thread.start();
+        }
+    }
+
 
     @FXML
     private void visibility_heuristic() {
