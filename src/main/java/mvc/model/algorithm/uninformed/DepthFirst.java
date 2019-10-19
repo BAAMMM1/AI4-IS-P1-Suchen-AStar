@@ -25,14 +25,16 @@ public class DepthFirst extends UninformedAlgorithm {
 
             Stack<Node> stack = new Stack<>();
 
-            stack.add(source);
+            stack.push(source);
+            snapShotsAdd(source);
+
             Node current;
 
             boolean run = true;
             while(!stack.isEmpty() && run){
                 current = stack.pop();
 
-                closeList.add(current);
+                closeListAdd(current);
                 List<Node> childs = field.expandNode(current);
 
 
@@ -42,12 +44,14 @@ public class DepthFirst extends UninformedAlgorithm {
 
                         if(child.equals(target)) {
                             System.out.println("Ziel gefunden: " + child.toString());
-                            path = this.tracePath(child);
+                            tracePath(child);
                             run = false;
                             break;
                         }
-                        stack.push(child);
+
                         child.setType(NodeType.OPENLIST);
+                        stack.push(child);
+                        snapShotsAdd(child);
 
                     }
                 }

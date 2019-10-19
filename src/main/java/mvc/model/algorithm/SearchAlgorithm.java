@@ -23,6 +23,8 @@ public abstract class SearchAlgorithm {
     private long endTime;
 
     // TODO Methoden add open, close ...., remove open, close, path für die anderen Algorithmen
+    // TODO openList zur Collection, dann hat jeder Algorithmus eine openList, in die er seine Collection-Art setzen kann. Dann bei addPath() usw. keine übergabe mehr
+    // TODO Pathfinding, alles für die Perfomance übergeben. (Anzahl an Knoten, Anzahl an geblockten Knoten, Anzahl an freien Knoten)
 
     public SearchAlgorithm(Field field, int source, int target) {
         this.field = field;
@@ -51,7 +53,7 @@ public abstract class SearchAlgorithm {
 
     protected abstract void execute();
 
-    protected List<Node> tracePath(Node node) {
+    protected void tracePath(Node node) {
 
 //        node.setDepth(node.getParent().getDepth() + 1);
 
@@ -69,36 +71,24 @@ public abstract class SearchAlgorithm {
 
         Collections.reverse(result);
 
-        return result;
+        path = result;
 
     }
 
 
-    protected void addOpenList(Collection<Node> collection, Node node) {
-        snapShots.add(new NodeSnapShot(node, NodeType.OPENLIST));
 
-        collection.add(node);
-        openList.add(node);
+    protected void snapShotsAdd(Node node){
+        snapShots.add(new NodeSnapShot(node, node.getType()));
     }
 
-    protected void removeOpenList(Collection<Node> collection, Node node) {
-        collection.remove(node);
-        openList.remove(node);
-    }
 
-    protected void addCloseList(Collection<Node> collection, Node node) {
+    protected void closeListAdd(Node node) {
         snapShots.add(new NodeSnapShot(node, NodeType.CLOSELIST));
-
-        collection.add(node);
         closeList.add(node);
     }
 
-    protected void removeCloseList(Collection<Node> collection, Node node) {
-        collection.remove(node);
-        closeList.remove(node);
-    }
 
-    protected void addPath(Node node) {
+    protected void pathAdd(Node node) {
         path.add(node);
         snapShots.add(new NodeSnapShot(node, NodeType.PATH));
     }
