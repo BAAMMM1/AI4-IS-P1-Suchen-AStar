@@ -1,10 +1,7 @@
 package mvc.model;
 
 import mvc.model.algorithm.SearchAlgorithm;
-import mvc.model.algorithm.uninformed.BreadthFirst;
 import mvc.model.algorithm.uninformed.IterativDeepeningDepthFirstRekursive;
-import mvc.model.algorithm.uninformed.IterativeDeepeningDepthFirst;
-import mvc.model.algorithm.uninformed.UninformedAlgorithm;
 import mvc.model.field.Field;
 
 public class Main {
