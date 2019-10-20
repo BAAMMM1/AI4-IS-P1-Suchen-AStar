@@ -184,6 +184,10 @@ public class PathFinding {
 
     }
 
+    public SearchAlgorithm getSearchAlgorithm() {
+        return searchAlgorithm;
+    }
+
     public long getMeasuredTime(){
         return searchAlgorithm.getTime();
     }

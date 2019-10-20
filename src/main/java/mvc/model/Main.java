@@ -4,6 +4,7 @@ import mvc.model.algorithm.SearchAlgorithm;
 import mvc.model.algorithm.uninformed.BreadthFirst;
 import mvc.model.algorithm.uninformed.IterativDeepeningDepthFirstRekursive;
 import mvc.model.algorithm.uninformed.IterativeDeepeningDepthFirst;
+import mvc.model.algorithm.uninformed.UninformedAlgorithm;
 import mvc.model.field.Field;
 
 public class Main {
@@ -45,6 +46,10 @@ public class Main {
         System.out.println("Time: " + searchAlgorithm.getTime());
         System.out.println(searchAlgorithm.getPath());
         System.out.println(searchAlgorithm.getSnapShots());
+        System.out.println(searchAlgorithm.getOpenList().size());
+        System.out.println(searchAlgorithm.getCloseList().size());
+
+
 
         // Algorithmus in das Feld eintragen
         field.paintAlgorithmInToFieldWithDepth(searchAlgorithm);
