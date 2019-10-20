@@ -13,6 +13,9 @@ public class IterativDeepeningDepthFirstRekursive extends UninformedAlgorithm {
     private static final int MAX_DEPTH = 200;
     private boolean solution = false;
 
+    private List<Node> openListTemp;
+    private List<Node> closeListTemp;
+
     public IterativDeepeningDepthFirstRekursive(Field field, int source, int target) {
         super(field, source, target);
     }
@@ -35,43 +38,22 @@ function DLS(node, depth)
     return null
      */
 
-/*    @Override
-    public void execute(){
-        
-        for(int i = 0; i < 9999; i++){
-            System.out.println("Depth: " + i);
-            if(dls(source, i)){
-                System.out.println("Lösung gefunden auf Tiefe: " + i);
-                break;
-            }
-        }
-
-    }
-
-    private boolean dls(Node current, int depth) {
-        if(depth == 0 && current.equals(target)) return true;
-
-        if(depth > 0){
-            List<Node> childs = field.expandNode(current);
-            for(Node child: childs){
-                boolean found = dls(child, depth-1);
-                if(found) return true;
-            }
-        }
-        return false;
-    }*/
 
     @Override
     public void execute() {
 
         for (int i = 0; i < MAX_DEPTH; i++) {
+
             System.out.println("Depthlimit: " + i);
-            openList = new ArrayList<>();
-            closeList = new ArrayList<>();
+            openListTemp = new ArrayList<>();
+            closeListTemp = new ArrayList<>();
+
             if (depthLimitedSearch(source, i)) {
                 System.out.println("Lösung gefunden auf Tiefe: " + i);
                 break;
             }
+            openList.addAll(openListTemp);
+            closeList.addAll(closeListTemp);
         }
 
 
@@ -85,7 +67,7 @@ function DLS(node, depth)
 
 
         current.setType(NodeType.CLOSELIST);
-        closeList.add(current);
+        closeListTemp.add(current);
         snapShotsAdd(current);
 
         boolean solution = false;
@@ -99,13 +81,13 @@ function DLS(node, depth)
 
             for (Node child : childs) {
 
-                if(!openList.contains(child) && !closeList.contains(child)) {
+                if(!openListTemp.contains(child) && !closeListTemp.contains(child)) {
 
                     if (current.getParent() == null || !current.getParent().equals(child) && !child.equals(source)) {
                         child.setType(NodeType.OPENLIST);
-                        openList.add(child);
+                        openListTemp.add(child);
                         child.setParent(current);
-                        snapShotsAdd(current);
+                        snapShotsAdd(child);
                     }
 
                     if (depthLimitedSearch(child, depthLimit - 1)) {
