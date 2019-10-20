@@ -22,10 +22,6 @@ public abstract class SearchAlgorithm {
     private long startTime;
     private long endTime;
 
-    // TODO Methoden add open, close ...., remove open, close, path für die anderen Algorithmen
-    // TODO openList zur Collection, dann hat jeder Algorithmus eine openList, in die er seine Collection-Art setzen kann. Dann bei addPath() usw. keine übergabe mehr
-    // TODO Pathfinding, alles für die Perfomance übergeben. (Anzahl an Knoten, Anzahl an geblockten Knoten, Anzahl an freien Knoten)
-
     public SearchAlgorithm(Field field, int source, int target) {
         this.field = field;
         this.source = field.getField()[source];
@@ -51,9 +47,14 @@ public abstract class SearchAlgorithm {
 
     }
 
+    public long getEndTime() {
+        return endTime;
+    }
+
     protected abstract void execute();
 
     protected void tracePath(Node node) {
+        System.out.println("tracee path");
 
 //        node.setDepth(node.getParent().getDepth() + 1);
 
@@ -63,6 +64,7 @@ public abstract class SearchAlgorithm {
         result.add(node);
 
         while (currenNode.getParent() != null) {
+            System.out.println("current: " + currenNode + " parent: " + currenNode.getParent());
             //System.out.println(currenNode);
             result.add(currenNode.getParent());
             currenNode = currenNode.getParent();
@@ -135,5 +137,9 @@ public abstract class SearchAlgorithm {
 
     public List<NodeSnapShot> getSnapShots() {
         return snapShots;
+    }
+
+    public void setCloseList(List<Node> closeList) {
+        this.closeList = closeList;
     }
 }

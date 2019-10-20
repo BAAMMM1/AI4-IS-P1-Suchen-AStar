@@ -183,4 +183,20 @@ public class PathFinding {
         System.out.println(pathFinding.getOpenList());
 
     }
+
+    public long getMeasuredTime(){
+        return searchAlgorithm.getTime();
+    }
+
+    public int getNodeSize(){
+        return searchAlgorithm.getField().getField().length;
+    }
+
+    public int getBlockedSize(){
+        return searchAlgorithm.getField().getBlockSet().size();
+    }
+
+    public int getFreeSize(){
+        return getNodeSize() - getBlockedSize();
+    }
 }

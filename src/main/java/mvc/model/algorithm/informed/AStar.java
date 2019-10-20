@@ -1,7 +1,6 @@
 package mvc.model.algorithm.informed;
 
 import mvc.model.algorithm.informed.heurisitc.Heuristic;
-import mvc.model.algorithm.informed.heurisitc.ManhattenDistance;
 import mvc.model.field.Node;
 import mvc.model.field.NodeType;
 import mvc.model.field.Field;
@@ -19,7 +18,7 @@ public class AStar extends InformedAlgorithm {
 
     public void execute(){
 
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getFcost));
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Node::getfcost));
 
         priorityQueue.add(source);
         snapShotsAdd(source);
@@ -51,6 +50,7 @@ public class AStar extends InformedAlgorithm {
                     child.setParent(current);
 
                     child.setgCost(pathCostToChildOverCurrent);
+                    child.sethCost(heuristic.hCost(child));
                     child.setFcost(child.getgCost()+ heuristic.hCost(child));
 
                     child.setType(NodeType.OPENLIST);
@@ -62,6 +62,7 @@ public class AStar extends InformedAlgorithm {
 
                     child.setParent(current);
                     child.setgCost(pathCostToChildOverCurrent);
+                    child.sethCost(heuristic.hCost(child));
                     child.setFcost(child.getgCost()+ heuristic.hCost(child));
                     snapShotsAdd(child);
 
