@@ -38,7 +38,7 @@ public class UniformCost extends UninformedAlgorithm {
 
             for(Node child: childs){
 
-                int pathCostToChildOverCurrent= current.getgCost() + child.getStepCoast();
+                int pathCostToChildOverCurrent= current.getgCost() + child.getStepCost();
 
                 if(!priorityQueue.contains(child) && !closeList.contains(child)){
 
