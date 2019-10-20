@@ -18,6 +18,8 @@ public class Node {
     // Die addieren StepCoast zu dem Knoten, d.h. die Pfadkosten zum Knoten
     private int gCost;
 
+    private int hCost;
+
     // f(n) = g(n) + (hn)
     private int fcost;
 
@@ -71,6 +73,14 @@ public class Node {
 
     public int getDepth() {
         return depth;
+    }
+
+    public int gethCost() {
+        return hCost;
+    }
+
+    public void sethCost(int hCost) {
+        this.hCost = hCost;
     }
 
     public void setgCost(int gCost) {

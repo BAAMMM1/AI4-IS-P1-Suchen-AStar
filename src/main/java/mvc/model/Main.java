@@ -1,25 +1,22 @@
 package mvc.model;
 
-import mvc.model.algorithm.informed.*;
-import mvc.model.algorithm.informed.heurisitc.DiagonalDistance;
-import mvc.model.algorithm.informed.heurisitc.DistanceFromTarget;
-import mvc.model.algorithm.informed.heurisitc.EuclideanDistance;
-import mvc.model.algorithm.informed.heurisitc.ManhattenDistance;
+import mvc.model.algorithm.SearchAlgorithm;
 import mvc.model.algorithm.uninformed.BreadthFirst;
-import mvc.model.algorithm.uninformed.UniformCost;
-import mvc.model.algorithm.uninformed.DepthFirst;
+import mvc.model.algorithm.uninformed.IterativDeepeningDepthFirstRekursive;
+import mvc.model.algorithm.uninformed.IterativeDeepeningDepthFirst;
 import mvc.model.field.Field;
 
 public class Main {
+
 
     public static void main(String[] args) {
 
 
         // 1. Feld setzten
-        Field field = new Field(50);
+        Field field = new Field(5);
 
 
-        // Felder blocken
+/*        // Felder blocken
         field.blockNode(5);
         field.blockNode(6);
         field.blockNode(89);
@@ -34,22 +31,23 @@ public class Main {
         field.blockNode(71);
         field.blockNode(70);
         field.blockNode(61);
-        field.blockNode(51);
+        field.blockNode(51);*/
 
         // Feld ausgeben
         //problem.drawField();
-        System.out.println(1);
         // Algorithmus durchlaufen lassen
-        BreadthFirst bfs = new BreadthFirst(field, 1520, 18);
-        bfs.calculate();
-        System.out.println(bfs.getSnapShots());
-        System.out.println(bfs.getOpenList());
+        SearchAlgorithm searchAlgorithm = new IterativDeepeningDepthFirstRekursive(field, 5, 24);
+        searchAlgorithm.calculate();
+        //System.out.println(searchAlgorithm.getSnapShots());
+        //System.out.println(searchAlgorithm.getOpenList());
         System.out.println("BFS");
-        System.out.println("Storage: " + bfs.getStorageComplexity());
-        System.out.println("Time: " + bfs.getTime());
+        System.out.println("Storage: " + searchAlgorithm.getStorageComplexity());
+        System.out.println("Time: " + searchAlgorithm.getTime());
+        System.out.println(searchAlgorithm.getPath());
+        System.out.println(searchAlgorithm.getSnapShots());
 
         // Algorithmus in das Feld eintragen
-        field.paintAlgorithmInToFieldWithDepth(bfs);
+        field.paintAlgorithmInToFieldWithDepth(searchAlgorithm);
 
         // Feld ausgeben
         System.out.println();
