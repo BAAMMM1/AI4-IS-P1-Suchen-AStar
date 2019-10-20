@@ -173,25 +173,25 @@ public class Controller {
 
     public void start() throws Exception {
         // hier müssen übergabe der Listen an model/Algorithm entstehen
+        if (choiceBox_Algorithm.getValue()!= null) {
+            if (choiceBox_Heuristik.getValue() == null && pathFinding.getUninformedAlgorithm().contains(choiceBox_Algorithm.getValue())) {
+                pathFinding.uninformedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), source, target);
+            } else if (choiceBox_Heuristik.getValue() != null) {
+                pathFinding.informedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), choiceBox_Heuristik.getValue().toString(), source, target);
+            } else {
+                throw new Exception();
+            }
 
-        if (choiceBox_Heuristik.getValue() == null && pathFinding.getUninformedAlgorithm().contains(choiceBox_Algorithm.getValue())) {
-            pathFinding.uninformedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), source, target);
-        } else if (choiceBox_Heuristik.getValue() != null) {
-            pathFinding.informedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), choiceBox_Heuristik.getValue().toString(), source, target);
-        } else {
-            throw new Exception();
-        }
+            this.openList = pathFinding.getOpenList();
+            this.closedList = pathFinding.getCloseList();
+            this.pathList = pathFinding.getPath();
 
-        this.openList = pathFinding.getOpenList();
-        this.closedList = pathFinding.getCloseList();
-        this.pathList = pathFinding.getPath();
-
-        this.historyline = pathFinding.getSnapShots();
-        this.historylineforThread = pathFinding.getSnapShots();
+            this.historyline = pathFinding.getSnapShots();
+            this.historylineforThread = pathFinding.getSnapShots();
 //        historyline.addAll(pathFinding.getSnapShots()); -> funktioniert aber nur, wenn sie vorher initialisiert wurde -> new Arraylist, da an null nicht geaddet werden kann
 
-        //drawHistorylineThread(historyline);
-        drawHistorylineTimeLine(historyline);
+            //drawHistorylineThread(historyline);
+            drawHistorylineTimeLine(historyline);
 
 //        drawOpenList(openList);
 //        drawClosedList(closedList);
@@ -205,7 +205,7 @@ public class Controller {
 //        this.closedList = solution[1];
 //        this.pathList = solution[2];
 
-
+        }
     }
 
     // TODO Darstellung nicht erst nachdem fertiggezeichnet wurde sondern sofortige Darstellung -> er wartet mit Zeit aber erst nach Abschluss ist sichtbar
