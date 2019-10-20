@@ -7,8 +7,10 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -16,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -170,25 +173,25 @@ public class Controller {
 
     public void start() throws Exception {
         // hier müssen übergabe der Listen an model/Algorithm entstehen
+        if (choiceBox_Algorithm.getValue()!= null) {
+            if (choiceBox_Heuristik.getValue() == null && pathFinding.getUninformedAlgorithm().contains(choiceBox_Algorithm.getValue())) {
+                pathFinding.uninformedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), source, target);
+            } else if (choiceBox_Heuristik.getValue() != null) {
+                pathFinding.informedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), choiceBox_Heuristik.getValue().toString(), source, target);
+            } else {
+                throw new Exception();
+            }
 
-        if (choiceBox_Heuristik.getValue() == null && pathFinding.getUninformedAlgorithm().contains(choiceBox_Algorithm.getValue())) {
-            pathFinding.uninformedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), source, target);
-        } else if (choiceBox_Heuristik.getValue() != null) {
-            pathFinding.informedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), choiceBox_Heuristik.getValue().toString(), source, target);
-        } else {
-            throw new Exception();
-        }
+            this.openList = pathFinding.getOpenList();
+            this.closedList = pathFinding.getCloseList();
+            this.pathList = pathFinding.getPath();
 
-        this.openList = pathFinding.getOpenList();
-        this.closedList = pathFinding.getCloseList();
-        this.pathList = pathFinding.getPath();
-
-        this.historyline = pathFinding.getSnapShots();
-        this.historylineforThread = pathFinding.getSnapShots();
+            this.historyline = pathFinding.getSnapShots();
+            this.historylineforThread = pathFinding.getSnapShots();
 //        historyline.addAll(pathFinding.getSnapShots()); -> funktioniert aber nur, wenn sie vorher initialisiert wurde -> new Arraylist, da an null nicht geaddet werden kann
 
-        //drawHistorylineThread(historyline);
-        drawHistorylineTimeLine(historyline);
+            //drawHistorylineThread(historyline);
+            drawHistorylineTimeLine(historyline);
 
 //        drawOpenList(openList);
 //        drawClosedList(closedList);
@@ -202,7 +205,7 @@ public class Controller {
 //        this.closedList = solution[1];
 //        this.pathList = solution[2];
 
-
+        }
     }
 
     // TODO Darstellung nicht erst nachdem fertiggezeichnet wurde sondern sofortige Darstellung -> er wartet mit Zeit aber erst nach Abschluss ist sichtbar
@@ -622,6 +625,8 @@ public class Controller {
         //cyan_rechtangle.setFill(Paint.valueOf("lightblue"));
         cyan_rechtangle.setFill(Color.web("#AFEEEE"));
         gridpane.add(cyan_rechtangle, column, row);
+        addTextfields(column, row, "OL", "OR");
+
     }
 
     private void drawPath(int column, int row) {
@@ -630,6 +635,13 @@ public class Controller {
         circle.setFill(Color.web("#FFFF00"));
         gridpane.setHalignment(circle, HPos.CENTER);
         gridpane.add(circle, column, row);
+        TextField tfpath = new TextField();
+        tfpath.setAlignment(Pos.CENTER);
+        tfpath.setText("Cost");
+        tfpath.setBackground(Background.EMPTY);
+        tfpath.setPrefSize(gridfieldsize,gridfieldsize);
+        gridpane.add(tfpath, column, row);
+
 
 //      Add Line, muss aber Fallunterscheidung gemacht werden um set Start X/Y Koordinate und End X/Y Koordiante zu setzen
 //        Line line = new Line();
@@ -640,6 +652,40 @@ public class Controller {
 //        Rectangle purple_rechtangle = new Rectangle(gridfieldsize,gridfieldsize);
 //        purple_rechtangle.setFill(Color.web("#FFFF00"));
 //        gridpane.add(purple_rechtangle, column, row);
+    }
+
+    private void addTextfields(int column, int row, String gMoveCost, String hValueDistanceToTarget){
+        // Textfield nach https://www.youtube.com/watch?v=KNXfSOx4eEE
+        // bzw nach https://www.youtube.com/watch?v=-L-WgKMFuhE&t=143s
+        //Oben links        -> G
+        TextField tf1 = new TextField();
+        tf1.setAlignment(Pos.TOP_LEFT);
+        tf1.setText(gMoveCost);
+        tf1.setBackground(Background.EMPTY);
+        tf1.setPrefSize(gridfieldsize,gridfieldsize);
+        tf1.setFont(Font.font(gridfieldsize/5));
+        //Oben rechts       -> H
+        TextField tf2 = new TextField();
+        tf2.setAlignment(Pos.TOP_RIGHT);
+        tf2.setText(hValueDistanceToTarget);
+        tf2.setBackground(Background.EMPTY);
+        tf2.setPrefSize(gridfieldsize,gridfieldsize);
+        tf2.setFont(Font.font(gridfieldsize/5));
+        //Mitte unten       -> F
+        TextField tf3 = new TextField();
+        tf3.setAlignment(Pos.BOTTOM_CENTER);
+        tf3.setText("BC");
+        // wird geändert, sobald hVaalue und gMovecost zahlen sind
+        // tf3.setText(Integer.valueof(hValueDistanceToTarget) + Integer.valueof(gMoveCost);
+        //tf3.setText(Integer.valueOf(Integer.valueOf(hValueDistanceToTarget) + Integer.valueOf(gMoveCost)).toString());  <- ?!? geht das nicht besser?
+        tf3.setBackground(Background.EMPTY);
+        tf3.setPrefSize(gridfieldsize,gridfieldsize);
+        tf3.setFont(Font.font(gridfieldsize*3/10));
+        gridpane.add(tf1, column, row);
+        gridpane.add(tf2, column, row);
+        gridpane.add(tf3, column, row);
+        // TODO JPS https://www.youtube.com/watch?v=jB1IOR5roUM ablauf
+        // Clearance-based Pathfinding  -> man geht von allen hindernissen aus und versucht möglichst große quadrate zu bilden https://harablog.wordpress.com/2009/01/29/clearance-based-pathfinding/
     }
 
 }
