@@ -67,7 +67,7 @@ public class Node {
         return stepCoast;
     }
 
-    public int getFcost() {
+    public int getfcost() {
         return fcost;
     }
 

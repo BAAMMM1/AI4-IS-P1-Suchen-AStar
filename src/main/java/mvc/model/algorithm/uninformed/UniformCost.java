@@ -1,6 +1,5 @@
 package mvc.model.algorithm.uninformed;
 
-import mvc.model.algorithm.SearchAlgorithm;
 import mvc.model.field.Node;
 import mvc.model.field.NodeType;
 import mvc.model.field.Field;
