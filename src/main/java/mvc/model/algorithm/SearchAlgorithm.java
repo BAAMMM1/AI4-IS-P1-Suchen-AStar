@@ -64,7 +64,7 @@ public abstract class SearchAlgorithm {
         result.add(node);
 
         while (currenNode.getParent() != null) {
-            System.out.println("current: " + currenNode + " parent: " + currenNode.getParent());
+            //System.out.println("current: " + currenNode + " parent: " + currenNode.getParent());
             //System.out.println(currenNode);
             result.add(currenNode.getParent());
             currenNode = currenNode.getParent();
