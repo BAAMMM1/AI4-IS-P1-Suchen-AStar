@@ -45,9 +45,7 @@ public class Controller {
     private IO io;
     private List<NodeSnapShot> historyline;
     private List<NodeSnapShot> historylineforThread;
-    private List<Integer> openList;
-    private List<Integer> closedList;
-    private List<Integer> pathList;
+
     private PathFinding pathFinding;
 
     @FXML
@@ -75,20 +73,19 @@ public class Controller {
     TextField grid_fieldsize_textfield;
 
     @FXML
+    TextField animation_speed_textfield;
+
+    @FXML
     Label label_Heuristik;
 
     @FXML
     ChoiceBox<String> choiceBox_Heuristik;
 
     @FXML
-    MenuBar menuBar;
-
-    @FXML
     MenuItem menuitem_load;
 
     @FXML
     MenuItem menuitem_save;
-
 
     public Controller() {
     }
@@ -97,9 +94,6 @@ public class Controller {
     private void initialize() {
         System.out.println("starte Initialize");
         //Initialisierung der Variablen
-        openList = new ArrayList<>();
-        closedList = new ArrayList<>();
-        pathList = new ArrayList<>();
         block = new HashSet<>();
         target = null;
         source = null;
@@ -128,7 +122,6 @@ public class Controller {
     }
 
 
-
     /*******************************************
      ***            File Section             ***
      *******************************************/
@@ -152,7 +145,7 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Field");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(("Field File(*.json"), "*.json"));
-        URI url = null;
+        URI url;
         url = fileChooser.showSaveDialog(stage).getAbsoluteFile().toURI();
         System.out.println("URL der ausgewählten Datei zum Speichern ist: " + url.toString());
         System.out.println("dabei Gridsize: " + gridsize + " und Block: " + block.toString() + " und Source: " + source + " und Target: " + target);
@@ -160,19 +153,16 @@ public class Controller {
     }
 
     public void start() throws Exception {
+        clickButtonResetGrid();
         // hier müssen übergabe der Listen an model/Algorithm entstehen
-        if (choiceBox_Algorithm.getValue()!= null) {
-            if (choiceBox_Heuristik.getValue() == null && pathFinding.getUninformedAlgorithm().contains(choiceBox_Algorithm.getValue())) {
+        if (choiceBox_Algorithm.getValue() != null) {
+            if (choiceBox_Heuristik.getValue() == null && pathFinding.getUninformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())) {
                 pathFinding.uninformedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), source, target);
             } else if (choiceBox_Heuristik.getValue() != null) {
-                pathFinding.informedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), choiceBox_Heuristik.getValue().toString(), source, target);
+                pathFinding.informedCalc(gridsize, block, choiceBox_Algorithm.getValue().toString(), choiceBox_Heuristik.getValue(), source, target);
             } else {
                 throw new Exception();
             }
-
-            this.openList = pathFinding.getOpenList();
-            this.closedList = pathFinding.getCloseList();
-            this.pathList = pathFinding.getPath();
 
             this.historyline = pathFinding.getSnapShots();
             this.historylineforThread = pathFinding.getSnapShots();
@@ -186,8 +176,8 @@ public class Controller {
         if (historyline != null) {
             // Setzen der Keysframes, der Zustände, die erreicht werden wollen
             ArrayList<KeyFrame> keyFrameArrayList = new ArrayList<>();
-            for (int a = 0; a < historyline.size();a++){
-                keyFrameArrayList.add(new KeyFrame(Duration.millis(a*sleeptime), e -> forkeyframeaction()));
+            for (int a = 0; a < historyline.size(); a++) {
+                keyFrameArrayList.add(new KeyFrame(Duration.millis(a * sleeptime), e -> forkeyframeaction()));
             }
             // Nacheinander abspielen aller Keyframes/Zustände
             Timeline timeline = new Timeline();
@@ -196,17 +186,17 @@ public class Controller {
         }
     }
 
-    private void forkeyframeaction(){
-            if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.OPENLIST)) {
-                drawOpenList(historylineforThread.get(0));
-            }
-            if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.CLOSELIST)) {
-                drawClosedList(historyline.get(0));
-            }
-            if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.PATH)) {
-                drawPath(historyline.get(0));
-            }
-            historylineforThread.remove(0);
+    private void forkeyframeaction() {
+        if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.OPENLIST)) {
+            drawOpenList(historylineforThread.get(0));
+        }
+        if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.CLOSELIST)) {
+            drawClosedList(historyline.get(0));
+        }
+        if (historylineforThread.get(0).getSnapShotTyp().equals(NodeType.PATH)) {
+            drawPath(historyline.get(0));
+        }
+        historylineforThread.remove(0);
     }
 
     private void drawClosedList(NodeSnapShot nodeSnapShot) {
@@ -214,13 +204,16 @@ public class Controller {
             int tmpcolumn = nodeSnapShot.getNode().getZustand() % gridsize;
             int tmprow = nodeSnapShot.getNode().getZustand() / gridsize;
             drawClosedList(tmpcolumn, tmprow, nodeSnapShot);
-    }}
+        }
+    }
 
     private void drawClosedList(int column, int row, NodeSnapShot nodeSnapShot) {
         Rectangle cyan_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
         cyan_rechtangle.setFill(Color.web("#AFEEEE"));
         gridpane.add(cyan_rechtangle, column, row);
-        addTextfields(column, row, nodeSnapShot.getgCost(), nodeSnapShot.gethCost());
+        if (choiceBox_Heuristik.getValue() != null && pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())) {
+            addTextfields(column, row, nodeSnapShot.getgCost(), nodeSnapShot.gethCost());
+        }
 
     }
 
@@ -233,17 +226,22 @@ public class Controller {
     }
 
     private void drawOpenList(int column, int row, NodeSnapShot nodeSnapShot) {
-            Rectangle green_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
-            green_rechtangle.setFill(Color.web("#98FB98"));
-            gridpane.add(green_rechtangle, column, row);
-            addTextfields(column, row, nodeSnapShot.getgCost() ,nodeSnapShot.gethCost());
+        Rectangle green_rechtangle = new Rectangle(gridfieldsize, gridfieldsize);
+        green_rechtangle.setFill(Color.web("#98FB98"));
+        gridpane.add(green_rechtangle, column, row);
+        //if (nodeSnapShot instanceof InformedAlgorithm){;
+        if (choiceBox_Heuristik.getValue() != null && pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())) {
+            addTextfields(column, row, nodeSnapShot.getgCost(), nodeSnapShot.gethCost());
+        }
     }
 
     private void drawPath(NodeSnapShot nodeSnapShot) {
-        if (nodeSnapShot.getNode().getZustand() != source && nodeSnapShot.getNode().getZustand() != target) {
-            int tmpcolumn = nodeSnapShot.getNode().getZustand() % gridsize;
-            int tmprow = nodeSnapShot.getNode().getZustand() / gridsize;
-            drawPath(tmpcolumn, tmprow, nodeSnapShot);
+        if (choiceBox_Heuristik.getValue() != null && pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())) {
+            if (nodeSnapShot.getNode().getZustand() != source && nodeSnapShot.getNode().getZustand() != target) {
+                int tmpcolumn = nodeSnapShot.getNode().getZustand() % gridsize;
+                int tmprow = nodeSnapShot.getNode().getZustand() / gridsize;
+                drawPath(tmpcolumn, tmprow, nodeSnapShot);
+            }
         }
     }
 
@@ -254,12 +252,11 @@ public class Controller {
         gridpane.add(circle, column, row);
         TextField tfpath = new TextField();
         tfpath.setAlignment(Pos.CENTER);
-        tfpath.setText(""+nodeSnapShot.getfCost());
+        tfpath.setText("" + nodeSnapShot.getfCost());
         tfpath.setBackground(Background.EMPTY);
-        tfpath.setPrefSize(gridfieldsize,gridfieldsize);
+        tfpath.setPrefSize(gridfieldsize, gridfieldsize);
         gridpane.add(tfpath, column, row);
     }
-
 
 
     @FXML
@@ -276,14 +273,22 @@ public class Controller {
 
     }
 
-    ;
-
-
     private void drawBlock() {
+/*
         if (block != null) {
             Iterator<Integer> it = block.iterator();
             while (it.hasNext()) {
                 Integer next = it.next();
+                int tmpcolumn = next % gridsize;
+                int tmprow = next / gridsize;
+                drawBlock(tmpcolumn, tmprow);
+            }
+        }
+*/
+
+        if (block != null) {
+            // foreach (Wert, über den gegangen werden soll : Set/Liste, in der der Wert vorhanden ist) -> intellij macht aus foreach -> for
+            for (Integer next : block) {
                 int tmpcolumn = next % gridsize;
                 int tmprow = next / gridsize;
                 drawBlock(tmpcolumn, tmprow);
@@ -347,6 +352,12 @@ public class Controller {
         gridfieldsize = a;
         System.out.println("gridfieldsize ist nun: " + a);
         initialize();
+    }
+
+    public void actionAnimationSpeedInput() {
+        if (!animation_speed_textfield.getText().equals("")) {
+            sleeptime = Double.parseDouble(this.animation_speed_textfield.getText());
+        }
     }
 
     @FXML
@@ -464,23 +475,24 @@ public class Controller {
 
     // Um das Grid wieder zu reseten -> Entfernen von OpenList, ClosedList und Path
     private void drawBlock(int column, int row) {
-        Rectangle black_rechtangle = new Rectangle(gridfieldsize-1, gridfieldsize-1);
+        Rectangle black_rechtangle = new Rectangle(gridfieldsize - 1, gridfieldsize - 1);
         black_rechtangle.setFill(Color.web("#808080"));
         GridPane.setHalignment(black_rechtangle, HPos.CENTER);
         gridpane.add(black_rechtangle, column, row);
     }
 
     private void drawSource(int column, int row) {
-        Rectangle green_rechtangle = new Rectangle(gridfieldsize-1, gridfieldsize-1);
+        Rectangle green_rechtangle = new Rectangle(gridfieldsize - 1, gridfieldsize - 1);
         green_rechtangle.setFill(Color.web("#00DD00"));
         System.out.println("paint of green : " + Paint.valueOf("green").toString());
-        GridPane.setHalignment(green_rechtangle, HPos.CENTER);;
+        GridPane.setHalignment(green_rechtangle, HPos.CENTER);
         gridpane.add(green_rechtangle, column, row);
     }
 
     private void drawTarget(int column, int row) {
-        Rectangle red_rechtangle = new Rectangle(gridfieldsize-1, gridfieldsize-1);
+        Rectangle red_rechtangle = new Rectangle(gridfieldsize - 1, gridfieldsize - 1);
         red_rechtangle.setFill(Color.web("#EE4400"));
+        GridPane.setHalignment(red_rechtangle, HPos.CENTER);
         GridPane.setHalignment(red_rechtangle, HPos.CENTER);
         gridpane.add(red_rechtangle, column, row);
     }
@@ -503,28 +515,27 @@ public class Controller {
     }
 
     // Um OpenList und ClosedList die CostFelder anzeigen zu lassen
-    private void addTextfields(int column, int row, int gMoveCost, int hHeuristicDistanceToTarget){
+    private void addTextfields(int column, int row, int gMoveCost, int hHeuristicDistanceToTarget) {
         // Textfield nach https://www.youtube.com/watch?v=KNXfSOx4eEE
         // bzw nach https://www.youtube.com/watch?v=-L-WgKMFuhE&t=143s
 
         //Oben links        -> G
-        gridpane.add(addTextfieldToNode(Pos.TOP_LEFT, ""+gMoveCost, gridfieldsize/4), column, row);
+        gridpane.add(addTextfieldToNode(Pos.TOP_LEFT, "" + gMoveCost, gridfieldsize / 4), column, row);
         //Oben rechts       -> H
-        gridpane.add(addTextfieldToNode(Pos.TOP_RIGHT, ""+hHeuristicDistanceToTarget, gridfieldsize/4), column, row);
+        gridpane.add(addTextfieldToNode(Pos.TOP_RIGHT, "" + hHeuristicDistanceToTarget, gridfieldsize / 4), column, row);
         //Mitte unten       -> F
-        gridpane.add(addTextfieldToNode(Pos.BOTTOM_CENTER, ""+(gMoveCost+hHeuristicDistanceToTarget), gridfieldsize*3/10), column, row);
+        gridpane.add(addTextfieldToNode(Pos.BOTTOM_CENTER, "" + (gMoveCost + hHeuristicDistanceToTarget), gridfieldsize * 3 / 10), column, row);
     }
 
-    private TextField addTextfieldToNode(Pos Position, String text, double fontsize){
+    private TextField addTextfieldToNode(Pos Position, String text, double fontsize) {
         TextField textfield = new TextField();
         textfield.setAlignment(Position);
         textfield.setText(text);
         textfield.setBackground(Background.EMPTY);
-        textfield.setPrefSize(gridfieldsize,gridfieldsize);
+        textfield.setPrefSize(gridfieldsize, gridfieldsize);
         textfield.setFont(Font.font(fontsize));
         return textfield;
     }
-
 }
 
 
