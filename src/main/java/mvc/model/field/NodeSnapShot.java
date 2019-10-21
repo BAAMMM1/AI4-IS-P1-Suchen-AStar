@@ -22,6 +22,10 @@ public class NodeSnapShot {
         return node;
     }
 
+    public int getFieldNumber(){
+        return node.getZustand();
+    }
+
     public int getgCost() {
         return gCost;
     }
