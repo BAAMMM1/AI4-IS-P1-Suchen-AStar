@@ -78,6 +78,16 @@ function DLS(node, depth)
         List<Node> childs = field.expandNode(current);
 
         if (depthLimit > 0) {
+            // Der for Blick ist für die snapShot einzeichnung
+            for (Node child : childs) {
+
+                if (!openListTemp.contains(child) && !closeListTemp.contains(child)) {
+                    if (current.getParent() == null || !current.getParent().equals(child) && !child.equals(source)) {
+                        child.setType(NodeType.OPENLIST);
+                        snapShotsAdd(child);
+                    }
+                }
+            }
 
             for (Node child : childs) {
 
@@ -87,7 +97,7 @@ function DLS(node, depth)
                         child.setType(NodeType.OPENLIST);
                         openListTemp.add(child);
                         child.setParent(current);
-                        snapShotsAdd(child);
+                        //snapShotsAdd(child);
                     }
 
                     if (depthLimitedSearch(child, depthLimit - 1)) {
