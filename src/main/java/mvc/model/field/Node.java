@@ -2,6 +2,9 @@ package mvc.model.field;
 
 public class Node {
 
+    /*
+    Stellt die aktuelle Feldnummer im Feld da
+     */
     private int zustand;
 
     private NodeType type;
@@ -13,7 +16,7 @@ public class Node {
     private int depth;
 
     // Schrittkosten zum Knoten (Kosten an der Kante)
-    private int stepCoast = 1;
+    private int stepCost = 1;
 
     // Die addieren StepCoast zu dem Knoten, d.h. die Pfadkosten zum Knoten
     private int gCost;
@@ -63,8 +66,8 @@ public class Node {
         return gCost;
     }
 
-    public int getStepCoast() {
-        return stepCoast;
+    public int getStepCost() {
+        return stepCost;
     }
 
     public int getfcost() {
@@ -87,8 +90,8 @@ public class Node {
         this.gCost = gCost;
     }
 
-    public void setStepCoast(int stepCoast) {
-        this.stepCoast = stepCoast;
+    public void setStepCost(int stepCost) {
+        this.stepCost = stepCost;
     }
 
     public void setFcost(int fcost) {

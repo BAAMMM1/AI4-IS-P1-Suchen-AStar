@@ -15,7 +15,7 @@ public class NodeSnapShot {
         this.gCost = node.getgCost();
         this.hCost = node.gethCost();
         this.fCost = node.getfcost();
-        this.stepCost = node.getStepCoast();
+        this.stepCost = node.getStepCost();
     }
 
     public Node getNode() {

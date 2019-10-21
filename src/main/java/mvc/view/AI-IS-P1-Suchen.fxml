@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="594.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.999-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.controller.Controller">
+<AnchorPane prefHeight="594.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.controller.Controller">
    <children>
       <AnchorPane layoutY="27.0">
          <children>
@@ -26,7 +26,7 @@
                         <TextField fx:id="grid_resize_textfield" layoutX="14.0" layoutY="14.0" onAction="#actionGridResizeInput" onInputMethodTextChanged="#actionGridResizeInput" prefHeight="25.0" prefWidth="40.0" promptText="GridSize" text="15" />
                       <Button layoutX="153.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Generate" />
                         <Button fx:id="button_reset_grid" layoutX="153.0" layoutY="42.0" mnemonicParsing="false" onAction="#clickButtonResetGrid" prefHeight="25.0" prefWidth="78.0" text="Reset Grid" />
-                        <Label layoutX="57.0" layoutY="46.0" text="GridFiledSize" />
+                        <Label layoutX="60.0" layoutY="46.0" text="GridFiledSize" />
                         <TextField fx:id="grid_fieldsize_textfield" layoutX="14.0" layoutY="42.0" onAction="#actionGridFieldresizeInput" prefHeight="25.0" prefWidth="40.0" text="40" />
                      </children>
                   </AnchorPane>
@@ -41,10 +41,12 @@
                         <ToggleButton fx:id="block_Button" layoutX="14.0" layoutY="44.0" mnemonicParsing="false" onMouseClicked="#clickBlockButton" prefHeight="25.0" prefWidth="100.0" text="Block" />
                          <ChoiceBox fx:id="choiceBox_Algorithm" layoutX="14.0" layoutY="95.0" onAction="#visibility_heuristic" prefHeight="25.0" prefWidth="217.0" />
                         <Label fx:id="label_Algorithm" layoutX="14.0" layoutY="79.0" text="Choice Algorithm" />
-                        <Button layoutX="15.0" layoutY="181.0" mnemonicParsing="false" onMouseClicked="#start" prefHeight="25.0" prefWidth="78.0" text="Start / Stop" />
+                        <Button layoutX="15.0" layoutY="181.0" mnemonicParsing="false" onMouseClicked="#start" prefHeight="25.0" prefWidth="78.0" text="Start" />
                         <ToggleButton fx:id="clear_Button" layoutX="131.0" layoutY="44.0" mnemonicParsing="false" onMouseClicked="#clickClearButton" prefHeight="25.0" prefWidth="100.0" text="Clear Field" />
                         <ChoiceBox fx:id="choiceBox_Heuristik" layoutX="14.0" layoutY="143.0" prefHeight="25.0" prefWidth="217.0" visible="false" />
                         <Label fx:id="label_Heuristik" layoutX="14.0" layoutY="127.0" text="Choice Heuristik" visible="false" />
+                        <Label layoutX="97.0" layoutY="185.0" text="Animation Speed" />
+                        <TextField fx:id="animation_speed_textfield" layoutX="191.0" layoutY="181.0" onAction="#actionAnimationSpeedInput" onInputMethodTextChanged="#actionAnimationSpeedInput" prefHeight="25.0" prefWidth="40.0" promptText="Animation Speed" text="50" />
                      </children>
                   </AnchorPane>
                </content>
