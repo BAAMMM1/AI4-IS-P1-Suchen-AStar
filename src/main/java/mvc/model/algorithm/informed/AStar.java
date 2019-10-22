@@ -59,11 +59,15 @@ public class AStar extends InformedAlgorithm {
 
 
                 } else if(priorityQueue.contains(child) && child.getgCost() > pathCostToChildOverCurrent){ // Gibt es bereits einen Weg zum Child, aber ist der Weg über diesen Knoten günstiger zum Kind als vorher?
-
+                    System.out.println("Fall 2");
                     child.setParent(current);
                     child.setgCost(pathCostToChildOverCurrent);
                     child.sethCost(heuristic.hCost(child));
                     child.setFcost(child.getgCost()+ heuristic.hCost(child));
+
+                    child.setType(NodeType.OPENLIST);
+                    priorityQueue.remove(child);
+                    priorityQueue.add(child);
                     snapShotsAdd(child);
 
                 }

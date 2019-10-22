@@ -52,14 +52,22 @@ function DLS(node, depth)
                 System.out.println("Lösung gefunden auf Tiefe: " + i);
                 break;
             }
-            openList.addAll(openListTemp);
-            closeList.addAll(closeListTemp);
+            clearParents();
+
         }
 
+        openList.addAll(openListTemp);
+        closeList.addAll(closeListTemp);
 
         tracePath(target);
         System.out.println(path);
 
+    }
+
+    private void clearParents() {
+        for(Node node: field.getField()){
+            node.setParent(null);
+        }
     }
 
 
@@ -71,7 +79,7 @@ function DLS(node, depth)
         snapShotsAdd(current);
 
         boolean solution = false;
-        if (current.equals(target)){
+        if (depthLimit == 0 && current.equals(target)){
             return true;
         }
 
@@ -98,11 +106,12 @@ function DLS(node, depth)
                         openListTemp.add(child);
                         child.setParent(current);
                         //snapShotsAdd(child);
+                        if (depthLimitedSearch(child, depthLimit - 1)) {
+                            return true;
+                        }
                     }
 
-                    if (depthLimitedSearch(child, depthLimit - 1)) {
-                        return true;
-                    }
+
                 }
             }
         }
