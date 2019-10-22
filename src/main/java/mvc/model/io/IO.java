@@ -23,13 +23,13 @@ public class IO {
         return null;
     }
 
-    public void save(URI file, int gridSize, Set<Integer> blockSet, Integer source, Integer target){
+    public void save(URI file, int gridSize, int gridFieldSize, Set<Integer> blockSet, Integer source, Integer target){
 
         System.out.println("--> " + file.toString());
         File fil2 = new File(file);
         System.out.println(fil2.toString());
         try {
-            new ObjectMapper().writeValue(new File(file), new CheckPointDTO(gridSize, blockSet, source, target));
+            new ObjectMapper().writeValue(new File(file), new CheckPointDTO(gridSize, gridFieldSize, blockSet, source, target));
         } catch (IOException e) {
             e.printStackTrace();
         }

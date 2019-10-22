@@ -30,6 +30,7 @@ import mvc.model.io.CheckPointDTO;
 import mvc.model.io.IO;
 import mvc.model.field.NodeSnapShot;
 
+import java.io.File;
 import java.net.URI;
 import java.util.*;
 
@@ -37,7 +38,7 @@ import java.util.*;
 public class Controller {
     private Integer gridsize = 16;
     private double gridfieldsize = 42;
-    private double sleeptime = 50d;
+    private double sleeptime = 2d;
     private Set<Integer> block;
     private Integer source;
     private Integer target;
@@ -109,12 +110,13 @@ public class Controller {
         pathFinding = new PathFinding();
         io = new IO();
         stage = new Stage();
+        animation_speed_textfield.setText("" + sleeptime);
 
         // Setzen der Standardeinstellung im Algorithm Bereich zum Bearbeiten
         // hier: Mode 1: Block setzen
         mode = 0;
-        showtextfield = true;
-        toggleButtonShowTextfield.setSelected(true);
+        showtextfield = false;
+        toggleButtonShowTextfield.setSelected(showtextfield);
 
         block_Button.setSelected(false);
         // Setzen der verfügbaren Such-Algorithm
@@ -144,11 +146,13 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load Field");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(("Field File(*.json"), "*.json"));
+        fileChooser.setInitialDirectory(new File("C:\\Users\\Christian\\ownCloud\\HAW Teamwork\\Semester 11\\Intelligente Systeme\\Praktikum 1"));
         URI uri = fileChooser.showOpenDialog(stage).getAbsoluteFile().toURI();
 
         CheckPointDTO checkPointDTO = io.load(uri);
 
         this.gridsize = checkPointDTO.getGridSize();
+        this.gridfieldsize = checkPointDTO.getGridFieldSize();
         this.source = checkPointDTO.getSource();
         this.target = checkPointDTO.getTarget();
         this.block = checkPointDTO.getBlockSet();
@@ -163,7 +167,7 @@ public class Controller {
         url = fileChooser.showSaveDialog(stage).getAbsoluteFile().toURI();
         System.out.println("URL der ausgewählten Datei zum Speichern ist: " + url.toString());
         System.out.println("dabei Gridsize: " + gridsize + " und Block: " + block.toString() + " und Source: " + source + " und Target: " + target);
-        io.save(url, gridsize, block, source, target);
+        io.save(url, gridsize, (int)gridfieldsize, block, source, target);
     }
 
     public void start() throws Exception {
@@ -399,7 +403,7 @@ public class Controller {
 
     public void clickGrid(MouseEvent event) {
         Node clickedNode = event.getPickResult().getIntersectedNode();
-        if (clickedNode != gridpane) {
+        if (clickedNode != gridpane && clickedNode !=null) {
             // click on descendant node
             Integer colIndex = GridPane.getColumnIndex(clickedNode);
             Integer rowIndex = GridPane.getRowIndex(clickedNode);
