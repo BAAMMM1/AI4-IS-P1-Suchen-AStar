@@ -35,8 +35,8 @@ import java.util.*;
 
 
 public class Controller {
-    private Integer gridsize = 15;
-    private double gridfieldsize = 40;
+    private Integer gridsize = 16;
+    private double gridfieldsize = 42;
     private double sleeptime = 50d;
     private Set<Integer> block;
     private Integer source;
@@ -46,6 +46,8 @@ public class Controller {
     private IO io;
     private List<NodeSnapShot> historyline;
     private List<NodeSnapShot> historylineforThread;
+    private String performanceText = "";
+    private Boolean showtextfield;
 
     private PathFinding pathFinding;
 
@@ -88,6 +90,12 @@ public class Controller {
     @FXML
     MenuItem menuitem_save;
 
+    @FXML
+    TextArea performanceTextArea;
+
+    @FXML
+    ToggleButton toggleButtonShowTextfield;
+
     public Controller() {
     }
 
@@ -105,12 +113,17 @@ public class Controller {
         // Setzen der Standardeinstellung im Algorithm Bereich zum Bearbeiten
         // hier: Mode 1: Block setzen
         mode = 0;
+        showtextfield = true;
+        toggleButtonShowTextfield.setSelected(true);
+
         block_Button.setSelected(false);
         // Setzen der verfügbaren Such-Algorithm
         List<Object> allAlgortihm = new ArrayList<>(pathFinding.getUninformedAlgorithm());
         allAlgortihm.add(new Separator());
         allAlgortihm.addAll(pathFinding.getInformedAlgorithm());
         choiceBox_Algorithm.setItems(FXCollections.observableArrayList(allAlgortihm));
+        grid_resize_textfield.setText("" + gridsize);
+        grid_fieldsize_textfield.setText("" + (int) gridfieldsize);
 
         // Setzen der Heuristik
         List<String> allHeuristik = new ArrayList<>(pathFinding.getHeuristic());
@@ -173,6 +186,17 @@ public class Controller {
                 this.historylineforThread = pathFinding.getSnapShots();
 
                 drawHistorylineTimeLine(historyline);
+
+                performanceText = performanceText + "Alg: " + choiceBox_Algorithm.getValue().toString() + "\n";
+                if (pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString()) && choiceBox_Heuristik.getValue() != null) {
+                    performanceText = performanceText + "Heu: " + choiceBox_Heuristik.getValue() + "\n";
+                } else {
+                    performanceText = performanceText + "Heu: not used\n";
+                }
+                performanceText = performanceText + "t : " + pathFinding.getMeasuredTime() + " ns\n";
+                performanceText = performanceText + "Mem: " + pathFinding.getSearchAlgorithm().getStorageComplexity() + "\n--------------------------\n";
+                performanceTextArea.setText(performanceText);
+
             }
         }
     }
@@ -183,7 +207,7 @@ public class Controller {
             // Setzen der Keysframes, der Zustände, die erreicht werden wollen
             ArrayList<KeyFrame> keyFrameArrayList = new ArrayList<>();
             for (int a = 0; a < historyline.size(); a++) {
-                keyFrameArrayList.add(new KeyFrame(Duration.millis(a * sleeptime), e -> forkeyframeaction()));
+                keyFrameArrayList.add(new KeyFrame(Duration.millis(a * sleeptime), event -> forkeyframeaction()));
             }
             // Nacheinander abspielen aller Keyframes/Zustände
             Timeline timeline = new Timeline();
@@ -208,14 +232,18 @@ public class Controller {
     private void drawClosedList(NodeSnapShot nodeSnapShot) {
         if (nodeSnapShot.getNode().getZustand() != source && nodeSnapShot.getNode().getZustand() != target) {
             gridpane.add(drawRectangle(gridfieldsize, gridfieldsize, "#AFEEEE"), getcolumn(nodeSnapShot), getrow(nodeSnapShot));
-            addTextfields(nodeSnapShot);
+            if (showtextfield) {
+                addTextfields(nodeSnapShot);
+            }
         }
     }
 
     private void drawOpenList(NodeSnapShot nodeSnapShot) {
         if (historylineforThread.get(0).getFieldNumber() != source && historylineforThread.get(0).getFieldNumber() != target) {
             gridpane.add(drawRectangle(gridfieldsize, gridfieldsize, "#98FB98"), getcolumn(nodeSnapShot), getrow(nodeSnapShot));
-            addTextfields(nodeSnapShot);
+            if (showtextfield) {
+                addTextfields(nodeSnapShot);
+            }
         }
     }
 
@@ -233,17 +261,20 @@ public class Controller {
         //Zeichnen der Nodes
         Circle cicic = drawCircle(gridfieldsize / 3.5);
         GridPane.setValignment(cicic, VPos.BOTTOM);
-        System.out.println("Valignment ist " + GridPane.getValignment(cicic));
         gridpane.add(cicic, column, row);
 
         //Beschriften der Nodes
-        String text;
-        if (choiceBox_Heuristik.getValue() != null && pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())) {
-            text = "" + nodeSnapShot.getfCost();
-        } else {
-            text = "" + nodeSnapShot.getNode().getDepth();
+        if (showtextfield) {
+            String text;
+            if (choiceBox_Heuristik.getValue() != null && pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())) {
+                text = "" + nodeSnapShot.getfCost();
+            } else {
+                text = "" + nodeSnapShot.getNode().getDepth();
+            }
+            gridpane.add(addPathTextfield(text, gridfieldsize * 3 / 10), column, row);
+
         }
-        gridpane.add(addPathTextfield(text), column, row);
+
     }
 
 
@@ -326,6 +357,11 @@ public class Controller {
         drawTarget();
         drawSource();
         drawBlock();
+    }
+
+    public void clickShowText(){
+        showtextfield = (!showtextfield);
+        toggleButtonShowTextfield.setSelected(showtextfield);
     }
 
     public void clickBlockButton() {
@@ -483,11 +519,12 @@ public class Controller {
         return circle;
     }
 
-    private TextField addPathTextfield(String text) {
+    private TextField addPathTextfield(String text, double fontsize) {
         TextField tfpath = new TextField();
         tfpath.setAlignment(Pos.BOTTOM_CENTER);
         tfpath.setBackground(Background.EMPTY);
         tfpath.setPrefSize(gridfieldsize, gridfieldsize);
+        tfpath.setFont(Font.font(fontsize));
         tfpath.setText(text);
         return tfpath;
     }

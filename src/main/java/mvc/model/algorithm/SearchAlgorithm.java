@@ -124,11 +124,11 @@ public abstract class SearchAlgorithm {
     }
 
     protected void startTime() {
-        startTime = System.currentTimeMillis();
+        startTime = System.nanoTime();
     }
 
     protected void endTime() {
-        endTime = System.currentTimeMillis();
+        endTime = System.nanoTime();
     }
 
     public long getTime() {

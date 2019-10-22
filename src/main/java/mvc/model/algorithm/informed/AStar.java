@@ -64,6 +64,10 @@ public class AStar extends InformedAlgorithm {
                     child.setgCost(pathCostToChildOverCurrent);
                     child.sethCost(heuristic.hCost(child));
                     child.setFcost(child.getgCost()+ heuristic.hCost(child));
+
+                    child.setType(NodeType.OPENLIST);
+                    priorityQueue.remove(child);
+                    priorityQueue.add(child);
                     snapShotsAdd(child);
 
                 }
