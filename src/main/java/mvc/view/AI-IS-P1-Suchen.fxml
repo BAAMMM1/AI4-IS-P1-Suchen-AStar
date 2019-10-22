@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="594.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.controller.Controller">
+<AnchorPane prefHeight="671.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.controller.Controller">
    <children>
       <AnchorPane layoutY="27.0">
          <children>
@@ -23,8 +24,8 @@
                   <AnchorPane prefHeight="87.0" prefWidth="258.0">
                      <children>
                         <Label layoutX="60.0" layoutY="18.0" text="Grid Size" />
-                        <TextField fx:id="grid_resize_textfield" layoutX="14.0" layoutY="14.0" onAction="#actionGridResizeInput" onInputMethodTextChanged="#actionGridResizeInput" prefHeight="25.0" prefWidth="40.0" promptText="GridSize" text="15" />
-                      <Button layoutX="153.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" text="Generate" />
+                        <TextField fx:id="grid_resize_textfield" layoutX="14.0" layoutY="14.0" onAction="#actionGridResizeInput" onInputMethodTextChanged="#actionGridResizeInput" prefHeight="25.0" prefWidth="40.0" promptText="GridSize" text="16" />
+                      <ToggleButton fx:id="toggleButtonShowTextfield" layoutX="153.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#clickShowText" prefHeight="25.0" prefWidth="78.0" text="Show Text" />
                         <Button fx:id="button_reset_grid" layoutX="153.0" layoutY="42.0" mnemonicParsing="false" onAction="#clickButtonResetGrid" prefHeight="25.0" prefWidth="78.0" text="Reset Grid" />
                         <Label layoutX="60.0" layoutY="46.0" text="GridFiledSize" />
                         <TextField fx:id="grid_fieldsize_textfield" layoutX="14.0" layoutY="42.0" onAction="#actionGridFieldresizeInput" prefHeight="25.0" prefWidth="40.0" text="40" />
@@ -51,11 +52,11 @@
                   </AnchorPane>
                </content>
             </TitledPane>
-            <TitledPane animated="false" layoutY="359.0" prefHeight="210.0" prefWidth="253.0" text="Performance">
+            <TitledPane animated="false" layoutY="359.0" prefHeight="331.0" prefWidth="253.0" text="Performance">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="327.0" prefWidth="251.0">
                      <children>
-                        <TextField layoutX="14.0" layoutY="14.0" prefHeight="155.0" prefWidth="222.0" />
+                        <TextArea fx:id="performanceTextArea" layoutX="14.0" layoutY="21.0" prefHeight="264.0" prefWidth="222.0" />
                      </children>
                   </AnchorPane>
               </content>

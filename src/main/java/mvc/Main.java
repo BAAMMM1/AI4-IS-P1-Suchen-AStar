@@ -26,7 +26,7 @@ public class Main extends Application {
         // Controller mFxmlDocumentController = fxmlLoader.getController();
         primaryStage.setTitle("AI-IS-P1-Suchen");
         //primaryStage.sizeToScene();;
-        primaryStage.setScene(new Scene(root, 874, 647));
+        primaryStage.setScene(new Scene(root, 948, 721));
         primaryStage.show();
 
     }
