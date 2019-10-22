@@ -53,10 +53,11 @@ function DLS(node, depth)
                 break;
             }
             clearParents();
-            openList.addAll(openListTemp);
-            closeList.addAll(closeListTemp);
+
         }
 
+        openList.addAll(openListTemp);
+        closeList.addAll(closeListTemp);
 
         tracePath(target);
         System.out.println(path);
