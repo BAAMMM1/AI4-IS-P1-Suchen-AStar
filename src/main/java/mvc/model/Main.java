@@ -1,7 +1,8 @@
 package mvc.model;
 
 import mvc.model.algorithm.SearchAlgorithm;
-import mvc.model.algorithm.uninformed.IterativDeepeningDepthFirstRekursive;
+import mvc.model.algorithm.informed.AStar;
+import mvc.model.algorithm.informed.heurisitc.ManhattenDistance;
 import mvc.model.field.Field;
 
 public class Main {
@@ -34,7 +35,7 @@ public class Main {
         // Feld ausgeben
         //problem.drawField();
         // Algorithmus durchlaufen lassen
-        SearchAlgorithm searchAlgorithm = new IterativDeepeningDepthFirstRekursive(field, 5, 24);
+        SearchAlgorithm searchAlgorithm = new AStar(field, 5, 24, new ManhattenDistance(field.getField()[24], 5));
         searchAlgorithm.calculate();
         //System.out.println(searchAlgorithm.getSnapShots());
         //System.out.println(searchAlgorithm.getOpenList());
