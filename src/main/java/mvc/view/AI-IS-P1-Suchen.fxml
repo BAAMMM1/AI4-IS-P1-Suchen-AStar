@@ -15,6 +15,11 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<!--
+  ~ Copyright (c) 2019. by Dennis Eickholt
+  ~ All rights reserved.
+  -->
+
 <AnchorPane prefHeight="671.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mvc.controller.Controller">
    <children>
       <AnchorPane layoutY="27.0">

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2019. by Dennis Eickholt
+ * All rights reserved.
+ */
+
 package mvc.controller;
 
 
@@ -35,6 +40,11 @@ import java.net.URI;
 import java.util.*;
 
 
+/**
+ * Verbindet die View mit den Algorithmen
+ * @author Dennis Eickholt
+ * @created 10/2019
+ */
 public class Controller {
     private Integer gridsize = 16;
     private double gridfieldsize = 42;
@@ -146,7 +156,8 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load Field");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(("Field File(*.json"), "*.json"));
-        fileChooser.setInitialDirectory(new File("C:\\Users\\Christian\\ownCloud\\HAW Teamwork\\Semester 11\\Intelligente Systeme\\Praktikum 1"));
+        // Setzt den LadePfad dorthin, wo die Beispiel-Spielfelder gespeichert sind
+        fileChooser.setInitialDirectory(new File("" + System.getProperty("user.dir") + "\\Examples"));
         URI uri = fileChooser.showOpenDialog(stage).getAbsoluteFile().toURI();
 
         CheckPointDTO checkPointDTO = io.load(uri);
@@ -157,6 +168,8 @@ public class Controller {
         this.target = checkPointDTO.getTarget();
         this.block = checkPointDTO.getBlockSet();
         clickButtonResetGrid();
+        grid_resize_textfield.setText(gridsize.toString());
+        grid_fieldsize_textfield.setText(""+gridfieldsize);
     }
 
     public void menuitem_save_action() {
@@ -410,16 +423,15 @@ public class Controller {
             System.out.println("Mouse clicked cell: " + colIndex + " And: " + rowIndex);
 
             if (colIndex != null && rowIndex != null) {
-
                 switch (mode) {
                     case 0:
                         break;
-                    case 1:
+                    case 1:     // Block adden
                         drawBlock(colIndex, rowIndex);
                         block.add(colIndex % gridsize + rowIndex * gridsize);
                         System.out.println("gespeichert in Blocklist: " + block.toString());
                         break;
-                    case 2:
+                    case 2:     // Block löschen
                         if ((target == null || target != colIndex % gridsize + rowIndex * gridsize)
                                 && (source != null && source != colIndex % gridsize + rowIndex * gridsize)) {
                             blankCell(getcolumn(source), getrow(source));
@@ -434,7 +446,7 @@ public class Controller {
                             System.out.println("Source nun Feld: " + source);
                         }
                         break;
-                    case 3:
+                    case 3:     // Ziel setzen
                         if ((source == null || source != colIndex % gridsize + rowIndex * gridsize)
                                 && (target != null && target != colIndex % gridsize + rowIndex * gridsize)) {
                             blankCell(getcolumn(target), getrow(target));
@@ -449,14 +461,18 @@ public class Controller {
                             System.out.println("Target nun Feld: " + target);
                         }
                         break;
-                    case 4:
+                    case 4:     // Start setzen
                         if (block.contains(colIndex % gridsize + rowIndex * gridsize)) {
                             block.remove(colIndex % gridsize + rowIndex * gridsize);
                             blankCell(colIndex, rowIndex);
                         }
                         break;
                 }
-
+                // Verbeserungsvorschlag: switch case anweisungen und auch viele if-> else if -> else if Andweisungen weisen darauf hin, das das Open Close Prinzip verletzt wird
+                // -> Open für Erweiterungen, Closed für Veränderungen -> das bedeutet hier z.b. Object/Interface CellButton erstellen mit Methode Action
+                //   da dann Objekte/Klassen erstellen für Start Ziel Block Löschen erstellen und dort Action definieren.
+                // da manche Source und target zusätzlich als übergabewert benötigen -> 2 "unterklassen" erstellen und dort dann jeweils mit übergabeparameter definieren
+                // dann hier entweder CellButton.action(row,column), oder CellButton.action(row, column, source, target)
             }
         }
     }
