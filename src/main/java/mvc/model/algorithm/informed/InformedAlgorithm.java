@@ -4,6 +4,12 @@ import mvc.model.algorithm.SearchAlgorithm;
 import mvc.model.algorithm.informed.heurisitc.Heuristic;
 import mvc.model.field.Field;
 
+/**
+ * Diese Klasse stellt einen informierten Algorithmus da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public abstract class InformedAlgorithm extends SearchAlgorithm {
 
     protected Heuristic heuristic;

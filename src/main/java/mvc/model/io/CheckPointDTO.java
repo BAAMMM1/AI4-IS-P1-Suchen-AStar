@@ -4,6 +4,12 @@ import mvc.model.field.Field;
 
 import java.util.Set;
 
+/**
+ * Diese Klasse stellt ein DTO zum laden und speichern der Felder als json da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class CheckPointDTO {
 
     private int gridSize;

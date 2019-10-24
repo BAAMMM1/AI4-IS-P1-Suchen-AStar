@@ -5,9 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Diese Klasse stellt Methoden zum speichern und laden von Feldern zur Verfügung.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class IO {
 
 
@@ -23,7 +28,7 @@ public class IO {
         return null;
     }
 
-    public void save(URI file, int gridSize, int gridFieldSize, Set<Integer> blockSet, Integer source, Integer target){
+    public void save(URI file, int gridSize, int gridFieldSize, Set<Integer> blockSet, Integer source, Integer target) {
 
         System.out.println("--> " + file.toString());
         File fil2 = new File(file);

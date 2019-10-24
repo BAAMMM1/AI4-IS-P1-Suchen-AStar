@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * WIP: Diese Klasse stellt die iterative Tiefensuche da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class IterativDeepeningDepthFirstRekursive extends UninformedAlgorithm {
 
     private static final int MAX_DEPTH = 200;

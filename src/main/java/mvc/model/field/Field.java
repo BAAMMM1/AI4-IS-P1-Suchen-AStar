@@ -4,6 +4,12 @@ import mvc.model.algorithm.*;
 
 import java.util.*;
 
+/**
+ * Diese Klasse stellt ein quadratisches Felt da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class Field {
 
     /**

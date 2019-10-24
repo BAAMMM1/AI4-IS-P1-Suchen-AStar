@@ -2,6 +2,12 @@ package mvc.model.algorithm.informed.heurisitc;
 
 import mvc.model.field.Node;
 
+/**
+ * Diese Klasse stellt die Heuristik eines informierten Algorithmus da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public abstract class Heuristic {
 
     protected int columns;

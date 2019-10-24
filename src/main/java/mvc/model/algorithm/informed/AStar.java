@@ -7,6 +7,13 @@ import mvc.model.field.Field;
 
 import java.util.*;
 
+
+/**
+ * Diese Klasse stellt den AStar da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class AStar extends InformedAlgorithm {
 
 
@@ -59,7 +66,6 @@ public class AStar extends InformedAlgorithm {
 
 
                 } else if(priorityQueue.contains(child) && child.getgCost() > pathCostToChildOverCurrent){ // Gibt es bereits einen Weg zum Child, aber ist der Weg über diesen Knoten günstiger zum Kind als vorher?
-                    System.out.println("Fall 2");
                     child.setParent(current);
                     child.setgCost(pathCostToChildOverCurrent);
                     child.sethCost(heuristic.hCost(child));
