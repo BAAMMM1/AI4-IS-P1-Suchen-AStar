@@ -4,6 +4,12 @@ import mvc.model.field.Node;
 
 import java.util.Random;
 
+/**
+ * Diese Klasse stellt eine Heuristik da, die die Entfernung zum Ziel überschätzt.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class Overestimate extends Heuristic{
 
     public Overestimate(Node target, int columns) {

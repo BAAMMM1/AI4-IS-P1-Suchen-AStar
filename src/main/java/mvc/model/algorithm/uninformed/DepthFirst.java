@@ -8,6 +8,12 @@ import mvc.model.field.Field;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Diese Klasse stellt die Tiefensuche da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class DepthFirst extends UninformedAlgorithm {
 
 

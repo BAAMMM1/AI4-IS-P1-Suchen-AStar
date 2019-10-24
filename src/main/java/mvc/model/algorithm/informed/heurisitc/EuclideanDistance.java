@@ -2,6 +2,20 @@ package mvc.model.algorithm.informed.heurisitc;
 
 import mvc.model.field.Node;
 
+
+/**
+ * Diese Klasse stellt die Euclidean-Distanz Heuristik da.
+ *
+ *     function heuristic(node) =
+ *      dx = abs(node.x - goal.x)
+ *      dy = abs(node.y - goal.y)
+ *      return D * sqrt(dx * dx + dy * dy)
+ *
+ * Quelle: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class EuclideanDistance extends Heuristic {
 
 
@@ -12,10 +26,7 @@ public class EuclideanDistance extends Heuristic {
 
 
     /*
-    function heuristic(node) =
-    dx = abs(node.x - goal.x)
-    dy = abs(node.y - goal.y)
-    return D * sqrt(dx * dx + dy * dy)
+
      */
     @Override
     public int hCost(Node node) {

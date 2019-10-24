@@ -8,6 +8,12 @@ import mvc.model.field.Field;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Diese Klasse stellt die Breiten-Suche da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class BreadthFirst extends UninformedAlgorithm {
 
 

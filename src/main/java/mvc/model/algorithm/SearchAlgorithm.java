@@ -7,6 +7,13 @@ import mvc.model.field.NodeType;
 
 import java.util.*;
 
+/**
+ * Die Klasse SearchAlgortihm stellt als abstrakte Oberklasse Funktionen für die konkreten Algorithmen zur Verfügung.
+ * Dabei muss jeder Such-Algorithmus der vom SearchAlgorithmus ableitet, seine Berechnung in der execute()-Methode definieren.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public abstract class SearchAlgorithm {
 
     protected Field field;
@@ -17,7 +24,14 @@ public abstract class SearchAlgorithm {
     protected List<Node> openList;
     protected List<Node> closeList;
     protected List<Node> path;
-    protected List<NodeSnapShot> snapShots;
+
+    /**
+     * Die SnapShot-Liste ist verantwortlich für das Anzeigen des Algorithmus in der GUI. Sie enthält den
+     * jeweiligen Status (OpenList, CloseLst ...) eines Knoten während der Berechnung des Algorithmus.
+     * D.h. Wenn ein Algorithmus implementiert wird und ein Knoten z.B. in die openlist hinzugefügt wird,
+     * dann muss er in der snapShot-Liste auch als SnapShot hinzugefügt werden.
+     */
+    private List<NodeSnapShot> snapShots;
 
     private long startTime;
     private long endTime;
@@ -26,16 +40,16 @@ public abstract class SearchAlgorithm {
         this.field = field;
         this.source = field.getField()[source];
         this.target = field.getField()[target];
-        this.openList = new ArrayList<Node>();
-        this.closeList = new ArrayList<Node>();
-        this.path = new ArrayList<Node>();
+        this.openList = new ArrayList<>();
+        this.closeList = new ArrayList<>();
+        this.path = new ArrayList<>();
         this.snapShots = new ArrayList<>();
     }
 
     public void calculate() {
-        this.openList = new ArrayList<Node>();
-        this.closeList = new ArrayList<Node>();
-        this.path = new ArrayList<Node>();
+        this.openList = new ArrayList<>();
+        this.closeList = new ArrayList<>();
+        this.path = new ArrayList<>();
         this.snapShots = new ArrayList<>();
 
         snapShots.add(new NodeSnapShot(source, NodeType.SOURCE));
@@ -47,16 +61,18 @@ public abstract class SearchAlgorithm {
 
     }
 
-    public long getEndTime() {
-        return endTime;
-    }
-
+    /**
+     * Diese Methode muss in jedem konkreten Such-Algorithmus die Handlungsvorschrift enthalten.
+     */
     protected abstract void execute();
 
+    /**
+     * Diese Methode identifiziert für einen Algorithmus den berechneten kürzesten Pfad. Dabei wird ausgehend vom
+     * Target-Knote alle Parent-Knoten bis zum Source-Knoten in eine Liste eingetragen.
+     *
+     * @param node
+     */
     protected void tracePath(Node node) {
-        System.out.println("tracee path");
-
-//        node.setDepth(node.getParent().getDepth() + 1);
 
         List<Node> result = new ArrayList<>();
         Node currenNode = node;
@@ -64,8 +80,6 @@ public abstract class SearchAlgorithm {
         result.add(node);
 
         while (currenNode.getParent() != null) {
-            //System.out.println("current: " + currenNode + " parent: " + currenNode.getParent());
-            //System.out.println(currenNode);
             result.add(currenNode.getParent());
             currenNode = currenNode.getParent();
             snapShots.add(new NodeSnapShot(currenNode, NodeType.PATH));
@@ -74,12 +88,10 @@ public abstract class SearchAlgorithm {
         Collections.reverse(result);
 
         path = result;
-
     }
 
 
-
-    protected void snapShotsAdd(Node node){
+    protected void snapShotsAdd(Node node) {
         snapShots.add(new NodeSnapShot(node, node.getType()));
     }
 
@@ -123,11 +135,11 @@ public abstract class SearchAlgorithm {
         return openList.size() + closeList.size();
     }
 
-    protected void startTime() {
+    private void startTime() {
         startTime = System.nanoTime();
     }
 
-    protected void endTime() {
+    private void endTime() {
         endTime = System.nanoTime();
     }
 
@@ -139,7 +151,4 @@ public abstract class SearchAlgorithm {
         return snapShots;
     }
 
-    public void setCloseList(List<Node> closeList) {
-        this.closeList = closeList;
-    }
 }

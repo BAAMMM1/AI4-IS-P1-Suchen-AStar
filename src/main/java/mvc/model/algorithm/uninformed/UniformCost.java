@@ -6,6 +6,12 @@ import mvc.model.field.Field;
 
 import java.util.*;
 
+/**
+ * Diese Klasse stellt die uninformierte Cost Suche da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class UniformCost extends UninformedAlgorithm {
 
 

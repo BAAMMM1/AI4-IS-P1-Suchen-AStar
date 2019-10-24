@@ -1,5 +1,13 @@
 package mvc.model.field;
 
+
+/**
+ * Diese Klasse stellt den zeitlichen Zustand eines Knoten im Suchbaum da. Der Knoten kann zu einem Zeitpunkt undiscovered,
+ * in der openlist, in der closelist oder ein Teil des Pfades sein. Diese Klasse dient der grafischen Aufbereitung.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class NodeSnapShot {
 
     private Node node;

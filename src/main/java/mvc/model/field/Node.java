@@ -1,5 +1,11 @@
 package mvc.model.field;
 
+/**
+ * Diese Klasse stellt einen Knoten als Verwaltungseinheit für einen aktuellen Zustand (Fieldnumber) da.
+ *
+ * @author Christian Graumann
+ * @created 10.2019
+ */
 public class Node {
 
     /*
@@ -18,7 +24,7 @@ public class Node {
     // Schrittkosten zum Knoten (Kosten an der Kante)
     private int stepCost = 1;
 
-    // Die addieren StepCoast zu dem Knoten, d.h. die Pfadkosten zum Knoten
+    // Die addierten StepCoast zu dem Knoten, d.h. die Pfadkosten zum Knoten
     private int gCost;
 
     private int hCost;
