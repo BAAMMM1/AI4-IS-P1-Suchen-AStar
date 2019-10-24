@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2019. by Dennis Eickholt
+ * All rights reserved.
+ */
+
 package mvc;
 
 import javafx.application.Application;
@@ -10,9 +15,13 @@ import mvc.controller.Controller;
 import java.net.URL;
 import java.nio.file.Paths;
 
+/**
+ * Startpunkt für das Programm
+ * @author Dennis Eickholt
+ * @created 10/2019
+ */
 public class Main extends Application {
 
-    // Schöner comment
 
     @Override
     public void start(Stage primaryStage) throws Exception{
