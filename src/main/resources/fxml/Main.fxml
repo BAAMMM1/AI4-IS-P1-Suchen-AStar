@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+  ~ Copyright (c) 2019. by Dennis Eickholt
+  ~ All rights reserved.
+  -->
+
+<AnchorPane style="-fx-background-color: e6e6e6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: e6e6e6;" BorderPane.alignment="CENTER">
+               <children>
+                <AnchorPane fx:id="contentPane" style="-fx-background-color: FFFFFF; -fx-border-color: c6c6c6;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                     <children>
+                        <GridPane id="gridpane" fx:id="gridpane" alignment="TOP_CENTER" gridLinesVisible="true" onMouseDragged="#clickGrid" onMousePressed="#clickGrid" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" />
+                            <ColumnConstraints hgrow="SOMETIMES" />
+                            <ColumnConstraints hgrow="SOMETIMES" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints vgrow="SOMETIMES" />
+                            <RowConstraints vgrow="SOMETIMES" />
+                            <RowConstraints vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </center>
+         <top>
+            <AnchorPane prefHeight="200.0" style="-fx-background-color: f3f2f1;" styleClass="shadowpane" stylesheets="@css/style.css" BorderPane.alignment="CENTER">
+               <children>
+                  <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem fx:id="menuitem_load" mnemonicParsing="false" onAction="#menuitem_load_action" text="Load" />
+                          <MenuItem fx:id="menuitem_save" mnemonicParsing="false" onAction="#menuitem_save_action" text="Save" />
+                          <MenuItem fx:id="menuitem_close" mnemonicParsing="false" text="Close" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Grid Size" />
+                              <TextField fx:id="grid_resize_textfield" onAction="#actionGridResizeInput" onInputMethodTextChanged="#actionGridResizeInput" prefHeight="25.0" prefWidth="40.0" promptText="GridSize" text="28" />
+                              <Label text="GridFiledSize" />
+                              <TextField fx:id="grid_fieldsize_textfield" onAction="#actionGridFieldresizeInput" prefHeight="25.0" prefWidth="40.0" text="28" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                            <ToggleButton fx:id="toggleButtonShowTextfield" mnemonicParsing="false" onMouseClicked="#clickShowText" prefHeight="25.0" prefWidth="78.0" text="Show Text" />
+                              <Button fx:id="button_reset_grid" mnemonicParsing="false" onAction="#clickButtonResetGrid" prefHeight="25.0" prefWidth="78.0" text="Reset Grid" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <ToggleButton fx:id="source_Button" mnemonicParsing="false" onMouseClicked="#clickSourceButton" prefHeight="25.0" prefWidth="100.0" text="Source" />
+                              <ToggleButton fx:id="target_Button" mnemonicParsing="false" onMouseClicked="#clickTargetButton" prefHeight="25.0" prefWidth="100.0" text="Target" />
+                              <ToggleButton fx:id="block_Button" mnemonicParsing="false" onMouseClicked="#clickBlockButton" prefHeight="25.0" prefWidth="100.0" text="Block" />
+                               <ChoiceBox fx:id="choiceBox_Algorithm" onAction="#visibility_heuristic" prefHeight="25.0" prefWidth="217.0" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label fx:id="label_Algorithm" text="Choice Algorithm" />
+                              <Button mnemonicParsing="false" onMouseClicked="#start" prefHeight="25.0" prefWidth="78.0" text="Start" />
+                              <ToggleButton fx:id="clear_Button" mnemonicParsing="false" onMouseClicked="#clickClearButton" prefHeight="25.0" prefWidth="100.0" text="Clear Field" />
+                              <ChoiceBox fx:id="choiceBox_Heuristik" prefHeight="25.0" prefWidth="217.0" visible="false" />
+                              <Label fx:id="label_Heuristik" text="Choice Heuristik" visible="false" />
+                              <Label text="Animation Speed" />
+                              <TextField fx:id="animation_speed_textfield" onAction="#actionAnimationSpeedInput" onInputMethodTextChanged="#actionAnimationSpeedInput" prefHeight="25.0" prefWidth="40.0" promptText="Animation Speed" text="50" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <TextArea fx:id="performanceTextArea" prefHeight="84.0" prefWidth="212.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>
