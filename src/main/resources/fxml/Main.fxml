@@ -3,9 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
@@ -15,7 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 
 <!--
   ~ Copyright (c) 2019. by Dennis Eickholt
@@ -26,11 +24,11 @@
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: e6e6e6;" BorderPane.alignment="CENTER">
+            <AnchorPane style="-fx-background-color: e6e6e6;" BorderPane.alignment="CENTER">
                <children>
                 <AnchorPane fx:id="contentPane" style="-fx-background-color: FFFFFF; -fx-border-color: c6c6c6;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                      <children>
-                        <GridPane id="gridpane" fx:id="gridpane" alignment="TOP_CENTER" gridLinesVisible="true" onMouseDragged="#clickGrid" onMousePressed="#clickGrid" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <GridPane id="gridpane" fx:id="gridpane" alignment="CENTER" gridLinesVisible="true" onMouseDragged="#clickGrid" onMousePressed="#clickGrid" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" />
                             <ColumnConstraints hgrow="SOMETIMES" />
@@ -48,64 +46,63 @@
             </AnchorPane>
          </center>
          <top>
-            <AnchorPane prefHeight="200.0" style="-fx-background-color: f3f2f1;" styleClass="shadowpane" stylesheets="@css/style.css" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="54.0" styleClass="controlPane" stylesheets="@../css/style.css" BorderPane.alignment="CENTER">
                <children>
-                  <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <menus>
-                      <Menu mnemonicParsing="false" text="File">
-                        <items>
-                          <MenuItem fx:id="menuitem_load" mnemonicParsing="false" onAction="#menuitem_load_action" text="Load" />
-                          <MenuItem fx:id="menuitem_save" mnemonicParsing="false" onAction="#menuitem_save_action" text="Save" />
-                          <MenuItem fx:id="menuitem_close" mnemonicParsing="false" text="Close" />
-                        </items>
-                      </Menu>
-                      <Menu mnemonicParsing="false" text="Help">
-                        <items>
-                          <MenuItem mnemonicParsing="false" text="About" />
-                        </items>
-                      </Menu>
-                    </menus>
-                  </MenuBar>
-                  <HBox prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0">
+                  <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="Grid Size" />
-                              <TextField fx:id="grid_resize_textfield" onAction="#actionGridResizeInput" onInputMethodTextChanged="#actionGridResizeInput" prefHeight="25.0" prefWidth="40.0" promptText="GridSize" text="28" />
-                              <Label text="GridFiledSize" />
-                              <TextField fx:id="grid_fieldsize_textfield" onAction="#actionGridFieldresizeInput" prefHeight="25.0" prefWidth="40.0" text="28" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                            <ToggleButton fx:id="toggleButtonShowTextfield" mnemonicParsing="false" onMouseClicked="#clickShowText" prefHeight="25.0" prefWidth="78.0" text="Show Text" />
-                              <Button fx:id="button_reset_grid" mnemonicParsing="false" onAction="#clickButtonResetGrid" prefHeight="25.0" prefWidth="78.0" text="Reset Grid" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <ToggleButton fx:id="source_Button" mnemonicParsing="false" onMouseClicked="#clickSourceButton" prefHeight="25.0" prefWidth="100.0" text="Source" />
-                              <ToggleButton fx:id="target_Button" mnemonicParsing="false" onMouseClicked="#clickTargetButton" prefHeight="25.0" prefWidth="100.0" text="Target" />
-                              <ToggleButton fx:id="block_Button" mnemonicParsing="false" onMouseClicked="#clickBlockButton" prefHeight="25.0" prefWidth="100.0" text="Block" />
-                               <ChoiceBox fx:id="choiceBox_Algorithm" onAction="#visibility_heuristic" prefHeight="25.0" prefWidth="217.0" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label fx:id="label_Algorithm" text="Choice Algorithm" />
-                              <Button mnemonicParsing="false" onMouseClicked="#start" prefHeight="25.0" prefWidth="78.0" text="Start" />
-                              <ToggleButton fx:id="clear_Button" mnemonicParsing="false" onMouseClicked="#clickClearButton" prefHeight="25.0" prefWidth="100.0" text="Clear Field" />
-                              <ChoiceBox fx:id="choiceBox_Heuristik" prefHeight="25.0" prefWidth="217.0" visible="false" />
-                              <Label fx:id="label_Heuristik" text="Choice Heuristik" visible="false" />
-                              <Label text="Animation Speed" />
-                              <TextField fx:id="animation_speed_textfield" onAction="#actionAnimationSpeedInput" onInputMethodTextChanged="#actionAnimationSpeedInput" prefHeight="25.0" prefWidth="40.0" promptText="Animation Speed" text="50" />
-                           </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <TextArea fx:id="performanceTextArea" prefHeight="84.0" prefWidth="212.0" />
-                           </children>
-                        </VBox>
+                        <Button fx:id="btnOpen" contentDisplay="TOP" mnemonicParsing="false" onAction="#menuitem_load_action" text="File open">
+                           <graphic>
+                              <SVGPath content="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z" styleClass="svgIcon" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btnSave" contentDisplay="TOP" mnemonicParsing="false" onAction="#menuitem_save_action" text="save">
+                           <graphic>
+                              <SVGPath content="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z" styleClass="svgIcon" />
+                           </graphic>
+                        </Button>
+                        <Separator orientation="VERTICAL" />
+                        <TextField fx:id="grid_resize_textfield" minWidth="100.0" onAction="#actionGridResizeInput" onInputMethodTextChanged="#actionGridResizeInput" prefHeight="25.0" prefWidth="40.0" promptText="Grid size" text="28" />
+                        <TextField fx:id="grid_fieldsize_textfield" onAction="#actionGridFieldresizeInput" prefHeight="25.0" prefWidth="40.0" promptText="Field Size" text="28" />
+                      <ToggleButton fx:id="toggleButtonShowTextfield" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#clickShowText" prefHeight="25.0" prefWidth="78.0" text="Show Text">
+                           <graphic>
+                              <SVGPath content="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16zM16 17H5V7h11l3.55 5L16 17z" styleClass="svgIcon" />
+                           </graphic>
+                        </ToggleButton>
+                        <Button fx:id="button_reset_grid" contentDisplay="TOP" mnemonicParsing="false" onAction="#clickButtonResetGrid" prefHeight="25.0" prefWidth="78.0" text="Reset Grid">
+                           <graphic>
+                              <SVGPath content="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" styleClass="svgIcon" />
+                           </graphic>
+                        </Button>
+                        <TextField fx:id="animation_speed_textfield" onAction="#actionAnimationSpeedInput" onInputMethodTextChanged="#actionAnimationSpeedInput" promptText="Animation duration" text="50" />
+                        <Separator orientation="VERTICAL" />
+                        <ToggleButton fx:id="source_Button" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#clickSourceButton" text="Source">
+                           <graphic>
+                              <SVGPath content="M3 21h2v-2H3v2zm4 0h2v-2H7v2zM5 7H3v2h2V7zM3 17h2v-2H3v2zM9 3H7v2h2V3zM5 3H3v2h2V3zm12 0h-2v2h2V3zm2 6h2V7h-2v2zm0-6v2h2V3h-2zm-4 18h2v-2h-2v2zM13 3h-2v8H3v2h8v8h2v-8h8v-2h-8V3zm6 18h2v-2h-2v2zm0-4h2v-2h-2v2z" style="-fx-fill: #00DD00;" styleClass="svgIcon" />
+                           </graphic></ToggleButton>
+                        <ToggleButton fx:id="target_Button" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#clickTargetButton" text="Target">
+                           <graphic>
+                              <SVGPath content="M3 21h2v-2H3v2zm4 0h2v-2H7v2zM5 7H3v2h2V7zM3 17h2v-2H3v2zM9 3H7v2h2V3zM5 3H3v2h2V3zm12 0h-2v2h2V3zm2 6h2V7h-2v2zm0-6v2h2V3h-2zm-4 18h2v-2h-2v2zM13 3h-2v8H3v2h8v8h2v-8h8v-2h-8V3zm6 18h2v-2h-2v2zm0-4h2v-2h-2v2z" style="-fx-fill: #EE4400;" styleClass="svgIcon" />
+                           </graphic></ToggleButton>
+                        <ToggleButton fx:id="block_Button" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#clickBlockButton" text="Block">
+                           <graphic>
+                              <SVGPath content="M13 7h-2v2h2V7zm0 4h-2v2h2v-2zm4 0h-2v2h2v-2zM3 3v18h18V3H3zm16 16H5V5h14v14zm-6-4h-2v2h2v-2zm-4-4H7v2h2v-2z" style="-fx-fill: #000000;" styleClass="svgIcon" />
+                           </graphic></ToggleButton>
+                        <ToggleButton fx:id="clear_Button" contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#clickClearButton" text="Clear Blocked Field">
+                           <graphic>
+                              <SVGPath content="M13 7h-2v2h2V7zm0 4h-2v2h2v-2zm4 0h-2v2h2v-2zM3 3v18h18V3H3zm16 16H5V5h14v14zm-6-4h-2v2h2v-2zm-4-4H7v2h2v-2z" styleClass="svgIcon" />
+                           </graphic></ToggleButton>
+                        <Separator orientation="VERTICAL" />
+                        <Label fx:id="label_Algorithm" />
+                         <ChoiceBox fx:id="choiceBox_Algorithm" accessibleText="Choice Algorithm" onAction="#visibility_heuristic" />
+                        <Label fx:id="label_Heuristik" visible="false" />
+                        <ChoiceBox fx:id="choiceBox_Heuristik" />
+                        <Button contentDisplay="TOP" mnemonicParsing="false" onMouseClicked="#start" text="Start">
+                           <graphic>
+                              <SVGPath content="M10 16.5l6-4.5-6-4.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" styleClass="svgIcon" />
+                           </graphic>
+                        </Button>
+                        <Separator orientation="VERTICAL" />
+                        <TextArea fx:id="performanceTextArea" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" visible="false" />
                      </children>
                   </HBox>
                </children>

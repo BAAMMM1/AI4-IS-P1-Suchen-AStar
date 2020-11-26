@@ -123,7 +123,7 @@ public class Controller {
         pathFinding = new PathFinding();
         io = new IO();
         stage = new Stage();
-        animation_speed_textfield.setText("" + sleeptime);
+        animation_speed_textfield.setText("Animation duration: " + sleeptime);
 
         // Setzen der Standardeinstellung im Algorithm Bereich zum Bearbeiten
         // hier: Mode 1: Block setzen
@@ -137,8 +137,8 @@ public class Controller {
         allAlgortihm.add(new Separator());
         allAlgortihm.addAll(pathFinding.getInformedAlgorithm());
         choiceBox_Algorithm.setItems(FXCollections.observableArrayList(allAlgortihm));
-        grid_resize_textfield.setText("" + gridsize);
-        grid_fieldsize_textfield.setText("" + (int) gridfieldsize);
+        grid_resize_textfield.setText("Grid size: " + gridsize);
+        grid_fieldsize_textfield.setText("Field size: " + (int) gridfieldsize);
 
         // Setzen der Heuristik
         List<String> allHeuristik = new ArrayList<>(pathFinding.getHeuristic());
@@ -148,6 +148,20 @@ public class Controller {
         cleargrid(gridpane);
 
         System.out.println("beende Initialize");
+        this.choiceBox_Algorithm.getSelectionModel().select(0);
+
+        grid_resize_textfield.setOnMouseClicked(event -> {
+            grid_resize_textfield.clear();
+        });
+
+        grid_fieldsize_textfield.setOnMouseClicked(event -> {
+            grid_fieldsize_textfield.clear();
+        });
+
+        animation_speed_textfield.setOnMouseClicked(event -> {
+            animation_speed_textfield.clear();
+        });
+
     }
 
 
@@ -171,8 +185,8 @@ public class Controller {
         this.target = checkPointDTO.getTarget();
         this.block = checkPointDTO.getBlockSet();
         clickButtonResetGrid();
-        grid_resize_textfield.setText(gridsize.toString());
-        grid_fieldsize_textfield.setText(""+gridfieldsize);
+        grid_resize_textfield.setText("Grid size: " + gridsize.toString());
+        grid_fieldsize_textfield.setText("Field size: " + gridfieldsize);
     }
 
     public void menuitem_save_action() {
@@ -207,6 +221,8 @@ public class Controller {
 
                 drawHistorylineTimeLine(historyline);
 
+                performanceText = "";
+
                 performanceText = performanceText + "Alg: " + choiceBox_Algorithm.getValue().toString() + "\n";
                 if (pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString()) && choiceBox_Heuristik.getValue() != null) {
                     performanceText = performanceText + "Heu: " + choiceBox_Heuristik.getValue() + "\n";
@@ -215,6 +231,7 @@ public class Controller {
                 }
                 performanceText = performanceText + "t : " + pathFinding.getMeasuredTime() + " ns\n";
                 performanceText = performanceText + "Mem: " + pathFinding.getSearchAlgorithm().getStorageComplexity() + "\n--------------------------\n";
+
                 performanceTextArea.setText(performanceText);
 
             }
@@ -367,10 +384,20 @@ public class Controller {
 
     public void actionAnimationSpeedInput() {
         if (!animation_speed_textfield.getText().equals("")) {
-            sleeptime = Double.parseDouble(this.animation_speed_textfield.getText());
+
+            try {
+                Double.parseDouble(animation_speed_textfield.getText());
+
+                sleeptime = Double.parseDouble(this.animation_speed_textfield.getText());
+
+                animation_speed_textfield.setText("Animation duration: " + animation_speed_textfield.getText());
+
+            } catch (NumberFormatException e) {
+
+            }
+
         }
     }
-
     @FXML
     private void clickButtonResetGrid() {
         cleargrid(gridpane);
@@ -501,7 +528,7 @@ public class Controller {
     private void blankCell(int column, int row) {
         Rectangle rectangle = drawRectangle(gridfieldsize, gridfieldsize, "#FFFFFF");
         rectangle.setStroke(Paint.valueOf("grey"));
-        rectangle.setStrokeWidth(0.5);
+        rectangle.setStrokeWidth(0.25);
         gridpane.add(rectangle, column, row);
     }
 
