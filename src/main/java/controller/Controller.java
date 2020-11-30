@@ -17,10 +17,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -49,6 +46,7 @@ import java.util.Set;
  * @created 10/2019
  */
 public class Controller {
+    private static double STROKE_SIZE = 0.25;
     private Integer gridsize = 28;
     private double gridfieldsize = 28;
     private double sleeptime = 2d;
@@ -67,6 +65,8 @@ public class Controller {
 
     @FXML
     GridPane gridpane;
+
+    private Rectangle[][] rectangles;
 
     @FXML
     ToggleButton block_Button;
@@ -110,6 +110,12 @@ public class Controller {
     @FXML
     ToggleButton toggleButtonShowTextfield;
 
+    @FXML
+    HBox hbox;
+
+    @FXML
+    AnchorPane contentPane;
+
     public Controller() {
     }
 
@@ -138,7 +144,6 @@ public class Controller {
         allAlgortihm.addAll(pathFinding.getInformedAlgorithm());
         choiceBox_Algorithm.setItems(FXCollections.observableArrayList(allAlgortihm));
         grid_resize_textfield.setText("Grid size: " + gridsize);
-        grid_fieldsize_textfield.setText("Field size: " + (int) gridfieldsize);
 
         // Setzen der Heuristik
         List<String> allHeuristik = new ArrayList<>(pathFinding.getHeuristic());
@@ -154,13 +159,14 @@ public class Controller {
             grid_resize_textfield.clear();
         });
 
-        grid_fieldsize_textfield.setOnMouseClicked(event -> {
-            grid_fieldsize_textfield.clear();
-        });
-
         animation_speed_textfield.setOnMouseClicked(event -> {
             animation_speed_textfield.clear();
         });
+
+        this.hbox.setFillHeight(true);
+        System.out.println(this.gridpane.isResizable());
+
+        this.initGridPaneResizer();
 
     }
 
@@ -268,7 +274,7 @@ public class Controller {
 
     private void drawClosedList(NodeSnapShot nodeSnapShot) {
         if (nodeSnapShot.getNode().getZustand() != source && nodeSnapShot.getNode().getZustand() != target) {
-            gridpane.add(drawRectangle(gridfieldsize, gridfieldsize, "#AFEEEE"), getcolumn(nodeSnapShot), getrow(nodeSnapShot));
+            rectangles[getcolumn(nodeSnapShot)][getrow(nodeSnapShot)].setFill(Color.valueOf("#AFEEEE"));
             if (showtextfield) {
                 addTextfields(nodeSnapShot);
             }
@@ -277,7 +283,7 @@ public class Controller {
 
     private void drawOpenList(NodeSnapShot nodeSnapShot) {
         if (historylineforThread.get(0).getFieldNumber() != source && historylineforThread.get(0).getFieldNumber() != target) {
-            gridpane.add(drawRectangle(gridfieldsize, gridfieldsize, "#98FB98"), getcolumn(nodeSnapShot), getrow(nodeSnapShot));
+            rectangles[getcolumn(nodeSnapShot)][getrow(nodeSnapShot)].setFill(Color.valueOf("#98FB98"));
             if (showtextfield) {
                 addTextfields(nodeSnapShot);
             }
@@ -298,7 +304,7 @@ public class Controller {
         //Zeichnen der Nodes
         Circle cicic = drawCircle(gridfieldsize / 3.5);
         GridPane.setValignment(cicic, VPos.BOTTOM);
-        gridpane.add(cicic, column, row);
+        rectangles[column][row].setFill(Color.valueOf("#FFFF00"));
 
         //Beschriften der Nodes
         if (showtextfield) {
@@ -342,9 +348,15 @@ public class Controller {
         gp.getRowConstraints().clear();
         gp.getColumnConstraints().clear();
         gp.getChildren().clear();
+        this.rectangles = new Rectangle[gridsize][gridsize];
         for (int a = 0; a < gridsize; a++) {
-            gp.getRowConstraints().add(new RowConstraints());
-            gp.getColumnConstraints().add(new ColumnConstraints());
+            RowConstraints rowConstraints = new RowConstraints(0, 0, Double.MAX_VALUE,
+                    Priority.ALWAYS, VPos.CENTER, true);
+            //rowConstraints.setVgrow(Priority.ALWAYS);
+            gp.getRowConstraints().add(rowConstraints);
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            //columnConstraints.setHgrow(Priority.ALWAYS);
+            gp.getColumnConstraints().add(columnConstraints);
         }
         for (int i = 0; i < gridsize; i++) {
             for (int j = 0; j < gridsize; j++) {
@@ -514,21 +526,29 @@ public class Controller {
 
     // Um das Grid wieder zu reseten -> Entfernen von OpenList, ClosedList und Path
     private void drawBlock(int column, int row) {
-        gridpane.add(drawRectangle(gridfieldsize - 1, gridfieldsize - 1, "#808080"), column, row);
+        rectangles[column][row].setFill(Color.valueOf("#808080"));
     }
 
     private void drawSource(int column, int row) {
-        gridpane.add(drawRectangle(gridfieldsize - 1, gridfieldsize - 1, "#00DD00"), column, row);
+        rectangles[column][row].setFill(Color.valueOf("#00DD00"));
     }
 
     private void drawTarget(int column, int row) {
-        gridpane.add(drawRectangle(gridfieldsize - 1, gridfieldsize - 1, "#EE4400"), column, row);
+        rectangles[column][row].setFill(Color.valueOf("#EE4400"));
     }
 
     private void blankCell(int column, int row) {
+
+        if(contentPane.getHeight() < contentPane.getWidth()){
+            gridfieldsize = contentPane.getHeight() / gridsize - 2;
+        } else {
+            gridfieldsize = contentPane.getWidth() / gridsize - 2;
+        }
+
         Rectangle rectangle = drawRectangle(gridfieldsize, gridfieldsize, "#FFFFFF");
         rectangle.setStroke(Paint.valueOf("grey"));
-        rectangle.setStrokeWidth(0.25);
+        rectangle.setStrokeWidth(STROKE_SIZE);
+        this.rectangles[column][row] = rectangle;
         gridpane.add(rectangle, column, row);
     }
 
@@ -603,6 +623,49 @@ public class Controller {
 
     private int getrow(NodeSnapShot nodeSnapShot) {
         return nodeSnapShot.getFieldNumber() / gridsize;
+    }
+
+    private void initGridPaneResizer() {
+
+        gridpane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            reSizeRectangles(newVal.doubleValue(), gridpane.getHeight());
+        });
+
+        gridpane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            reSizeRectangles(gridpane.getWidth(), newVal.doubleValue());
+        });
+
+
+    }
+
+    public void reSizeRectangles(double gridPaneWidth, double gridPaneHeight) {
+        System.out.println("resize with: " + gridPaneWidth + " " + gridPaneHeight);
+
+        double width, height;
+
+        /*if (((gridPaneHeight / gridfieldsize)) * gridfieldsize < gridPaneWidth) {
+            width = (gridPaneHeight / gridfieldsize) - 1.0;
+            height = (gridPaneHeight / gridfieldsize) - 1.0;
+        } else {
+            width = (gridPaneWidth / gridfieldsize) - 1.5;
+            height = (gridPaneWidth / gridfieldsize) - 1.5;
+        }*/
+
+        if(contentPane.getHeight() < contentPane.getWidth()){
+            gridfieldsize = contentPane.getHeight() / gridsize - 2;
+        } else {
+            gridfieldsize = contentPane.getWidth() / gridsize - 2;
+        }
+
+
+        for (int i = 0; i < rectangles.length; i++) {
+            for (int j = 0; j < rectangles[i].length; j++) {
+                rectangles[i][j].setWidth(gridfieldsize);
+                rectangles[i][j].setHeight(gridfieldsize);
+
+            }
+
+        }
     }
 }
 

@@ -11,15 +11,15 @@
 .controlPane .button{
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #000000;
-    -fx-min-width: 100;
-    -fx-min-height: 48;
+    -fx-pref-width: 100;
+    -fx-pref-height: 48;
 }
 
 .controlPane .toggle-button{
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #000000;
-    -fx-min-width: 100;
-    -fx-min-height: 48;
+    -fx-pref-width: 100;
+    -fx-pref-height: 48;
 }
 
 .controlPane .toggle-button:hover{
@@ -54,9 +54,8 @@
     -fx-background-color: #FFFFFF;
     -fx-text-inner-color: #000000;
     -fx-prompt-text-fill: #000000;
-    -fx-min-width: 100;
-    -fx-max-width: 200;
-    -fx-min-height: 48;
+    -fx-pref-width: 100;
+    -fx-pref-height: 48;
 }
 
 .controlPane .choice-box:hover{
@@ -102,7 +101,12 @@
 .controlPane .text-field{
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #000000;
-    -fx-min-width: 100;
-    -fx-min-height: 51;
+    -fx-pref-width: 150;
+    -fx-pref-height: 51;
     -fx-border-color: #eaeaea;
+}
+
+.grid-pane {
+    -fx-min-width: 50;
+    -fx-min-height: 50;
 }
