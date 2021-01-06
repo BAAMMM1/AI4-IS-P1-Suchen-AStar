@@ -3,7 +3,7 @@
 
 Projekt im Rahmen des Intelligente Systeme Praktikum zum Thema Suchen
 
-![](https://git.haw-hamburg.de/abr227/ai4-is-p1-suchen/-/raw/master/teaser.gif)
+![](https://github.com/BAAMMM1/ai4-is-p1-suchen/blob/master/teaser.gif)
 
 </div>
 
