@@ -1,4 +1,4 @@
-# AI4-IS-P1-Suchen
+# AI4-IS-P1-Suchen-AStar
 <div align="center">
 
 Projekt im Rahmen des Intelligente Systeme Praktikum zum Thema Suchen
