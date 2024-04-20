@@ -1,13 +1,19 @@
 # AI4-IS-P1-Suchen-AStar
-<div align="center">
-
-Projekt im Rahmen des Intelligente Systeme Praktikum zum Thema Suchen
+## Description
+Project as part of the Intelligent Systems practial training focusing on the topic of searching.
 
 ![](https://github.com/BAAMMM1/ai4-is-p1-suchen/blob/master/teaser.gif)
 
-</div>
+## Requirements
+- Java JDK v21 installed on your machine
 
-Team:
-- Dennis Eickholt
-- Christian Graumann
+## How to run?
+Linux:
+```
+./gradlew run
+```
 
+Windows:
+```
+.\gradlew.bat run
+```

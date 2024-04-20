@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2019. by Dennis Eickholt
- * All rights reserved.
- */
-
 package controller;
 
 
@@ -40,11 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 
-/**
- * Verbindet die View mit den Algorithmen
- * @author Dennis Eickholt
- * @created 10/2019
- */
 public class Controller {
     private static double STROKE_SIZE = 0.25;
     private Integer gridsize = 28;
