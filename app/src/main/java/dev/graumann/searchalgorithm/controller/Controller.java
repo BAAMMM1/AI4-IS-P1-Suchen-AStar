@@ -179,17 +179,22 @@ public class Controller {
             + fileSeperator + "examples")
         );
 
-        URI uri = fileChooser.showOpenDialog(stage).getAbsoluteFile().toURI();
+        File file = fileChooser.showOpenDialog(stage);
 
-        CheckPointDTO checkPointDTO = io.load(uri);
+        if(file != null){
 
-        this.gridsize = checkPointDTO.getGridSize();
-        this.gridfieldsize = checkPointDTO.getGridFieldSize();
-        this.source = checkPointDTO.getSource();
-        this.target = checkPointDTO.getTarget();
-        this.block = checkPointDTO.getBlockSet();
-        clickButtonResetGrid();
-        grid_resize_textfield.setText("Grid size: " + gridsize.toString());
+            URI uri = file.getAbsoluteFile().toURI();
+
+            CheckPointDTO checkPointDTO = io.load(uri);
+
+            this.gridsize = checkPointDTO.getGridSize();
+            this.gridfieldsize = checkPointDTO.getGridFieldSize();
+            this.source = checkPointDTO.getSource();
+            this.target = checkPointDTO.getTarget();
+            this.block = checkPointDTO.getBlockSet();
+            clickButtonResetGrid();
+            grid_resize_textfield.setText("Grid size: " + gridsize.toString());
+        }
     }
 
     public void menuitem_save_action() {
@@ -197,10 +202,14 @@ public class Controller {
         fileChooser.setTitle("Save Field");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(("Field File(*.json"), "*.json"));
         URI url;
-        url = fileChooser.showSaveDialog(stage).getAbsoluteFile().toURI();
-        System.out.println("URL der ausgewählten Datei zum Speichern ist: " + url.toString());
-        System.out.println("dabei Gridsize: " + gridsize + " und Block: " + block.toString() + " und Source: " + source + " und Target: " + target);
-        io.save(url, gridsize, (int)gridfieldsize, block, source, target);
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {        
+            url = file.getAbsoluteFile().toURI();
+            System.out.println("URL der ausgewählten Datei zum Speichern ist: " + url.toString());
+            System.out.println("dabei Gridsize: " + gridsize + " und Block: " + block.toString() + " und Source: " + source + " und Target: " + target);
+            io.save(url, gridsize, (int)gridfieldsize, block, source, target);
+        }
     }
 
     public void start() throws Exception {
