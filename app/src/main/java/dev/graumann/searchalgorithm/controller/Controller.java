@@ -213,7 +213,9 @@ public class Controller {
     }
 
     public void start() throws Exception {
-        clickButtonResetGrid();
+        if(this.source == null || this.target == null) return;
+
+        clickButtonResetGrid(); 
         // hier müssen übergabe der Listen an model/Algorithm entstehen
         if (choiceBox_Algorithm.getValue() != null) {
             if (choiceBox_Heuristik.getValue() == null && pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())) {
