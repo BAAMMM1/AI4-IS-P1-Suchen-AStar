@@ -4,7 +4,7 @@
 ## Description
 Project as part of the Intelligent Systems practial training focusing on the topic of searching.
 
-![](https://github.com/BAAMMM1/AI4-IS-P1-Suchen-AStar/blob/1254f91913f58e4a653df2f3245e2a899458fdf0/teaser.gif)
+![](https://github.com/BAAMMM1/AI4-IS-P1-Suchen-AStar/blob/348d64e00d7ee3168c27801875344e28374f1b75/images/teaser.gif)
 
 ## Requirements
 - Java JDK v21 installed on your machine
