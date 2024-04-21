@@ -165,16 +165,29 @@ public class Controller {
     /*******************************************
      ***            File Section             ***
      *******************************************/
-
     public void menuitem_load_action() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load Field");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(("Field File(*.json"), "*.json"));
+        
         // Setzt den LadePfad dorthin, wo die Beispiel-Spielfelder gespeichert sind
-        fileChooser.setInitialDirectory(new File("" + System.getProperty("user.dir") + "\\Examples"));
+        String fileSeperator = System.getProperty("file.separator");
+        fileChooser.setInitialDirectory(
+            new File(System.getProperty("user.dir")
+            + fileSeperator + "src"
+            + fileSeperator + "main"
+            + fileSeperator + "resources"
+            + fileSeperator + "dev"
+            + fileSeperator + "graumann"
+            + fileSeperator + "searchalgorithm"
+            + fileSeperator + "examples")
+        );
+
         URI uri = fileChooser.showOpenDialog(stage).getAbsoluteFile().toURI();
 
         CheckPointDTO checkPointDTO = io.load(uri);
+
+        System.out.println(checkPointDTO == null);
 
         this.gridsize = checkPointDTO.getGridSize();
         this.gridfieldsize = checkPointDTO.getGridFieldSize();

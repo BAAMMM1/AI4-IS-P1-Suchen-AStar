@@ -85,7 +85,7 @@ public class PathFinding {
 
     private void initUninformedAlgorithms() {
 
-        Set<Class<? extends UninformedAlgorithm>> searchAlgortihms = new Reflections("model.algorithm",
+        Set<Class<? extends UninformedAlgorithm>> searchAlgortihms = new Reflections("dev.graumann.searchalgorithm.model.algorithm",
                 new SubTypesScanner(false))
                 .getSubTypesOf(UninformedAlgorithm.class);
 
@@ -99,7 +99,7 @@ public class PathFinding {
 
     private void initHeuristic() {
 
-        Set<Class<? extends Heuristic>> informedAlgorithms = new Reflections("model.algorithm",
+        Set<Class<? extends Heuristic>> informedAlgorithms = new Reflections("dev.graumann.searchalgorithm.model.algorithm",
                 new SubTypesScanner(false))
                 .getSubTypesOf(Heuristic.class);
 
@@ -112,7 +112,7 @@ public class PathFinding {
 
     private void initInformedAlgorithm() {
 
-        Set<Class<? extends InformedAlgorithm>> heuristics = new Reflections("model.algorithm",
+        Set<Class<? extends InformedAlgorithm>> heuristics = new Reflections("dev.graumann.searchalgorithm.model.algorithm",
                 new SubTypesScanner(false))
                 .getSubTypesOf(InformedAlgorithm.class);
 
