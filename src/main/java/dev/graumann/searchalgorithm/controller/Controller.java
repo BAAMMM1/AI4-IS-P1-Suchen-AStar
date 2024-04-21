@@ -78,9 +78,6 @@ public class Controller {
     TextField grid_resize_textfield;
 
     @FXML
-    TextField grid_fieldsize_textfield;
-
-    @FXML
     TextField animation_speed_textfield;
 
     @FXML
@@ -187,8 +184,6 @@ public class Controller {
 
         CheckPointDTO checkPointDTO = io.load(uri);
 
-        System.out.println(checkPointDTO == null);
-
         this.gridsize = checkPointDTO.getGridSize();
         this.gridfieldsize = checkPointDTO.getGridFieldSize();
         this.source = checkPointDTO.getSource();
@@ -196,7 +191,6 @@ public class Controller {
         this.block = checkPointDTO.getBlockSet();
         clickButtonResetGrid();
         grid_resize_textfield.setText("Grid size: " + gridsize.toString());
-        grid_fieldsize_textfield.setText("Field size: " + gridfieldsize);
     }
 
     public void menuitem_save_action() {
@@ -231,16 +225,12 @@ public class Controller {
 
                 drawHistorylineTimeLine(historyline);
 
-                performanceText = "";
-
-                performanceText = performanceText + "Alg: " + choiceBox_Algorithm.getValue().toString() + "\n";
+                performanceText = choiceBox_Algorithm.getValue().toString() + " / ";
                 if (pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString()) && choiceBox_Heuristik.getValue() != null) {
-                    performanceText = performanceText + "Heu: " + choiceBox_Heuristik.getValue() + "\n";
-                } else {
-                    performanceText = performanceText + "Heu: not used\n";
+                    performanceText = performanceText + choiceBox_Heuristik.getValue() + " / ";
                 }
-                performanceText = performanceText + "t : " + pathFinding.getMeasuredTime() + " ns\n";
-                performanceText = performanceText + "Mem: " + pathFinding.getSearchAlgorithm().getStorageComplexity() + "\n--------------------------\n";
+                performanceText = performanceText + "time: " + pathFinding.getMeasuredTime() + "ns" + " / ";
+                performanceText = performanceText + "memory: " + pathFinding.getSearchAlgorithm().getStorageComplexity() + " fields";
 
                 performanceTextArea.setText(performanceText);
 
@@ -327,10 +317,10 @@ public class Controller {
 
     @FXML
     private void visibility_heuristic() {
-        System.out.println(choiceBox_Algorithm.getValue());
         if (choiceBox_Algorithm != null && pathFinding.getInformedAlgorithm().contains(choiceBox_Algorithm.getValue().toString())) {
             label_Heuristik.setVisible(true);
             choiceBox_Heuristik.setVisible(true);
+            choiceBox_Heuristik.getSelectionModel().select(0);
         } else {
             label_Heuristik.setVisible(false);
             choiceBox_Heuristik.setVisible(false);
@@ -387,16 +377,9 @@ public class Controller {
 
     public void actionGridResizeInput() {
         gridsize = Integer.parseInt(grid_resize_textfield.getText());
-        System.out.println("gridsize ist nun: " + gridsize);
         initialize();
     }
 
-    public void actionGridFieldresizeInput() {
-        Integer a = Integer.parseInt(grid_fieldsize_textfield.getText());
-        gridfieldsize = a;
-        System.out.println("gridfieldsize ist nun: " + a);
-        initialize();
-    }
 
     public void actionAnimationSpeedInput() {
         if (!animation_speed_textfield.getText().equals("")) {
@@ -643,8 +626,6 @@ public class Controller {
     }
 
     public void reSizeRectangles(double gridPaneWidth, double gridPaneHeight) {
-        System.out.println("resize with: " + gridPaneWidth + " " + gridPaneHeight);
-
         double width, height;
 
         /*if (((gridPaneHeight / gridfieldsize)) * gridfieldsize < gridPaneWidth) {
