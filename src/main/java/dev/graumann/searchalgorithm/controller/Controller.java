@@ -152,7 +152,6 @@ public class Controller {
         });
 
         this.hbox.setFillHeight(true);
-        System.out.println(this.gridpane.isResizable());
 
         this.initGridPaneResizer();
 
