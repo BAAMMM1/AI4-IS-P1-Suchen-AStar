@@ -37,7 +37,7 @@ public class EuclideanDistance extends Heuristic {
         int dx = Math.abs(xNode - xTarget);
         int dy = Math.abs(yNode - yTarget);
 
-        return (int)(d * Math.sqrt(dx * dx + dy * dy)); // TODO (int) nicht double?
+        return (int)(d * Math.sqrt(dx * dx + dy * dy)); // (int) nicht double?
     }
 
 }

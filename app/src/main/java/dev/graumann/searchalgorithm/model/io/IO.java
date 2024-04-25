@@ -42,8 +42,9 @@ public class IO {
     }
 
     public static void main(String[] args) throws IOException {
-        IO io = new IO();
         /*
+        IO io = new IO();
+        
         io.save("db/field", 15, new HashSet<Integer>(), 10, 15);
         io.save("db/field", 0, null, null, null);
         io.save("d:/Audio/example", 15, null, 10, 15);

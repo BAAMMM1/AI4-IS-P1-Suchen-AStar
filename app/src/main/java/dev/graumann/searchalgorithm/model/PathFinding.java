@@ -89,7 +89,7 @@ public class PathFinding {
                 new SubTypesScanner(false))
                 .getSubTypesOf(UninformedAlgorithm.class);
 
-        for (Class object : searchAlgortihms) {
+        for (Class<? extends UninformedAlgorithm> object : searchAlgortihms) {
             if (!Modifier.isAbstract(object.getModifiers())) {
                 uninformedMap.put(object.getSimpleName(), object.getName());
             }
@@ -103,7 +103,7 @@ public class PathFinding {
                 new SubTypesScanner(false))
                 .getSubTypesOf(Heuristic.class);
 
-        for (Class object : informedAlgorithms) {
+        for (Class<? extends Heuristic> object : informedAlgorithms) {
             if (!Modifier.isAbstract(object.getModifiers())) {
                 heuristicMap.put(object.getSimpleName(), object.getName());
             }
@@ -116,7 +116,7 @@ public class PathFinding {
                 new SubTypesScanner(false))
                 .getSubTypesOf(InformedAlgorithm.class);
 
-        for (Class object : heuristics) {
+        for (Class<? extends InformedAlgorithm> object : heuristics) {
             if (!Modifier.isAbstract(object.getModifiers())) {
                 informedMap.put(object.getSimpleName(), object.getName());
             }

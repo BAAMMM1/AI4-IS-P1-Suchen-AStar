@@ -16,8 +16,6 @@ import dev.graumann.searchalgorithm.model.field.NodeType;
 public class IterativDeepeningDepthFirstRekursive extends UninformedAlgorithm {
 
     private static final int MAX_DEPTH = 200;
-    private boolean solution = false;
-
     private List<Node> openListTemp;
     private List<Node> closeListTemp;
 

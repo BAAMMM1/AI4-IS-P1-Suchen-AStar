@@ -636,7 +636,7 @@ public class Controller {
     }
 
     public void reSizeRectangles(double gridPaneWidth, double gridPaneHeight) {
-        double width, height;
+        
 
         /*if (((gridPaneHeight / gridfieldsize)) * gridfieldsize < gridPaneWidth) {
             width = (gridPaneHeight / gridfieldsize) - 1.0;
@@ -665,8 +665,8 @@ public class Controller {
 }
 
 
-// TODO JPS https://www.youtube.com/watch?v=jB1IOR5roUM ablauf
-// TODO Clearance-based Pathfinding  -> man geht von allen hindernissen aus und versucht möglichst große quadrate zu bilden https://harablog.wordpress.com/2009/01/29/clearance-based-pathfinding/
+// JPS https://www.youtube.com/watch?v=jB1IOR5roUM ablauf
+// Clearance-based Pathfinding  -> man geht von allen hindernissen aus und versucht möglichst große quadrate zu bilden https://harablog.wordpress.com/2009/01/29/clearance-based-pathfinding/
 
 // https://stackoverflow.com/questions/39235545/add-delay-after-platform-runlater-runnable
 // drawPath(int column, int row, NodeSnapShot nodeSnapShot) + v^ both, for Thread and Timeline
